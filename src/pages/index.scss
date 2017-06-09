@@ -1,0 +1,55 @@
+body { min-height: initial; }
+h4 { margin: 10px 0 0; }
+a { cursor: pointer; }
+button.mdl-button { text-transform: none; }
+
+#layout {
+    > div {
+        display: flex;
+    }
+}
+
+#photos {
+    overflow: hidden;
+    > div {
+        display: flex;
+        flex-wrap: wrap;
+        height: 100vh;
+        overflow: auto;
+        align-content: flex-start;
+        $size: 100px;
+        width: calc(100% + #{$size});
+        a {
+            display: inline-block;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: $size;
+            height: $size;
+        }
+    }
+}
+
+#sidebar {
+    $margin: 20px;
+    margin: $margin;
+    height: calc(100vh - $margin*2);
+    flex-shrink: 0;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    > section {
+        padding: 0 40px;
+        &[name=controls] {
+            input {
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+#map {
+    flex-grow: 1;
+    min-height: 350px;
+    padding-top: 0;
+    padding-bottom: 0;
+}

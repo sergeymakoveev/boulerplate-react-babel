@@ -1,0 +1,45 @@
+{
+  "name": "react-babel-boulerplate",
+  "version": "0.0.1",
+  "description": "React-babel boulerplate",
+  "repository": {
+    "type": "git",
+    "url": "git@git.assembla.com:rrmmo.git"
+  },
+  "author": "CodeInside <info@codeinside.ru>",
+  "license": "Commercial",
+  "keywords": [
+    "webpack",
+    "babel",
+    "eslint"
+  ],
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.5.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^0.28.4",
+    "eslint": "^3.19.0",
+    "eslint-loader": "^1.7.1",
+    "extract-loader": "^0.1.0",
+    "file-loader": "^0.11.2",
+    "html-loader": "^0.4.5",
+    "node-sass": "^4.5.3",
+    "ramda": "^0.24.1",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "sass-loader": "^6.0.5",
+    "style-loader": "^0.18.2",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5",
+    "webpack-notifier": "^1.5.0",
+    "lib": "../lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {}
+}
