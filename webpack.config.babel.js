@@ -60,7 +60,8 @@ export default {
     ].filter( p => p ),
 
     resolve: {
-        modules: [DIR_SRC, 'node_modules']
+        modules: [DIR_SRC, 'node_modules'],
+        extensions: ['.js', '.jsx']
     },
 
     module: {
@@ -71,7 +72,7 @@ export default {
 
         rules: [
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 enforce: 'pre',
                 use: 'eslint-loader',
                 include: DIR_SRC,
@@ -83,13 +84,30 @@ export default {
                 include: DIR_SRC,
                 loader: 'babel-loader',
                 query: {
+                    presets: ['env', 'stage-0']
+                }
+            },
+            {
+                test: /\.jsx$/,
+                // exclude: /\/node_modules|bower_components\//,
+                include: DIR_SRC,
+                loader: 'babel-loader',
+                query: {
                     presets: ['env', 'stage-0', 'react']
                 }
             },
             {
                 test: /\.css$/,
-                use: DEV ? ['style-loader', 'css-loader?sourceMap']
-                         : ['style-loader','css-loader!autoprefixer']
+                use: ( sourceMap => ([
+                            'style-loader',
+                            `css-loader?sourceMap=${sourceMap}`,
+                            { loader: 'postcss-loader',
+                                options: {
+                                    sourceMap,
+                                    plugins: [autoprefixer]
+                                }
+                            }
+                        ]))(DEV)
             },
             {
                 test: /\.scss$/,
