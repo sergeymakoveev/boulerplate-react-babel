@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import WebpackNotifierPlugin from 'webpack-notifier';
+import autoprefixer from 'autoprefixer';
 
 
 const DEV = process.env.NODE_ENV != 'production',
@@ -92,8 +93,17 @@ export default {
             },
             {
                 test: /\.scss$/,
-                use: DEV ? ['style-loader', 'css-loader?sourceMap=true', 'sass-loader?sourceMap=true']
-                         : ['style-loader', 'css-loader', 'autoprefixer!resolve-url!sass?sourceMap']
+                use: ( sourceMap => ([
+                            'style-loader',
+                            `css-loader?sourceMap=${sourceMap}`,
+                            { loader: 'postcss-loader',
+                                options: {
+                                    sourceMap,
+                                    plugins: [autoprefixer]
+                                }
+                            },
+                            `sass-loader?sourceMap=${sourceMap}`
+                        ]))(DEV)
             },
             {
                 test: /\.(gif|png|jpg|svg|ttf|eot|woff|woff2)$/,

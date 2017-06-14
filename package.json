@@ -14,6 +14,7 @@
     "eslint"
   ],
   "devDependencies": {
+    "autoprefixer": "^7.1.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",
@@ -26,17 +27,18 @@
     "extract-loader": "^0.1.0",
     "file-loader": "^0.11.2",
     "html-loader": "^0.4.5",
+    "lib": "../lib",
     "node-sass": "^4.5.3",
+    "postcss-loader": "^2",
     "ramda": "^0.24.1",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
+    "react": "^15.6.0",
+    "react-dom": "^15.6.0",
     "sass-loader": "^6.0.5",
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.8",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5",
-    "webpack-notifier": "^1.5.0",
-    "lib": "../lib"
+    "webpack-notifier": "^1.5.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

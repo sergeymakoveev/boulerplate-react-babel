@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom';
 class Layout extends React.Component {
 
     state = {
-        title: 'React-Babel boulerplate',
+        title: 'test react success',
     };
 
     // constructor( props ){
@@ -19,7 +19,14 @@ class Layout extends React.Component {
     // componentDidMount() {
     // }
 
-    render = () => <h1>{ this.state.title }</h1>;
+    click = () =>
+        this.setState({ title: `${this.state.title} click`})
+
+    render = () => (
+        <button onClick={ this.click }>
+            { this.state.title }
+        </button>
+    );
 }
 
-ReactDOM.render(<Layout />, document.getElementById('layout'));
+ReactDOM.render(<Layout />, document.getElementById('test-react'));

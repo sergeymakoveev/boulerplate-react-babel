@@ -27,7 +27,7 @@ frontend-clean:
 	@rm -rf ${DIR-DIST}
 
 clean: frontend-clean
-	@rm -rf ${DIR-NPM}
+	@rm -rf ${DIR-NPM} package-lock.json
 	${MAKE} npm-install
 
 npm-install:
