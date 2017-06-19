@@ -1,7 +1,19 @@
-body { min-height: initial; }
-h4 { margin: 10px 0 0; }
-a { cursor: pointer; }
-button.mdl-button { text-transform: none; }
+@import '~normalize.css';
+
+body {
+    min-height: initial;
+}
+
+h4 {
+    margin: 10px 0 0;
+}
+a {
+    cursor: pointer;
+}
+
+button.mdl-button {
+    text-transform: none;
+}
 
 #layout {
     > div {
@@ -11,6 +23,7 @@ button.mdl-button { text-transform: none; }
 
 #photos {
     overflow: hidden;
+
     > div {
         display: flex;
         flex-wrap: wrap;
@@ -19,6 +32,7 @@ button.mdl-button { text-transform: none; }
         align-content: flex-start;
         $size: 100px;
         width: calc(100% + #{$size});
+
         a {
             display: inline-block;
             background-repeat: no-repeat;

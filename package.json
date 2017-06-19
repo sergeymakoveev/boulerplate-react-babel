@@ -29,6 +29,7 @@
     "html-loader": "^0.4.5",
     "lib": "../lib",
     "node-sass": "^4.5.3",
+    "normalize.css": "^7.0.0",
     "postcss-loader": "^2",
     "ramda": "^0.24.1",
     "react": "^15.6.0",
