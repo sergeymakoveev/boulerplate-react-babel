@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import WebpackNotifierPlugin from 'webpack-notifier';
 import autoprefixer from 'autoprefixer';
+import StyleLintPlugin from 'stylelint-webpack-plugin';
 
 
 const DEV = process.env.NODE_ENV != 'production',
@@ -48,6 +49,7 @@ export default {
     // },
 
     plugins: [
+        new StyleLintPlugin({syntax: 'scss'}),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.optimize.CommonsChunkPlugin({ name: 'common' }),
         DEV ? new WebpackNotifierPlugin({alwaysNotify: true})
@@ -60,7 +62,7 @@ export default {
     ].filter( p => p ),
 
     resolve: {
-        modules: [DIR_SRC, 'node_modules'],
+        modules: ['node_modules', DIR_SRC],
         extensions: ['.js', '.jsx']
     },
 
