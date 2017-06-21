@@ -34,7 +34,7 @@ export default {
     entry: {
         ...( DEV ? { test: `${DIR_SRC_PAGES}/test` } : {} ),
         index: `${DIR_SRC_PAGES}/index`,
-        // appts: `${DIR_SRC_PAGES}/ts/index`,
+        appts: `${DIR_SRC_PAGES}/ts/index`,
         appjs: `${DIR_SRC_PAGES}/js/index`
     },
 
@@ -55,6 +55,7 @@ export default {
         new StyleLintPlugin({syntax: 'scss'}),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.optimize.CommonsChunkPlugin({ name: 'common' }),
+        // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         DEV ? new WebpackNotifierPlugin({alwaysNotify: true})
             : new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false,
                                                                 drop_console: true } }),
@@ -82,25 +83,11 @@ export default {
                 loader: 'tslint-loader',
             },
             {
-                test: /\.ts$/,
+                test: /\.tsx?$/,
                 loader: 'ts-loader',
                 include: DIR_SRC,
                 exclude: DIR_SRC_EXTERNALS
 
-            },
-            {
-                test: /\.tsx$/,
-                use: [
-                    'ts-loader',
-                    {
-                        loader: 'babel-loader',
-                        query: {
-                            presets: ['env', 'stage-0', 'react']
-                        }
-                    }
-                ],
-                include: DIR_SRC,
-                exclude: DIR_SRC_EXTERNALS
             },
             {
                 test: /\.jsx?$/,
