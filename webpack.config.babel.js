@@ -10,7 +10,8 @@ const DEV = process.env.NODE_ENV != 'production',
       DIR_SRC_PAGES = `${DIR_SRC}/pages`,
       DIR_SRC_EXTERNALS = `${DIR_SRC}/externals`,
       DIR_PUBLIC = '/',
-      DIR_DIST = `${DIR}/dist`;
+      DIR_DIST = `${DIR}/dist`,
+      PORT = 8080;
 
 //// noParse:  wrapRegexp(/\/node_modules\/(angular\/angular)/, 'noParse')
 function wrapRegexp(regexp, label) {
@@ -32,7 +33,9 @@ export default {
 
     entry: {
         ...( DEV ? { test: `${DIR_SRC_PAGES}/test` } : {} ),
-        index: `${DIR_SRC_PAGES}/index`
+        index: `${DIR_SRC_PAGES}/index`,
+        // appts: `${DIR_SRC_PAGES}/ts/index`,
+        appjs: `${DIR_SRC_PAGES}/js/index`
     },
 
     output: {
@@ -63,7 +66,7 @@ export default {
 
     resolve: {
         modules: ['node_modules', DIR_SRC],
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.ts', '.jsx', '.tsx']
     },
 
     module: {
@@ -74,7 +77,33 @@ export default {
 
         rules: [
             {
-                test: /\.(js|jsx)$/,
+                test: /\.tsx?$/,
+                enforce: 'pre',
+                loader: 'tslint-loader',
+            },
+            {
+                test: /\.ts$/,
+                loader: 'ts-loader',
+                include: DIR_SRC,
+                exclude: DIR_SRC_EXTERNALS
+
+            },
+            {
+                test: /\.tsx$/,
+                use: [
+                    'ts-loader',
+                    {
+                        loader: 'babel-loader',
+                        query: {
+                            presets: ['env', 'stage-0', 'react']
+                        }
+                    }
+                ],
+                include: DIR_SRC,
+                exclude: DIR_SRC_EXTERNALS
+            },
+            {
+                test: /\.jsx?$/,
                 enforce: 'pre',
                 use: 'eslint-loader',
                 include: DIR_SRC,
@@ -146,6 +175,12 @@ export default {
     },
 
     devServer: {
+        historyApiFallback: {
+            rewrites: [
+                { from: /^\/js/, to: '/js' },
+                { from: /^\/ts/, to: '/ts' },
+            ]
+        },
         // port: 3001,
         // proxy: {
         //     '*': 'http://localhost:8888'
