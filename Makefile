@@ -1,8 +1,8 @@
 SHELL = /bin/bash
 
-.PHONY: start backend frontend
+.PHONY: start clean install
 
-APP=REACT-BABEL
+APP=REACT-BABEL-TYPESCRIPT
 DIR=${PWD}
 DIR-SRC=${DIR}/src
 DIR-DIST=${DIR}/dist
@@ -14,21 +14,20 @@ start: develop
 develop:
 	@webpack-dev-server --inline --hot
 
-frontend-build: frontend-clean
+build: clean-dist
 	webpack
 
-frontend-build-production: frontend-clean
+build-production: clean-dist
 	@NODE_ENV=production webpack -p
 
-frontend-debug:
+debug:
 	@webpack --profile --display-modules --display-reasons
 
-frontend-clean:
+clean-dist:
 	@rm -rf ${DIR-DIST}
 
-clean: frontend-clean
+clean: clean-dist
 	@rm -rf ${DIR-NPM} package-lock.json
-	${MAKE} npm-install
 
-npm-install:
+install: clean
 	@npm install
