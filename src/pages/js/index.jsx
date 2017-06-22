@@ -47,7 +47,10 @@ class Layout extends React.Component {
                     <Route path="/about" component={About}/>
                     <Route path="/topics" component={Topics}/>
                     <Route path="*"
-                        render={({ location }) => <h3>404: {location.pathname}</h3>}/>
+                        render={
+                            ({ location }) => <h3>404: {location.pathname}</h3>
+                        }
+                    />
                 </Switch>
             </div>
         </Router>
