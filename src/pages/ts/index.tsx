@@ -1,13 +1,13 @@
 import './index.html';
 import './index.scss';
 
+import * as R from 'ramda';
 
-import { * as React } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Link, Switch, RouteComponentProps } from 'react-router-dom';
 
-
-class Layout extends React.Component {
+class Layout extends React.Component<{}, {}> {
 
     state = {
         title: 'React-Babel boulerplate',
@@ -20,54 +20,62 @@ class Layout extends React.Component {
     // componentDidMount() {
     // }
 
-    render = () => (
-        <Router>
-            <div>
-                <h1>{ this.state.title }</h1>
-                <ul>
-                    <li>
-                        <Link to={'/'}>
-                            Home
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to={'/about'}>
-                            About
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to={'/topics'}>
-                            Topics
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to={'/ts-component'}>
-                            TSComponent
-                        </Link>
-                    </li>
-                </ul>
-                <Route exact path="/" component={Home}/>
-                <Route path="/about" component={About}/>
-                <Route path="/topics" component={Topics}/>
-                <Route path="/ts-component" component={TSComponent}/>
-            </div>
-        </Router>
-    )
+    render(): JSX.Element {
+        return (
+            <Router basename={'/ts'}>
+                <div>
+                    <h1>{this.state.title}</h1>
+                    <ul>
+                        <li>
+                            <Link to={'/'}>
+                                Home
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to={'/about'}>
+                                About
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to={'/topics'}>
+                                Topics
+                            </Link>
+                        </li>
+                    </ul>
+                    <Switch>
+                        <Route path="/" exact={true} component={Home}/>
+                        <Route path="/about" component={About}/>
+                        <Route path="/topics" component={Topics}/>
+                        <Route
+                            path="*"
+                            render={
+                                ({ location: {} }): React.ReactNode => (
+                                    <h3>404: {location.pathname}</h3>
+                                )
+                            }
+                        />
+                    </Switch>
+                </div>
+            </Router>
+        );
+    }
 }
 
-const Home = () => (
+
+const Home: React.StatelessComponent<{}> = () => (
     <div>
         <h2>Home</h2>
     </div>
-)
+);
 
-const About = () => (
+
+const About: React.StatelessComponent<{}> = () => (
     <div>
         <h2>About</h2>
     </div>
-)
+);
 
-const Topics = ({ match }) => (
+const Topics: React.StatelessComponent<RouteComponentProps<{}>> = ({ match }) => (
     <div>
         <h2>Topics</h2>
         <ul>
@@ -87,17 +95,22 @@ const Topics = ({ match }) => (
                 </Link>
             </li>
         </ul>
-        <Route path={`${match.url}/:topicId`} component={Topic}/>
-        <Route exact path={match.url} render={() => (
-        <h3>Please select a topic.</h3>
-        )}/>
+        <Route
+            path={`${match.url}/:topicId`}
+            component={Topic}
+        />
+        <Route
+            exact={true}
+            path={match.url}
+            render={() => <h3>Please select a topic.</h3>}
+        />
     </div>
-)
+);
 
-const Topic = ({ match }) => (
+const Topic: React.StatelessComponent<RouteComponentProps<{}>> = ({ match }) => (
     <div>
-        <h3>{match.params.topicId}</h3>
+        <h3>{R.prop('topicId', match.params)}</h3>
     </div>
-)
+);
 
 ReactDOM.render(<Layout />, document.getElementById('layout'));
