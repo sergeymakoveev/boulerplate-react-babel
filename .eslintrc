@@ -19,6 +19,7 @@
         "no-debugger": 1,
         "no-extra-semi": 1,
         "no-underscore-dangle": 0,
-        "no-unreachable": 2
+        "no-unreachable": 2,
+        "no-use-before-define": 1
     }
 }
