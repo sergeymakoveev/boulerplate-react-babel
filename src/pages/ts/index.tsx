@@ -7,6 +7,60 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Link, Switch, RouteComponentProps } from 'react-router-dom';
 
+const Home: React.StatelessComponent<{}> = () => (
+    <div>
+        <h2>Home</h2>
+    </div>
+);
+
+
+const About: React.StatelessComponent<{}> = () => (
+    <div>
+        <h2>About</h2>
+    </div>
+);
+
+
+const Topic: React.StatelessComponent<RouteComponentProps<{}>> = ({ match }) => (
+    <div>
+        <h3>{R.prop('topicId', match.params)}</h3>
+    </div>
+);
+
+
+const Topics: React.StatelessComponent<RouteComponentProps<{}>> = ({ match }) => (
+    <div>
+        <h2>Topics</h2>
+        <ul>
+            <li>
+                <Link to={`${match.url}/rendering`}>
+                    Rendering with React
+                </Link>
+            </li>
+            <li>
+                <Link to={`${match.url}/components`}>
+                    Components
+                </Link>
+            </li>
+            <li>
+                <Link to={`${match.url}/props-v-state`}>
+                    Props v. State
+                </Link>
+            </li>
+        </ul>
+        <Route
+            path={`${match.url}/:topicId`}
+            component={Topic}
+        />
+        <Route
+            exact={true}
+            path={match.url}
+            render={() => <h3>Please select a topic.</h3>}
+        />
+    </div>
+);
+
+
 class Layout extends React.Component<{}, {}> {
 
     state = {
@@ -61,56 +115,5 @@ class Layout extends React.Component<{}, {}> {
     }
 }
 
-
-const Home: React.StatelessComponent<{}> = () => (
-    <div>
-        <h2>Home</h2>
-    </div>
-);
-
-
-const About: React.StatelessComponent<{}> = () => (
-    <div>
-        <h2>About</h2>
-    </div>
-);
-
-const Topics: React.StatelessComponent<RouteComponentProps<{}>> = ({ match }) => (
-    <div>
-        <h2>Topics</h2>
-        <ul>
-            <li>
-                <Link to={`${match.url}/rendering`}>
-                    Rendering with React
-                </Link>
-            </li>
-            <li>
-                <Link to={`${match.url}/components`}>
-                    Components
-                </Link>
-            </li>
-            <li>
-                <Link to={`${match.url}/props-v-state`}>
-                    Props v. State
-                </Link>
-            </li>
-        </ul>
-        <Route
-            path={`${match.url}/:topicId`}
-            component={Topic}
-        />
-        <Route
-            exact={true}
-            path={match.url}
-            render={() => <h3>Please select a topic.</h3>}
-        />
-    </div>
-);
-
-const Topic: React.StatelessComponent<RouteComponentProps<{}>> = ({ match }) => (
-    <div>
-        <h3>{R.prop('topicId', match.params)}</h3>
-    </div>
-);
 
 ReactDOM.render(<Layout />, document.getElementById('layout'));

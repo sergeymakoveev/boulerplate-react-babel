@@ -10,17 +10,16 @@ const DEV = process.env.NODE_ENV != 'production',
       DIR_SRC_PAGES = `${DIR_SRC}/pages`,
       DIR_SRC_EXTERNALS = `${DIR_SRC}/externals`,
       DIR_PUBLIC = '/',
-      DIR_DIST = `${DIR}/dist`,
-      PORT = 8080;
+      DIR_DIST = `${DIR}/dist`;
 
 //// noParse:  wrapRegexp(/\/node_modules\/(angular\/angular)/, 'noParse')
-function wrapRegexp(regexp, label) {
-    regexp.test = function(path) {
-        console.log(`[${label}]: ${path}`);
-        return RegExp.prototype.test.call(this, path);
-    };
-    return regexp;
-}
+// function wrapRegexp(regexp, label) {
+//     regexp.test = function(path) {
+//         console.log(`[${label}]: ${path}`);
+//         return RegExp.prototype.test.call(this, path);
+//     };
+//     return regexp;
+// }
 
 
 export default {
@@ -67,7 +66,7 @@ export default {
 
     resolve: {
         modules: ['node_modules', DIR_SRC],
-        extensions: ['.js', '.ts', '.jsx', '.tsx']
+        extensions: ['.js', '.ts', '.jsx', '.tsx', '.scss', '.css']
     },
 
     module: {
@@ -81,6 +80,9 @@ export default {
                 test: /\.tsx?$/,
                 enforce: 'pre',
                 loader: 'tslint-loader',
+                options: {
+                    typeCheck: true
+                }
             },
             {
                 test: /\.tsx?$/,
