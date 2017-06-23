@@ -1,7 +1,6 @@
 import './index.html';
 import './index.scss';
 
-import R from 'ramda';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

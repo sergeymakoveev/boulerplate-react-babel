@@ -69,7 +69,7 @@ const About = () => (
     </div>
 )
 
-const Topics = ({ match }) => (
+const Topics = ({ match = {} } = {}) => (
     <div>
         <h2>Topics</h2>
         <ul>
@@ -99,9 +99,9 @@ const Topics = ({ match }) => (
     </div>
 )
 
-const Topic = ({ match }) => (
+const Topic = ({ match = {} } = {}) => (
     <div>
-        <h3>{match.params.topicId}</h3>
+        <h3>{R.prop('topicId', match.params)}</h3>
     </div>
 )
 
