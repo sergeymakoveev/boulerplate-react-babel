@@ -42,6 +42,11 @@ const Topics: React.StatelessComponent<RouteComponentProps<{}>> = ({ match }) =>
             path={match.url}
             render={() => <h3>Please select a topic.</h3>}
         />
+        <Route
+            exact={true}
+            path={`${match.url}/components`}
+            render={() => <h3>COMPONENTS!!!</h3>}
+        />
     </div>
 );
 

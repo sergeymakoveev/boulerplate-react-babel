@@ -5,16 +5,17 @@ import './index.scss';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Link, Route, /* RouteComponentProps, */ Switch } from 'react-router-dom';
+import { BrowserRouter as Router, NavLink, Route, /* RouteComponentProps, */ Switch } from 'react-router-dom';
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 
 import AppBar from 'material-ui/AppBar';
+import Drawer from 'material-ui/Drawer';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // import DATA from 'data.json';
@@ -99,14 +100,20 @@ const Menu: React.StatelessComponent<{}> = () => (
 
 class Layout extends React.Component<{}, {}> {
 
-  public state = {
-    logged: true,
-    title: 'React-Typescript boulerplate'
-  };
+    public state = {
+        drawer: false,
+        logged: true,
+        title: 'React-Typescript boulerplate'
+    };
 
-    // constructor( props ){
-    //     super( props );
-    // };
+    public toggleDrawer() {
+        this.setState({ drawer: !this.state.drawer });
+    }
+
+    constructor( props: React.Props<{}> ) {
+        super( props );
+        this.toggleDrawer = this.toggleDrawer.bind(this);
+    }
 
     // componentDidMount() {
     // }
@@ -116,28 +123,25 @@ class Layout extends React.Component<{}, {}> {
             <Router>
                 <div>
                     <AppBar
-                        title="Title"
-                        iconElementLeft={<IconButton><NavigationClose /></IconButton>}
+                        title={this.state.title}
                         iconElementRight={this.state.logged ? <Menu /> : <Login />}
+                        onLeftIconButtonTouchTap={ this.toggleDrawer }
                     />
+                    <Drawer
+                        docked={false}
+                        open={this.state.drawer}
+                        onRequestChange={ this.toggleDrawer }
+                    >
+                        <AppBar
+                            iconElementLeft={<span />}
+                            iconElementRight={<IconButton><NavigationMenu /></IconButton>}
+                            onRightIconButtonTouchTap={ this.toggleDrawer }
+                        />
+                        <NavLink to={'/'} exact={true} ><MenuItem>Home</MenuItem></NavLink>
+                        <NavLink to={'/about'}><MenuItem>About</MenuItem></NavLink>
+                        <NavLink to={'/topics'}><MenuItem>Topics</MenuItem></NavLink>
+                    </Drawer>
                     <h1>{this.state.title}</h1>
-                    <ul>
-                        <li>
-                            <Link to={'/'}>
-                                Home
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to={'/about'}>
-                                About
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to={'/topics'}>
-                                Topics
-                            </Link>
-                        </li>
-                    </ul>
                     <Switch>
                         <Route path="/" exact={true} component={Home}/>
                         <Route path="/about" component={About}/>
@@ -158,4 +162,7 @@ class Layout extends React.Component<{}, {}> {
 }
 
 
-ReactDOM.render( <MuiThemeProvider><Layout /></MuiThemeProvider>, document.getElementById('layout'));
+ReactDOM.render(
+    <MuiThemeProvider><Layout /></MuiThemeProvider>,
+    document.getElementById('layout')
+);
