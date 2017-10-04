@@ -1,16 +1,19 @@
-import webpack from 'webpack';
-import WebpackNotifierPlugin from 'webpack-notifier';
-import autoprefixer from 'autoprefixer';
-import StyleLintPlugin from 'stylelint-webpack-plugin';
+/* tslint:disable:object-literal-sort-keys */
+
+import * as autoprefixer from 'autoprefixer';
+import * as StyleLintPlugin from 'stylelint-webpack-plugin';
+import * as webpack from 'webpack';
+import * as WebpackNotifierPlugin from 'webpack-notifier';
 
 
-const DEV = process.env.NODE_ENV != 'production',
-      DIR = __dirname,
-      DIR_SRC = `${DIR}/src`,
-      DIR_SRC_PAGES = `${DIR_SRC}/pages`,
-      DIR_SRC_EXTERNALS = `${DIR_SRC}/externals`,
-      DIR_PUBLIC = '/',
-      DIR_DIST = `${DIR}/dist`;
+const
+    DEV = process.env.NODE_ENV !== 'production',
+    DIR = __dirname,
+    DIR_SRC = `${DIR}/src`,
+    DIR_SRC_PAGES = `${DIR_SRC}/pages`,
+    DIR_SRC_EXTERNALS = `${DIR_SRC}/externals`,
+    DIR_PUBLIC = '/',
+    DIR_DIST = `${DIR}/dist`;
 
 //// noParse:  wrapRegexp(/\/node_modules\/(angular\/angular)/, 'noParse')
 // function wrapRegexp(regexp, label) {
@@ -24,17 +27,14 @@ const DEV = process.env.NODE_ENV != 'production',
 
 export default {
 
-    // watch: DEV,
-
-    devtool: DEV ? 'inline-source-map' : false,
-
     context: DIR_SRC,
 
+    // watch: DEV,
+    devtool: DEV ? 'inline-source-map' : false,
+
     entry: {
-        ...( DEV ? { test: `${DIR_SRC_PAGES}/test` } : {} ),
-        index: `${DIR_SRC_PAGES}/index`,
-        appts: `${DIR_SRC_PAGES}/ts/index`,
-        appjs: `${DIR_SRC_PAGES}/js/index`
+        // ...( DEV ? { test: `${DIR_SRC_PAGES}/test` } : {} ),
+        index: `${DIR_SRC_PAGES}/index.tsx`
     },
 
     output: {
@@ -62,11 +62,11 @@ export default {
         // new webpack.ProvidePlugin({
         //     $: 'jquery'
         // })
-    ].filter( p => p ),
+    ].filter( (p) => p ),
 
     resolve: {
         modules: ['node_modules', DIR_SRC],
-        extensions: ['.js', '.ts', '.jsx', '.tsx', '.scss', '.css']
+        extensions: ['.json', '.js', '.ts', '.tsx', '.scss', '.css']
     },
 
     module: {
@@ -76,10 +76,19 @@ export default {
         noParse: [ /\/node_modules\/moment\/moment\.js/ ],
 
         rules: [
+            // {
+            //     test: /\.json$/,
+            //     enforce: 'pre',
+            //     use: 'tslint-loader',
+            //     include: DIR_SRC,
+            //     exclude: DIR_SRC_EXTERNALS
+            // },
             {
                 test: /\.tsx?$/,
                 enforce: 'pre',
                 loader: 'tslint-loader',
+                include: DIR_SRC,
+                exclude: DIR_SRC_EXTERNALS,
                 options: {
                     typeCheck: true
                 }
@@ -92,56 +101,35 @@ export default {
 
             },
             {
-                test: /\.jsx?$/,
-                enforce: 'pre',
-                use: 'eslint-loader',
-                include: DIR_SRC,
-                exclude: DIR_SRC_EXTERNALS
-            },
-            {
-                test: /\.js$/,
-                // exclude: /\/node_modules|bower_components\//,
-                include: DIR_SRC,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['env', 'stage-0']
-                }
-            },
-            {
-                test: /\.jsx$/,
-                // exclude: /\/node_modules|bower_components\//,
-                include: DIR_SRC,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['env', 'stage-0', 'react']
-                }
-            },
-            {
                 test: /\.css$/,
-                use: ( sourceMap => ([
-                            'style-loader',
-                            `css-loader?sourceMap=${sourceMap}`,
-                            { loader: 'postcss-loader',
-                                options: {
-                                    sourceMap,
-                                    plugins: [autoprefixer]
-                                }
+                use: (
+                    (sourceMap) => ([
+                        'style-loader',
+                        `css-loader?sourceMap=${sourceMap}`,
+                        { loader: 'postcss-loader',
+                            options: {
+                                sourceMap,
+                                plugins: [autoprefixer]
                             }
-                        ]))(DEV)
+                        }
+                    ])
+                )(DEV)
             },
             {
                 test: /\.scss$/,
-                use: ( sourceMap => ([
-                            'style-loader',
-                            `css-loader?sourceMap=${sourceMap}`,
-                            { loader: 'postcss-loader',
-                                options: {
-                                    sourceMap,
-                                    plugins: [autoprefixer]
-                                }
-                            },
-                            `sass-loader?sourceMap=${sourceMap}`
-                        ]))(DEV)
+                use: (
+                    (sourceMap) => ([
+                        'style-loader',
+                        `css-loader?sourceMap=${sourceMap}`,
+                        { loader: 'postcss-loader',
+                            options: {
+                                sourceMap,
+                                plugins: [autoprefixer]
+                            }
+                        },
+                        `sass-loader?sourceMap=${sourceMap}`
+                    ])
+                )(DEV)
             },
             {
                 test: /\.(gif|png|jpg|svg|ttf|eot|woff|woff2)$/,
@@ -164,16 +152,16 @@ export default {
     },
 
     devServer: {
+        // port: 3001,
         historyApiFallback: {
             rewrites: [
-                { from: /^\/js/, to: '/js' },
-                { from: /^\/ts/, to: '/ts' },
+                // { from: /^\/js/, to: '/js' },
+                { from: /./, to: '/' }
             ]
         },
-        // port: 3001,
-        // proxy: {
-        //     '*': 'http://localhost:8888'
-        // },
+        proxy: {
+            '/api': 'http://localhost:3000'
+        },
         host: '0.0.0.0'
     }
 

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "outDir": "dist",
     "module": "commonjs",
     "target": "es5",
@@ -11,7 +12,6 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -21,13 +21,8 @@
     "noUnusedLocals": true
   },
   "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest",
-    "src/setupTests.ts"
+    "./node_modules",
+    "./dist"
   ],
   "types": [
     "typePatches"

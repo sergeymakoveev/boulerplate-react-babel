@@ -2,12 +2,11 @@ SHELL = /bin/bash
 
 .PHONY: start clean install
 
-APP=REACT-BABEL-TYPESCRIPT
+APP=REACT-TYPESCRIPT
 DIR=${PWD}
 DIR-SRC=${DIR}/src
 DIR-DIST=${DIR}/dist
 DIR-NPM=${DIR}/node_modules
-
 
 start: develop
 
