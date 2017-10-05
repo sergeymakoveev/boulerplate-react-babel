@@ -18,6 +18,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
+import PageThreeNative from 'pages/three';
+
 // import DATA from 'data.json';
 import Topics from 'pages/topics';
 
@@ -140,12 +142,14 @@ class Layout extends React.Component<{}, {}> {
                         <NavLink to={'/'} exact={true} ><MenuItem>Home</MenuItem></NavLink>
                         <NavLink to={'/about'}><MenuItem>About</MenuItem></NavLink>
                         <NavLink to={'/topics'}><MenuItem>Topics</MenuItem></NavLink>
+                        <NavLink to={'/three'}><MenuItem>Three</MenuItem></NavLink>
                     </Drawer>
                     <h1>{this.state.title}</h1>
                     <Switch>
                         <Route path="/" exact={true} component={Home}/>
                         <Route path="/about" component={About}/>
                         <Route path="/topics" component={Topics}/>
+                        <Route path="/three" component={PageThreeNative}/>
                         <Route
                             path="*"
                             render={
