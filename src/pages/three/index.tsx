@@ -1,6 +1,5 @@
+import * as THREE from 'externals/three';
 import * as React from 'react';
-import * as THREE from 'three';
-import { OrbitControls } from 'three-orbitcontrols-ts';
 
 
 class PageThreeNative extends React.Component<{}, {}> {
@@ -29,13 +28,30 @@ class PageThreeNative extends React.Component<{}, {}> {
         this.onWindowResize = this.onWindowResize.bind(this);
     }
 
+    public getSizes() {
+        const {clientWidth = 1, clientHeight = 1} = this.container || {};
+        const {devicePixelRatio} = window;
+        return {
+            devicePixelRatio,
+            height: clientHeight,
+            ratio: clientWidth / clientHeight,
+            width: clientWidth
+        };
+    }
+
+    public render_three() {
+        this.renderer
+            .render( this.scene, this.camera );
+    }
+
     public onMouseMove( event: MouseEvent ) {
         event.preventDefault();
         this.mouse.set(
           ( event.clientX / window.innerWidth ) * 2 - 1,
           - ( event.clientY / window.innerHeight ) * 2 + 1
         );
-        this.raycaster.setFromCamera( this.mouse, this.camera );
+        this.raycaster
+            .setFromCamera( this.mouse, this.camera );
         const intersects = this.raycaster.intersectObjects( this.objects );
         if ( intersects && intersects.length > 0 ) {
             const intersect = intersects[ 0 ];
@@ -52,31 +68,32 @@ class PageThreeNative extends React.Component<{}, {}> {
     }
 
     public onWindowResize() {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize( window.innerWidth, window.innerHeight );
-    }
-
-    public render_three() {
-        this.renderer.render( this.scene, this.camera );
+        const { width, height, ratio } = this.getSizes();
+        this.camera.aspect = ratio;
+        this.camera
+            .updateProjectionMatrix();
+        this.renderer
+            .setSize( width, height );
     }
 
     public componentDidMount() {
-        const {innerWidth, innerHeight, devicePixelRatio} = window;
-        const ratio = innerWidth / innerHeight;
+        const { ratio, devicePixelRatio } = this.getSizes();
 
         const directionalLight = new THREE.DirectionalLight( 0xffffff );
         const geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
         const plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: false } ) );
 
         this.camera = new THREE.PerspectiveCamera( 45, ratio, 1, 10000 );
-        this.camera.position.set( 500, 800, 1300 );
-        this.camera.lookAt( new THREE.Vector3() );
+        this.camera.position
+            .set( 500, 800, 1300 );
+        this.camera
+            .lookAt( new THREE.Vector3() );
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true, devicePixelRatio });
-        this.controls = new OrbitControls( this.camera );
+        this.controls = new THREE.OrbitControls( this.camera );
 
-        directionalLight.position.set( 1, 0.75, 0.5 ).normalize();
+        directionalLight.position
+            .set( 1, 0.75, 0.5 ).normalize();
         geometry.rotateX( - Math.PI / 2 );
 
         this.scene.background = new THREE.Color( 0xf0f0f0 );
@@ -87,9 +104,6 @@ class PageThreeNative extends React.Component<{}, {}> {
         this.scene.add( plane );
 
         this.objects.push( plane );
-        this.renderer.setSize( innerWidth, innerHeight );
-
-        console.warn(this.container);
 
         window.addEventListener( 'resize', this.onWindowResize, false );
         window.addEventListener( 'mousemove', this.onMouseMove, false );
@@ -99,11 +113,15 @@ class PageThreeNative extends React.Component<{}, {}> {
                 .appendChild( this.renderer.domElement );
 
         this.render_three();
+        setTimeout( this.onWindowResize, 500 );
     }
 
     public render() {
         return (
-            <div ref={(container) => { this.container = container; }} />
+            <div
+                id="page"
+                ref={(container) => { this.container = container; }}
+            />
         );
     }
 }
