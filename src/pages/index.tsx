@@ -100,7 +100,7 @@ const Menu: React.StatelessComponent<{}> = () => (
 );
 
 
-class Layout extends React.Component<{}, {}> {
+class App extends React.Component<{}, {}> {
 
     public state = {
         drawer: false,
@@ -123,42 +123,45 @@ class Layout extends React.Component<{}, {}> {
     public render(): JSX.Element {
         return (
             <Router>
-                <div>
-                    <AppBar
-                        title={this.state.title}
-                        iconElementRight={this.state.logged ? <Menu /> : <Login />}
-                        onLeftIconButtonTouchTap={ this.toggleDrawer }
-                    />
-                    <Drawer
-                        docked={false}
-                        open={this.state.drawer}
-                        onRequestChange={ this.toggleDrawer }
-                    >
+                <div id="layout">
+                    <header>
                         <AppBar
-                            iconElementLeft={<span />}
-                            iconElementRight={<IconButton><NavigationMenu /></IconButton>}
-                            onRightIconButtonTouchTap={ this.toggleDrawer }
+                            title={this.state.title}
+                            iconElementRight={this.state.logged ? <Menu /> : <Login />}
+                            onLeftIconButtonTouchTap={ this.toggleDrawer }
                         />
-                        <NavLink to={'/'} exact={true} ><MenuItem>Home</MenuItem></NavLink>
-                        <NavLink to={'/about'}><MenuItem>About</MenuItem></NavLink>
-                        <NavLink to={'/topics'}><MenuItem>Topics</MenuItem></NavLink>
-                        <NavLink to={'/three'}><MenuItem>Three</MenuItem></NavLink>
-                    </Drawer>
-                    <h1>{this.state.title}</h1>
-                    <Switch>
-                        <Route path="/" exact={true} component={Home}/>
-                        <Route path="/about" component={About}/>
-                        <Route path="/topics" component={Topics}/>
-                        <Route path="/three" component={PageThreeNative}/>
-                        <Route
-                            path="*"
-                            render={
-                                ({ location: {} }): React.ReactNode => (
-                                    <h3>404: {location.pathname}</h3>
-                                )
-                            }
-                        />
-                    </Switch>
+                        <Drawer
+                            docked={false}
+                            open={this.state.drawer}
+                            onRequestChange={ this.toggleDrawer }
+                        >
+                            <AppBar
+                                iconElementLeft={<span />}
+                                iconElementRight={<IconButton><NavigationMenu /></IconButton>}
+                                onRightIconButtonTouchTap={ this.toggleDrawer }
+                            />
+                            <NavLink to={'/'} exact={true} ><MenuItem>Home</MenuItem></NavLink>
+                            <NavLink to={'/about'}><MenuItem>About</MenuItem></NavLink>
+                            <NavLink to={'/topics'}><MenuItem>Topics</MenuItem></NavLink>
+                            <NavLink to={'/three'}><MenuItem>Three</MenuItem></NavLink>
+                        </Drawer>
+                    </header>
+                    <main>
+                        <Switch>
+                            <Route path="/" exact={true} component={Home}/>
+                            <Route path="/about" component={About}/>
+                            <Route path="/topics" component={Topics}/>
+                            <Route path="/three" component={PageThreeNative}/>
+                            <Route
+                                path="*"
+                                render={
+                                    ({ location: {} }): React.ReactNode => (
+                                        <h3>404: {location.pathname}</h3>
+                                    )
+                                }
+                            />
+                        </Switch>
+                    </main>
                 </div>
             </Router>
         );
@@ -167,6 +170,6 @@ class Layout extends React.Component<{}, {}> {
 
 
 ReactDOM.render(
-    <MuiThemeProvider><Layout /></MuiThemeProvider>,
-    document.getElementById('layout')
+    <MuiThemeProvider><App /></MuiThemeProvider>,
+    document.getElementById('app')
 );

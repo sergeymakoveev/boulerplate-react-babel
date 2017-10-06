@@ -1,3 +1,27 @@
 @import '~normalize.css';
 @import '~externals/material-ui/index.scss';
 @import '~pages/variables.scss';
+
+$header-height: 64px;
+$main-height: calc(100% - #{$header-height} - 30px);
+
+html {
+    height: 100%;
+    body {
+        height: 100%;
+        > #app {
+            height: 100%;
+            > #layout {
+                height: 100%;
+                > main {
+                    height: $main-height;
+                    display: flex;
+                    align-items: stretch;
+                    > #page {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
