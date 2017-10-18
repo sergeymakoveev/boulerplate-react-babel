@@ -18,8 +18,10 @@
   ],
   "devDependencies": {
     "@types/autoprefixer": "^6.7.3",
+    "@types/isomorphic-fetch": "0.0.34",
     "@types/material-ui": "0.18.2",
     "@types/node": "^7.0.32",
+    "@types/query-string": "^5.0.0",
     "@types/ramda": "^0",
     "@types/react": "^15",
     "@types/react-dom": "^15",
@@ -33,11 +35,13 @@
     "extract-loader": "^1.0.1",
     "file-loader": "^1.1.4",
     "html-loader": "^0.5.1",
+    "isomorphic-fetch": "^2.2.1",
     "material-ui": "0.18.2",
     "moment": "^2.18.1",
     "node-sass": "^4.5.3",
     "normalize.css": "^7",
     "postcss-loader": "^2",
+    "query-string": "^5.0.0",
     "ramda": "^0",
     "react": "^15",
     "react-dom": "^15",
@@ -57,10 +61,12 @@
     "url-loader": "^0.5.8",
     "webpack": "^3.6",
     "webpack-dev-server": "^2.5.0",
-    "webpack-notifier": "^1.5.0",
-    "whatwg-fetch": "^2.0.3"
+    "webpack-notifier": "^1.5.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "url": "^0.11.0"
   }
 }
