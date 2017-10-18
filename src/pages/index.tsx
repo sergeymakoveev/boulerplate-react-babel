@@ -1,8 +1,6 @@
 import './index.html';
 import './index.scss';
 
-// import * as R from 'ramda';
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter as Router, NavLink, Route, /* RouteComponentProps, */ Switch } from 'react-router-dom';
@@ -20,6 +18,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // import DATA from 'data.json';
 import Topics from 'pages/topics';
+import { User, Users } from 'pages/users';
 
 injectTapEventPlugin();
 
@@ -140,12 +139,28 @@ class Layout extends React.Component<{}, {}> {
                         <NavLink to={'/'} exact={true} ><MenuItem>Home</MenuItem></NavLink>
                         <NavLink to={'/about'}><MenuItem>About</MenuItem></NavLink>
                         <NavLink to={'/topics'}><MenuItem>Topics</MenuItem></NavLink>
+                        <NavLink to={'/users'}><MenuItem>Users</MenuItem></NavLink>
                     </Drawer>
-                    <h1>{this.state.title}</h1>
+
+                    <Route
+                        path="/users/:id"
+                        render={
+                            ({ match: {params} , history }) => (
+                                <User
+                                    data={{ id: params.id }}
+                                    onClose={
+                                        () => history.push('/users')
+                                    }
+                                />
+                            )
+                        }
+                    />
+
                     <Switch>
                         <Route path="/" exact={true} component={Home}/>
                         <Route path="/about" component={About}/>
                         <Route path="/topics" component={Topics}/>
+                        <Route path="/users" component={Users}/>
                         <Route
                             path="*"
                             render={
