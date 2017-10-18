@@ -2,10 +2,10 @@ import * as fetch from 'isomorphic-fetch';
 import * as qs from 'query-string';
 import { ResponseInterface, UserResponseInterface, UsersResponseInterface } from './http.interfaces';
 
-const
-BASE = '/api';
-
 type HttpRequest<T> = (options?: {}) => Promise<T>;
+
+const
+    BASE = '/api';
 
 
 function request(url: string) {
