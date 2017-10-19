@@ -9,18 +9,18 @@ import { UserInterface } from 'api/http.interfaces';
 import * as helpers from 'helpers';
 
 
-interface UserDialogIterface {
+interface UserDialogInterface {
     data: UserInterface;
     onClose: () => void;
 }
 
-export class User extends React.Component<UserDialogIterface> {
+export class User extends React.Component<UserDialogInterface> {
 
     public state = {
         data: {} as UserInterface
     };
 
-    constructor(props: UserDialogIterface ) {
+    constructor(props: UserDialogInterface ) {
         super(props);
         const p = props.data.id;
         api.users
