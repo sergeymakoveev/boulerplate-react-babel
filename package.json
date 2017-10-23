@@ -21,6 +21,7 @@
     "@types/isomorphic-fetch": "0.0.34",
     "@types/material-ui": "0.18.2",
     "@types/node": "^7.0.32",
+    "@types/prop-types": "^15.5.2",
     "@types/query-string": "^5.0.0",
     "@types/ramda": "^0",
     "@types/react": "^15",
@@ -58,6 +59,7 @@
     "tslint-loader": "^3.5.3",
     "tslint-react": "^3.0.0",
     "typescript": "^2.4.0",
+    "url": "^0.11.0",
     "url-loader": "^0.5.8",
     "webpack": "^3.6",
     "webpack-dev-server": "^2.5.0",
@@ -65,8 +67,5 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "url": "^0.11.0"
   }
 }

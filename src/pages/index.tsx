@@ -3,12 +3,11 @@ import './index.scss';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter as Router, NavLink, Route, /* RouteComponentProps, */ Switch } from 'react-router-dom';
+import { BrowserRouter as Router, NavLink, Route, Switch } from 'react-router-dom';
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
-import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -17,69 +16,13 @@ import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // import DATA from 'data.json';
+import SignIn from 'components/signin';
+import About from 'pages/about';
+import Home from 'pages/about';
 import Topics from 'pages/topics';
 import { User, Users } from 'pages/users';
 
 injectTapEventPlugin();
-
-const Home: React.StatelessComponent<{}> = () => (
-    <div>
-        <h2>Home</h2>
-    </div>
-);
-
-
-const About: React.StatelessComponent<{}> = () => (
-    <div>
-        <h2>About</h2>
-    </div>
-);
-
-
-/*
-const Topic: React.StatelessComponent<RouteComponentProps<{}>> = ({ match }) => (
-    <div>
-        <h3>{R.prop('topicId', match.params)}</h3>
-    </div>
-);
-
-
-const Topics: React.StatelessComponent<RouteComponentProps<{}>> = ({ match }) => (
-    <div>
-        <h2>Topics</h2>
-        <ul>
-            <li>
-                <Link to={`${match.url}/rendering`}>
-                    Rendering with React
-                </Link>
-            </li>
-            <li>
-                <Link to={`${match.url}/components`}>
-                    Components
-                </Link>
-            </li>
-            <li>
-                <Link to={`${match.url}/props-v-state`}>
-                    Props v. State
-                </Link>
-            </li>
-        </ul>
-        <Route
-            path={`${match.url}/:topicId`}
-            component={Topic}
-        />
-        <Route
-            exact={true}
-            path={match.url}
-            render={() => <h3>Please select a topic.</h3>}
-        />
-    </div>
-);
-*/
-
-const Login: React.StatelessComponent<{}> = () => (
-    <FlatButton label="Login" />
-);
 
 
 const Menu: React.StatelessComponent<{}> = () => (
@@ -119,59 +62,65 @@ class Layout extends React.Component<{}, {}> {
 
     public render(): JSX.Element {
         return (
-            <Router>
-                <div>
-                    <AppBar
-                        title={this.state.title}
-                        iconElementRight={this.state.logged ? <Menu /> : <Login />}
-                        onLeftIconButtonTouchTap={ this.toggleDrawer }
-                    />
-                    <Drawer
-                        docked={false}
-                        open={this.state.drawer}
-                        onRequestChange={ this.toggleDrawer }
-                    >
+            !this.state.logged
+            ? <SignIn />
+            : (
+                <Router>
+                    <div>
                         <AppBar
-                            iconElementLeft={<span />}
-                            iconElementRight={<IconButton><NavigationMenu /></IconButton>}
-                            onRightIconButtonTouchTap={ this.toggleDrawer }
+                            title={this.state.title}
+                            iconElementRight={
+                                <Menu />
+                            }
+                            onLeftIconButtonTouchTap={ this.toggleDrawer }
                         />
-                        <NavLink to={'/'} exact={true} ><MenuItem>Home</MenuItem></NavLink>
-                        <NavLink to={'/about'}><MenuItem>About</MenuItem></NavLink>
-                        <NavLink to={'/topics'}><MenuItem>Topics</MenuItem></NavLink>
-                        <NavLink to={'/users'}><MenuItem>Users</MenuItem></NavLink>
-                    </Drawer>
+                        <Drawer
+                            docked={false}
+                            open={this.state.drawer}
+                            onRequestChange={ this.toggleDrawer }
+                        >
+                            <AppBar
+                                iconElementLeft={<span />}
+                                iconElementRight={<IconButton><NavigationMenu /></IconButton>}
+                                onRightIconButtonTouchTap={ this.toggleDrawer }
+                            />
+                            <NavLink to={'/'} exact={true} ><MenuItem>Home</MenuItem></NavLink>
+                            <NavLink to={'/about'}><MenuItem>About</MenuItem></NavLink>
+                            <NavLink to={'/topics'}><MenuItem>Topics</MenuItem></NavLink>
+                            <NavLink to={'/users'}><MenuItem>Users</MenuItem></NavLink>
+                        </Drawer>
 
-                    <Route
-                        path="/users/:id"
-                        render={
-                            ({ match: {params} , history }) => (
-                                <User
-                                    data={{ id: params.id }}
-                                    onClose={
-                                        () => history.push('/users')
-                                    }
-                                />
-                            )
-                        }
-                    />
-
-                    <Switch>
-                        <Route path="/" exact={true} component={Home}/>
-                        <Route path="/about" component={About}/>
-                        <Route path="/topics" component={Topics}/>
-                        <Route path="/users" component={Users}/>
                         <Route
-                            path="*"
+                            path="/users/:id"
                             render={
-                                ({ location: {} }): React.ReactNode => (
-                                    <h3>404: {location.pathname}</h3>
+                                ({ match: {params} , history }) => (
+                                    <User
+                                        data={{ id: params.id }}
+                                        onClose={
+                                            () => history.push('/users')
+                                        }
+                                    />
                                 )
                             }
                         />
-                    </Switch>
-                </div>
-            </Router>
+
+                        <Switch>
+                            <Route path="/" exact={true} component={Home}/>
+                            <Route path="/about" component={About}/>
+                            <Route path="/topics" component={Topics}/>
+                            <Route path="/users" component={Users}/>
+                            <Route
+                                path="*"
+                                render={
+                                    ({ location: {} }): React.ReactNode => (
+                                        <h3>404: {location.pathname}</h3>
+                                    )
+                                }
+                            />
+                        </Switch>
+                    </div>
+                </Router>
+            )
         );
     }
 }
