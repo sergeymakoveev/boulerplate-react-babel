@@ -9,35 +9,32 @@ import * as injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import { indigo500, indigo700 } from 'material-ui/styles/colors';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // import DATA from 'data.json';
+import Menu from 'components/menu';
 import SignIn from 'components/signin';
 import About from 'pages/about';
 import Home from 'pages/about';
 import Topics from 'pages/topics';
 import { User, Users } from 'pages/users';
 
+const THEME = {
+    ...lightBaseTheme,
+    palette: {
+        ...lightBaseTheme.palette,
+        pickerHeaderColor: indigo500,
+        primary1Color: indigo500,
+        primary2Color: indigo700
+    }
+};
+
 injectTapEventPlugin();
-
-
-const Menu: React.StatelessComponent<{}> = () => (
-    <IconMenu
-        iconButtonElement={
-            <IconButton><MoreVertIcon /></IconButton>
-        }
-        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-    >
-        <MenuItem primaryText="Refresh" />
-        <MenuItem primaryText="Help" />
-        <MenuItem primaryText="Sign out" />
-    </IconMenu>
-);
 
 
 class Layout extends React.Component<{}, {}> {
@@ -127,6 +124,10 @@ class Layout extends React.Component<{}, {}> {
 
 
 ReactDOM.render(
-    <MuiThemeProvider><Layout /></MuiThemeProvider>,
+    <MuiThemeProvider
+        muiTheme={getMuiTheme(THEME)}
+    >
+        <Layout />
+    </MuiThemeProvider>,
     document.getElementById('layout')
 );
