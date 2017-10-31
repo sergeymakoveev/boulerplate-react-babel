@@ -7,7 +7,7 @@ const
 
 
 function request(url) {
-    return ({args: {path, query} = {path: '', query: {}}, ...options}) => {
+    return ({path='', query={}, ...options}) => {
         query = qs.stringify(query);
         query = query ? `?${query}` : '';
         path = path ? `/${path}` : '';
@@ -48,7 +48,7 @@ const
 
 export const users = {
     create: usersCreate,
-    item: (id) => usersItem({ path: `${id}` }),
+    item: (path) => usersItem({ path }),
     list: (query) => usersList({ query }),
     remove: usersRemove,
     update: usersUpdate
