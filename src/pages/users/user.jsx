@@ -1,18 +1,32 @@
 import PropTypes from 'prop-types';
-import R from 'ramda';
+import * as R from 'ramda';
 import React from 'react';
+
+import { reduxForm, Field } from 'redux-form';
+import { TextField, validators } from 'externals/redux-form-material-ui';
 
 import CommonDialog from 'components/dialog';
 
-import api from 'api/http';
-import helpers from 'helpers';
+import * as api from 'api/http';
+import * as helpers from 'helpers';
 
+const VALIDATORS = {
+    login: validators.pipe(
+        validators.required,
+        validators.is.email
+    ),
+    email: validators.pipe(
+        validators.required,
+        validators.is.email
+    )
+};
 
-export class User extends React.Component {
+class User extends React.Component {
 
     static propTypes = {
         data: PropTypes.object,
-        onSubmit: PropTypes.func
+        onClose: PropTypes.func,
+        handleSubmit: PropTypes.func
     }
 
     state = {
@@ -21,31 +35,56 @@ export class User extends React.Component {
 
     constructor(props) {
         super(props);
-        const p = props.data.id;
         api.users
-            .item( p )
+            .item( props.data.id )
             .then( (data) => this.setState({ data }) );
     }
 
-    onSubmit = () => {
-        this.props.onSubmit
-        && this.props.onSubmit();
-    }
+    // onSubmit = () => {
+    //     this.props.onSubmit
+    //     && this.props.onSubmit();
+    // }
 
     render() {
         const props = this.props;
         const state = this.state;
-        const data = helpers.get(state.data);
+        const data = helpers.path(state.data);
         return R.complement(R.isEmpty)(state.data) && (
             <CommonDialog
+                contentStyle={{ width: '300px' }}
                 title={ `User: ${data('name')}` }
                 onClose={props.onClose}
-                onSubmit={this.onSubmit}
+                onSubmit={props.handleSubmit}
             >
-                <h3>{ data('name') }</h3>
+                <Field
+                    style={{ width: '100%' }}
+                    component={TextField}
+                    name="login"
+                    hintText="Login"
+                    floatingLabelText="Login"
+                    validate={
+                        VALIDATORS.login
+                    }
+                />
+                <br />
+                <Field
+                    style={{ width: '100%' }}
+                    component={TextField}
+                    name="email"
+                    hintText="Email"
+                    floatingLabelText="Email"
+                    validate={
+                        VALIDATORS.email
+                    }
+                />
+
             </CommonDialog>
         );
     }
 }
 
-export default User;
+export default reduxForm({
+    form: 'FormUser',
+    // validate,
+    // asyncValidate,
+})(User);
