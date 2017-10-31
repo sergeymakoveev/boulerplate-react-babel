@@ -17,8 +17,8 @@ export class CommonDialog extends React.Component {
     };
 
     static propTypes = {
-        labelCancel: PropTypes.string,
-        labelSubmit: PropTypes.string,
+        labelCancel: PropTypes.oneOfType(PropTypes.string, PropTypes.bool),
+        labelSubmit: PropTypes.oneOfType(PropTypes.string, PropTypes.bool),
         onClose: PropTypes.func,
         onSubmit: PropTypes.func,
         open: PropTypes.bool,

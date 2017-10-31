@@ -10,10 +10,10 @@
   "license": "Commercial",
   "keywords": [
     "webpack",
-    "typescript",
+    "babel",
     "eslint",
-    "typescript",
-    "tslint",
+    "react",
+    "redux",
     "stylelint"
   ],
   "devDependencies": {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import helpers from 'helpers';
+import * as helpers from 'helpers';
 
 import {
     Table,
@@ -29,7 +29,7 @@ export class Users extends React.Component {
     }
 
     render() {
-        const props = helpers.get(this.props);
+        const props = helpers.path(this.props);
         return (
             <div>
                 <h1>Users</h1>
