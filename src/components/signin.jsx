@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import * as R from 'ramda';
 import React from 'react';
 
 import { reduxForm, Field } from 'redux-form';
@@ -24,8 +23,6 @@ class SignIn extends React.PureComponent {
     static propTypes = {
         handleSubmit: PropTypes.func
     }
-
-    validate = R.always('required')
 
     render() {
         const { handleSubmit /*, pristine, submitting */} = this.props;
