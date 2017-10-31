@@ -1,9 +1,7 @@
-/* tslint:disable:object-literal-sort-keys */
-
-import * as autoprefixer from 'autoprefixer';
-import * as StyleLintPlugin from 'stylelint-webpack-plugin';
-import * as webpack from 'webpack';
-import * as WebpackNotifierPlugin from 'webpack-notifier';
+import autoprefixer from 'autoprefixer';
+import StyleLintPlugin from 'stylelint-webpack-plugin';
+import webpack from 'webpack';
+import WebpackNotifierPlugin from 'webpack-notifier';
 
 
 const
@@ -34,7 +32,7 @@ export default {
 
     entry: {
         // ...( DEV ? { test: `${DIR_SRC_PAGES}/test` } : {} ),
-        index: `${DIR_SRC_PAGES}/index.tsx`
+        index: `${DIR_SRC_PAGES}/index.jsx`
     },
 
     output: {
@@ -66,7 +64,7 @@ export default {
 
     resolve: {
         modules: ['node_modules', DIR_SRC],
-        extensions: ['.json', '.js', '.ts', '.tsx', '.scss', '.css']
+        extensions: ['.json', '.js', '.jsx', '.scss', '.css']
     },
 
     module: {
@@ -84,21 +82,26 @@ export default {
             //     exclude: DIR_SRC_EXTERNALS
             // },
             {
-                test: /\.tsx?$/,
+                test: /\.jsx?$/,
                 enforce: 'pre',
-                loader: 'tslint-loader',
+                loader: 'eslint-loader',
+                include: DIR_SRC
+            },
+            {
+                test: /\.js$/,
                 include: DIR_SRC,
-                exclude: DIR_SRC_EXTERNALS,
-                options: {
-                    typeCheck: true
+                loader: 'babel-loader',
+                query: {
+                    presets: ['env', 'stage-0']
                 }
             },
             {
-                test: /\.tsx?$/,
-                loader: 'ts-loader',
+                test: /\.jsx$/,
                 include: DIR_SRC,
-                exclude: DIR_SRC_EXTERNALS
-
+                loader: 'babel-loader',
+                query: {
+                    presets: ['env', 'stage-0', 'react']
+                }
             },
             {
                 test: /\.css$/,

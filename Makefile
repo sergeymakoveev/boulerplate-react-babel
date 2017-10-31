@@ -2,7 +2,7 @@ SHELL = /bin/bash
 
 .PHONY: start clean install
 
-APP=REACT-TYPESCRIPT
+APP=REACT-BABEL
 DIR=${PWD}
 DIR-SRC=${DIR}/src
 DIR-DIST=${DIR}/dist

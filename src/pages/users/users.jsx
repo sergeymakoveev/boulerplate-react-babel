@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import * as helpers from 'helpers';
+import helpers from 'helpers';
 
 import {
     Table,
@@ -13,23 +13,22 @@ import {
 } from 'material-ui/Table';
 
 import * as api from 'api/http';
-import { UserInterface } from 'api/http.interfaces';
 
 
-export class Users extends React.Component<{}, {}> {
+export class Users extends React.Component {
 
-    public state = {
+    state = {
         users: []
     };
 
-    constructor( props: RouteComponentProps<{}> ) {
+    constructor( props ) {
         super( props );
         api.users
             .list()
             .then( (users) => this.setState({ users }) );
     }
 
-    public render(): JSX.Element {
+    render() {
         const props = helpers.get(this.props);
         return (
             <div>
@@ -46,7 +45,7 @@ export class Users extends React.Component<{}, {}> {
                     <TableBody>
                     {
                         this.state.users
-                            .map(( user: UserInterface ) => (
+                            .map(( user ) => (
                                 <TableRow key={user.id}>
                                     <TableRowColumn>{ user.id }</TableRowColumn>
                                     <TableRowColumn>

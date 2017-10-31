@@ -1,39 +1,38 @@
-import * as R from 'ramda';
-import * as React from 'react';
+import PropTypes from 'prop-types';
+import R from 'ramda';
+import React from 'react';
 
 import CommonDialog from 'components/dialog';
 
-import * as api from 'api/http';
-import { UserInterface } from 'api/http.interfaces';
-import * as helpers from 'helpers';
+import api from 'api/http';
+import helpers from 'helpers';
 
 
-interface UserDialogInterface {
-    data: UserInterface;
-    onClose?: () => void;
-    onSubmit?: () => void;
-}
+export class User extends React.Component {
 
-export class User extends React.Component<UserDialogInterface> {
+    static propTypes = {
+        data: PropTypes.object,
+        onSubmit: PropTypes.func
+    }
 
-    public state = {
-        data: {} as UserInterface
+    state = {
+        data: {}
     };
 
-    constructor(props: UserDialogInterface ) {
+    constructor(props) {
         super(props);
         const p = props.data.id;
         api.users
             .item( p )
-            .then( (data: UserInterface) => this.setState({ data }) );
+            .then( (data) => this.setState({ data }) );
     }
 
-    public onSubmit = () => {
+    onSubmit = () => {
         this.props.onSubmit
         && this.props.onSubmit();
     }
 
-    public render() {
+    render() {
         const props = this.props;
         const state = this.state;
         const data = helpers.get(state.data);
