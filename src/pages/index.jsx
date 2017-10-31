@@ -72,7 +72,7 @@ class Layout extends React.Component {
                         (data) => {
                             api.authorise(data)
                                .then(
-                                   (user) => console.warn({user}) || this.setState({ user })
+                                   (user) => this.setState({ user })
                                )
                         }
                     }
