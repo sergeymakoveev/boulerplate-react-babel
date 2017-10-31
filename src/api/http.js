@@ -2,7 +2,8 @@ import fetch from 'isomorphic-fetch';
 import qs from 'query-string';
 
 const
-    BASE = '/api';
+    BASE = '/api',
+    headers = {'Content-Type': 'application/json'};
 
 
 function request(url) {
@@ -22,11 +23,11 @@ function get(r) {
 }
 
 function post(r) {
-    return (body) => r({ body, method: 'POST' });
+    return (body) => r({ body, headers, method: 'POST' });
 }
 
 function update(r) {
-    return (body) => r({ body, method: 'UPDATE' });
+    return (body) => r({ body, headers, method: 'PUT' });
 }
 
 function remove(r) {
@@ -34,6 +35,7 @@ function remove(r) {
 }
 
 const REQUESTS = {
+    authorise: request('/authorise'),
     users: request('/users')
 };
 
@@ -51,3 +53,5 @@ export const users = {
     remove: usersRemove,
     update: usersUpdate
 };
+
+export const authorise = update(REQUESTS.authorise);
