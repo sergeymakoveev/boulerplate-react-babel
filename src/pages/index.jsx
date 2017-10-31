@@ -18,6 +18,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
+import * as api from 'api/http';
 import store from 'store';
 
 // import DATA from 'data.json';
@@ -66,7 +67,16 @@ class Layout extends React.Component {
             <Provider store={ store }>
             {
                 !this.state.user
-                ? <SignIn onSubmit={(user) => this.setState({ user })} />
+                ? <SignIn
+                    onSubmit={
+                        (data) => {
+                            api.authorise(data)
+                               .then(
+                                   (user) => console.warn({user}) || this.setState({ user })
+                               )
+                        }
+                    }
+                  />
                 : (
                     <Router>
                         <div>
