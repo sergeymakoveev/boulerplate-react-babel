@@ -25,7 +25,7 @@ import store from 'store';
 import Menu from 'components/menu';
 import SignIn from 'components/signin';
 import About from 'pages/about';
-import Home from 'pages/about';
+import Home from 'pages/home';
 import Topics from 'pages/topics';
 import { User, Users } from 'pages/users';
 
@@ -109,6 +109,7 @@ class Layout extends React.Component {
                                     ({ match: {params} , history }) => (
                                         <User
                                             data={{ id: params.id }}
+                                            onSubmit={(data) => console.warn({data})}
                                             onClose={
                                                 () => history.push('/users')
                                             }
