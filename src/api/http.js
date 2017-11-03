@@ -1,6 +1,8 @@
 import fetch from 'isomorphic-fetch';
 import qs from 'query-string';
 
+
+
 const
     BASE = '/api',
     headers = {'Content-Type': 'application/json'};
@@ -16,10 +18,6 @@ function request(url) {
             options
         ).then((response) => response.json());
     };
-}
-
-function get(r) {
-    return r;
 }
 
 function post(r) {
@@ -41,8 +39,8 @@ const REQUESTS = {
 
 const
     usersCreate = post(REQUESTS.users),
-    usersItem = get(REQUESTS.users),
-    usersList = get(REQUESTS.users),
+    usersItem = REQUESTS.users,
+    usersList = REQUESTS.users,
     usersRemove = remove(REQUESTS.users),
     usersUpdate = update(REQUESTS.users);
 
@@ -55,3 +53,7 @@ export const users = {
 };
 
 export const authorise = update(REQUESTS.authorise);
+
+export default {
+    authorise, users
+};
