@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
-import * as R from 'ramda';
 import React from 'react';
-
+import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
+
 import { TextField, validators } from 'externals/redux-form-material-ui';
 
 import CommonDialog from 'components/dialog';
 
-import * as api from 'api/http';
-import * as helpers from 'helpers';
+import ACTIONS from 'api/http.actions';
+import { PropTypesUser } from 'proptypes';
+import helpers from 'helpers';
 
 const VALIDATORS = {
     login: validators.pipe(
@@ -25,8 +26,12 @@ class User extends React.Component {
 
     static propTypes = {
         data: PropTypes.object,
+        dispatch: PropTypes.func,
+        initialValues: PropTypesUser,
+        load: PropTypes.any,
+        load_test: PropTypes.any,
         onClose: PropTypes.func,
-        handleSubmit: PropTypes.func
+        handleSubmit: PropTypes.func,
     }
 
     state = {
@@ -34,11 +39,22 @@ class User extends React.Component {
     };
 
     constructor(props) {
+        const { data, load } = props;
         super(props);
-        api.users
-            .item( props.data.id )
-            .then( (data) => this.setState({ data }) );
+        console.warn('constructor', { props });
+        data.id
+        && load(data.id);
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     const { dispatch, data, load } = nextProps;
+    //     console.warn(
+    //         'componentWillReceiveProps',
+    //         { props: this.props.initialValues, nextProps }
+    //     );
+    //     (data.id !== this.props.data.id)
+    //     && dispatch(load(data.id));
+    // }
 
     // onSubmit = () => {
     //     this.props.onSubmit
@@ -47,12 +63,15 @@ class User extends React.Component {
 
     render() {
         const props = this.props;
-        const state = this.state;
-        const data = helpers.path(state.data);
-        return R.complement(R.isEmpty)(state.data) && (
+        const user = helpers.path(props.initialValues);
+        console.warn(
+            'render',
+            { id: props.id, initialValues: props.initialValues }
+        );
+        return (
             <CommonDialog
                 contentStyle={{ width: '300px' }}
-                title={ `User: ${data('name')}` }
+                title={`User: ${user('name')}` }
                 onClose={props.onClose}
                 onSubmit={props.handleSubmit}
             >
@@ -77,14 +96,26 @@ class User extends React.Component {
                         VALIDATORS.email
                     }
                 />
-
             </CommonDialog>
         );
     }
 }
 
-export default reduxForm({
-    form: 'FormUser',
-    // validate,
-    // asyncValidate,
-})(User);
+export default connect(
+    (state) => ({
+        // pull initial values from account reducer
+        initialValues: state.http.data
+    }),
+    // bind account loading action creator
+    ({
+        load: ACTIONS.USERS_ITEM,
+        load_test: ACTIONS.USERS_ITEM_TEST,
+    }),
+)(
+    reduxForm({
+        form: 'FormUser',
+        // enableReinitialize: true,
+        // validate,
+        // asyncValidate,
+    })(User)
+);

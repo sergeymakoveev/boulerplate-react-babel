@@ -27,7 +27,7 @@ import SignIn from 'components/signin';
 import About from 'pages/about';
 import Home from 'pages/home';
 import Topics from 'pages/topics';
-import { User, Users } from 'pages/users';
+import { Users } from 'pages/users';
 
 const THEME = {
     ...lightBaseTheme,
@@ -46,7 +46,7 @@ class Layout extends React.Component {
 
     state = {
         drawer: false,
-        user: false,
+        user: {},
         title: 'React-Babel boulerplate'
     };
 
@@ -102,22 +102,6 @@ class Layout extends React.Component {
                                 <NavLink to={'/topics'}><MenuItem>Topics</MenuItem></NavLink>
                                 <NavLink to={'/users'}><MenuItem>Users</MenuItem></NavLink>
                             </Drawer>
-
-                            <Route
-                                path="/users/:id"
-                                render={
-                                    ({ match: {params} , history }) => (
-                                        <User
-                                            data={{ id: params.id }}
-                                            onSubmit={(data) => console.warn({data})}
-                                            onClose={
-                                                () => history.push('/users')
-                                            }
-                                        />
-                                    )
-                                }
-                            />
-
                             <Switch>
                                 <Route path="/" exact={true} component={Home}/>
                                 <Route path="/about" component={About}/>

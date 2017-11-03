@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 
-import * as helpers from 'helpers';
+import helpers from 'helpers';
+import User from './user';
 
 import {
     Table,
@@ -32,6 +33,20 @@ export class Users extends React.Component {
         const props = helpers.path(this.props);
         return (
             <div>
+                <Route
+                    path="/users/:id"
+                    render={
+                        ({ match: { params }, history }) => (
+                            <User
+                                data={{ id: params.id }}
+                                onSubmit={(data) => console.warn({ data })}
+                                onClose={
+                                    () => history.push('/users')
+                                }
+                            />
+                        )
+                    }
+                />
                 <h1>Users</h1>
                 <Table>
                     <TableHeader>

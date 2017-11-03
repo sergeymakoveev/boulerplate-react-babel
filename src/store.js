@@ -1,12 +1,23 @@
-import { combineReducers, createStore } from 'redux';
+import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { reducer as form } from 'redux-form';
+import { createLogger } from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
 
-const reducer = combineReducers({ form });
+import { reducer as http } from 'api/http.reducer';
 
-const store = (
-    window.devToolsExtension
+const create = window.devToolsExtension
     ? window.devToolsExtension()(createStore)
-    : createStore
-)(reducer);
+    : createStore;
+
+const store = create(
+    combineReducers({
+        form,
+        http,
+    }),
+    applyMiddleware (
+        thunkMiddleware,
+        createLogger(),
+    )
+);
 
 export default store;
