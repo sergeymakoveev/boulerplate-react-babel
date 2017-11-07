@@ -7,7 +7,7 @@ import { TextField, validators } from 'externals/redux-form-material-ui';
 
 import CommonDialog from 'components/dialog';
 
-import ACTIONS from 'api/http.actions';
+import ACTIONS from './actions';
 import { PropTypesUser } from 'proptypes';
 import helpers from 'helpers';
 
@@ -104,12 +104,11 @@ class User extends React.Component {
 export default connect(
     (state) => ({
         // pull initial values from account reducer
-        initialValues: state.http.data
+        initialValues: state.users.show
     }),
     // bind account loading action creator
     ({
-        load: ACTIONS.USERS_ITEM,
-        load_test: ACTIONS.USERS_ITEM_TEST,
+        load: ACTIONS.USERS_SHOW,
     }),
 )(
     reduxForm({

@@ -18,7 +18,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
-import * as api from 'api/http';
+import api from 'api/http';
 import store from 'store';
 
 // import DATA from 'data.json';

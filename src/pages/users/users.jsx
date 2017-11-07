@@ -13,7 +13,7 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 
-import * as api from 'api/http';
+import api from 'api/http';
 
 
 export class Users extends React.Component {
