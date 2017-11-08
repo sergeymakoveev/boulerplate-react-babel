@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import helpers from 'helpers';
-import User from './user';
-
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 import {
     Table,
     TableBody,
@@ -14,9 +13,12 @@ import {
 } from 'material-ui/Table';
 
 import api from 'api/http';
+import { PropTypesRoute } from 'proptypes';
 
 
 export class Users extends React.Component {
+
+    static propTypes = PropTypesRoute
 
     state = {
         users: []
@@ -30,24 +32,23 @@ export class Users extends React.Component {
     }
 
     render() {
-        const props = helpers.path(this.props);
+        const { location: { pathname },  } = this.props;
+        console.warn({prooops: this.props });
         return (
             <div>
-                <Route
-                    path="/users/:id"
-                    render={
-                        ({ match: { params }, history }) => (
-                            <User
-                                data={{ id: params.id }}
-                                onSubmit={(data) => console.warn({ data })}
-                                onClose={
-                                    () => history.push('/users')
-                                }
-                            />
-                        )
-                    }
-                />
-                <h1>Users</h1>
+                <h1>
+                    Users
+                    <Link to={`${pathname}/new`}>
+                        <FloatingActionButton
+                            style={{
+                                verticalAlign: 'middle',
+                                marginLeft: '20px'
+                            }}
+                        >
+                            <ContentAdd />
+                        </FloatingActionButton>
+                    </Link>
+                </h1>
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -64,7 +65,7 @@ export class Users extends React.Component {
                                 <TableRow key={user.id}>
                                     <TableRowColumn>{ user.id }</TableRowColumn>
                                     <TableRowColumn>
-                                        <Link to={`${props('match.url')}/${user.id}`}>
+                                        <Link to={`${pathname}/${user.id}`}>
                                             { user.name }
                                         </Link>
                                     </TableRowColumn>

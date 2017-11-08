@@ -27,7 +27,7 @@ import SignIn from 'components/signin';
 import About from 'pages/about';
 import Home from 'pages/home';
 import Topics from 'pages/topics';
-import { Users } from 'pages/users';
+import { User, Users } from 'pages/users';
 
 const THEME = {
     ...lightBaseTheme,
@@ -65,20 +65,22 @@ class Layout extends React.Component {
     render() {
         return (
             <Provider store={ store }>
-            {
-                !this.state.user
-                ? <SignIn
-                    onSubmit={
-                        (data) => {
-                            api.authorise(data)
-                               .then(
-                                   (user) => this.setState({ user })
-                               )
-                        }
-                    }
-                  />
-                : (
-                    <Router>
+                <Router>
+                {
+                    !this.state.user
+                    ? (
+                        <SignIn
+                            onSubmit={
+                                (data) => {
+                                    api.authorise(data)
+                                    .then(
+                                        (user) => this.setState({ user })
+                                    )
+                                }
+                            }
+                        />
+                    )
+                    : (
                         <div>
                             <AppBar
                                 title={this.state.title}
@@ -116,10 +118,11 @@ class Layout extends React.Component {
                                     }
                                 />
                             </Switch>
+                            <Route path="/users/:id" component={User} />
                         </div>
-                    </Router>
-                )
-            }
+                    )
+                }
+                </Router>
             </Provider>
         );
     }
