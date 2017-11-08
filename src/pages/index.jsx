@@ -118,7 +118,7 @@ class Layout extends React.Component {
                                     }
                                 />
                             </Switch>
-                            <Route path="/users/:id" component={User} />
+                            <Route path="/users/:id" component={User} exact={true} />
                         </div>
                     )
                 }
