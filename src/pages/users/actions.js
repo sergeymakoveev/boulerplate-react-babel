@@ -10,9 +10,11 @@ export const ACTIONS = {
     USERS_SHOW:
         (id) =>
             (dispath) => (
-                api.users
+                +id
+                ? api.users
                     .item(id)
                     .then((data) => dispath({ type: TYPES.USERS_SHOW, data }))
+                : dispath({ type: TYPES.USERS_SHOW, data: {} })
             )
 };
 

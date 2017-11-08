@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import * as R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
@@ -8,8 +9,8 @@ import { TextField, validators } from 'externals/redux-form-material-ui';
 import CommonDialog from 'components/dialog';
 
 import ACTIONS from './actions';
-import { PropTypesUser } from 'proptypes';
-import helpers from 'helpers';
+import { PropTypesRoute, PropTypesUser } from 'proptypes';
+
 
 const VALIDATORS = {
     login: validators.pipe(
@@ -25,11 +26,10 @@ const VALIDATORS = {
 class User extends React.Component {
 
     static propTypes = {
-        data: PropTypes.object,
+        ...PropTypesRoute,
         dispatch: PropTypes.func,
         initialValues: PropTypesUser,
         load: PropTypes.any,
-        load_test: PropTypes.any,
         onClose: PropTypes.func,
         handleSubmit: PropTypes.func,
     }
@@ -39,11 +39,10 @@ class User extends React.Component {
     };
 
     constructor(props) {
-        const { data, load } = props;
+        const { match: { params }, load } = props;
         super(props);
-        console.warn('constructor', { props });
-        data.id
-        && load(data.id);
+        console.warn('user: constructor', { props });
+        load(params.id);
     }
 
     // componentWillReceiveProps(nextProps) {
@@ -61,18 +60,25 @@ class User extends React.Component {
     //     && this.props.onSubmit();
     // }
 
+    onClose = () => {
+        this.props.history.push('/users');
+        this.props.onClose
+        && this.props.onClose();
+    }
+
     render() {
         const props = this.props;
-        const user = helpers.path(props.initialValues);
-        console.warn(
-            'render',
-            { id: props.id, initialValues: props.initialValues }
-        );
+        const user = props.initialValues || {};
+        console.warn('user: render', {props});
         return (
             <CommonDialog
                 contentStyle={{ width: '300px' }}
-                title={`User: ${user('name')}` }
-                onClose={props.onClose}
+                title={
+                    R.isEmpty(user)
+                    ? 'New user'
+                    : `User: ${user.name}`
+                }
+                onClose={this.onClose}
                 onSubmit={props.handleSubmit}
             >
                 <Field
