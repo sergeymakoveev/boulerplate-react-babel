@@ -15,6 +15,8 @@ import {
 import api from 'api/http';
 import { PropTypesRoute } from 'proptypes';
 
+import { routes } from 'pages';
+
 
 export class Users extends React.Component {
 
@@ -32,13 +34,12 @@ export class Users extends React.Component {
     }
 
     render() {
-        const { location: { pathname },  } = this.props;
         console.warn({prooops: this.props });
         return (
             <div>
                 <h1>
                     Users
-                    <Link to={`${pathname}/new`}>
+                    <Link to={routes.users('new')}>
                         <FloatingActionButton
                             style={{
                                 verticalAlign: 'middle',
@@ -65,7 +66,7 @@ export class Users extends React.Component {
                                 <TableRow key={user.id}>
                                     <TableRowColumn>{ user.id }</TableRowColumn>
                                     <TableRowColumn>
-                                        <Link to={`${pathname}/${user.id}`}>
+                                        <Link to={routes.users(user.id)}>
                                             { user.name }
                                         </Link>
                                     </TableRowColumn>

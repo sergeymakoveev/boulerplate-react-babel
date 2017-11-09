@@ -20,6 +20,7 @@ import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
 import api from 'api/http';
 import store from 'store';
+import { routes } from 'pages';
 
 // import DATA from 'data.json';
 import Menu from 'components/menu';
@@ -99,16 +100,16 @@ class Layout extends React.Component {
                                     iconElementRight={<IconButton><NavigationMenu /></IconButton>}
                                     onRightIconButtonTouchTap={ this.toggleDrawer }
                                 />
-                                <NavLink to={'/'} exact={true} ><MenuItem>Home</MenuItem></NavLink>
-                                <NavLink to={'/about'}><MenuItem>About</MenuItem></NavLink>
-                                <NavLink to={'/topics'}><MenuItem>Topics</MenuItem></NavLink>
-                                <NavLink to={'/users'}><MenuItem>Users</MenuItem></NavLink>
+                                <NavLink to={routes.home()} exact={true} ><MenuItem>Home</MenuItem></NavLink>
+                                <NavLink to={routes.about()}><MenuItem>About</MenuItem></NavLink>
+                                <NavLink to={routes.topics()}><MenuItem>Topics</MenuItem></NavLink>
+                                <NavLink to={routes.users()}><MenuItem>Users</MenuItem></NavLink>
                             </Drawer>
                             <Switch>
-                                <Route path="/" exact={true} component={Home}/>
-                                <Route path="/about" component={About}/>
-                                <Route path="/topics" component={Topics}/>
-                                <Route path="/users" component={Users}/>
+                                <Route path={routes.home()} exact={true} component={Home}/>
+                                <Route path={routes.about()} component={About}/>
+                                <Route path={routes.topics()} component={Topics}/>
+                                <Route path={routes.users()} component={Users}/>
                                 <Route
                                     path="*"
                                     render={
@@ -118,7 +119,7 @@ class Layout extends React.Component {
                                     }
                                 />
                             </Switch>
-                            <Route path="/users/:id" component={User} exact={true} />
+                            <Route path={`${routes.users()}/:id`} component={User} exact={true} />
                         </div>
                     )
                 }
