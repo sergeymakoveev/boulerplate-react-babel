@@ -7,11 +7,6 @@ const
     BASE = '/api',
     headers = {'Content-Type': 'application/json'};
 
-export const routes = {
-    authorise: '/authorise',
-    users: '/users',
-}
-
 function request(url) {
     return ({path='', query={}, ...options}) => {
         query = qs.stringify(query);
@@ -36,17 +31,17 @@ function remove(r) {
     return () => r({ method: 'DELETE' });
 }
 
-const REQUESTS = {
-    authorise: request(routes.authorise),
-    users: request(routes.users),
+const requests = {
+    authorise: request('/authorise'),
+    users: request('/users'),
 };
 
 const
-    usersCreate = post(REQUESTS.users),
-    usersItem = REQUESTS.users,
-    usersList = REQUESTS.users,
-    usersRemove = remove(REQUESTS.users),
-    usersUpdate = update(REQUESTS.users);
+    usersCreate = post(requests.users),
+    usersItem = requests.users,
+    usersList = requests.users,
+    usersRemove = remove(requests.users),
+    usersUpdate = update(requests.users);
 
 export const users = {
     create: usersCreate,
@@ -56,10 +51,10 @@ export const users = {
     update: usersUpdate
 };
 
-export const authorise = update(REQUESTS.authorise);
+export const authorise = update(requests.authorise);
 
 export const api = {
-    authorise, users, routes
+    authorise, users
 };
 
 export default api;
