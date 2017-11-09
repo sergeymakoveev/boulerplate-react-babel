@@ -7,6 +7,10 @@ const
     BASE = '/api',
     headers = {'Content-Type': 'application/json'};
 
+export const routes = {
+    authorise: '/authorise',
+    users: '/users',
+}
 
 function request(url) {
     return ({path='', query={}, ...options}) => {
@@ -33,8 +37,8 @@ function remove(r) {
 }
 
 const REQUESTS = {
-    authorise: request('/authorise'),
-    users: request('/users')
+    authorise: request(routes.authorise),
+    users: request(routes.users),
 };
 
 const
@@ -54,6 +58,8 @@ export const users = {
 
 export const authorise = update(REQUESTS.authorise);
 
-export default {
-    authorise, users
+export const api = {
+    authorise, users, routes
 };
+
+export default api;
