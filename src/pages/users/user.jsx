@@ -70,7 +70,7 @@ class User extends React.Component {
 
     render() {
         const props = this.props;
-        const user = props.initialValues || {};
+        const user = props.data || {};
         console.warn('user: render', {props});
         return (
             <CommonDialog
@@ -112,7 +112,8 @@ class User extends React.Component {
 export default connect(
     (state) => ({
         // pull initial values from account reducer
-        initialValues: state.users.show
+        initialValues: state.users.show,
+        data: state.users.show,
     }),
     // bind account loading action creator
     ({
@@ -121,7 +122,7 @@ export default connect(
 )(
     reduxForm({
         form: 'FormUser',
-        // enableReinitialize: true,
+        enableReinitialize: true,
         // validate,
         // asyncValidate,
     })(User)
