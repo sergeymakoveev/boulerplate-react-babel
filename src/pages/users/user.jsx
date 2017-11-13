@@ -32,7 +32,7 @@ class User extends React.Component {
         ...PropTypesRoute,
         dispatch: PropTypes.func,
         initialValues: PropTypesUser,
-        load: PropTypes.any,
+        load: PropTypes.func,
         onClose: PropTypes.func,
         handleSubmit: PropTypes.func,
     }

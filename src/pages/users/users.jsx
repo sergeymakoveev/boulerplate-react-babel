@@ -28,7 +28,7 @@ class Users extends React.Component {
     static propTypes = {
         ...PropTypesRoute,
         list: PropTypesUsers,
-        load: PropTypes.any,
+        load: PropTypes.func,
         remove: PropTypes.func,
     }
 
