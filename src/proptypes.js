@@ -7,6 +7,8 @@ export const PropTypesUser = PropTypes.shape({
     email: PropTypes.string,
 });
 
+export const PropTypesUsers = PropTypes.arrayOf(PropTypesUser);
+
 export const PropTypesRoute = {
     history: PropTypes.object,
     location: PropTypes.object,
