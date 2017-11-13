@@ -7,28 +7,40 @@ const
     BASE = '/api',
     headers = {'Content-Type': 'application/json'};
 
-function request(url) {
-    return ({path='', query={}, ...options}) => {
+const request =
+    (url) =>
+    (options={}) =>
+    ({path='', query={}}={}) =>
+    (data) => {
+        const body = JSON.stringify(data);
         query = qs.stringify(query);
         query = query ? `?${query}` : '';
         path = path ? `/${path}` : '';
-        return fetch(
-            `${BASE}${url}${path}${query}`,
-            options
-        ).then((response) => response.json());
+        return (
+            fetch(
+                `${BASE}${url}${path}${query}`,
+                {
+                    ...options,
+                    ...(body ? { body } : {})
+                }
+            ).then((response) => response.json())
+        );
     };
+
+function get(r) {
+    return r();
 }
 
 function post(r) {
-    return (body) => r({ body, headers, method: 'POST' });
+    return r({ headers, method: 'POST' });
 }
 
 function update(r) {
-    return (body) => r({ body, headers, method: 'PUT' });
+    return r({ headers, method: 'PUT' });
 }
 
 function remove(r) {
-    return () => r({ method: 'DELETE' });
+    return r({ method: 'DELETE' });
 }
 
 const requests = {
@@ -36,19 +48,12 @@ const requests = {
     users: request('/users'),
 };
 
-const
-    usersCreate = post(requests.users),
-    usersItem = requests.users,
-    usersList = requests.users,
-    usersRemove = remove(requests.users),
-    usersUpdate = update(requests.users);
-
 export const users = {
-    create: usersCreate,
-    item: (path) => usersItem({ path }),
-    list: (query) => usersList({ query }),
-    remove: usersRemove,
-    update: usersUpdate
+    create: post(requests.users)(),
+    item: (id) => get(requests.users)({ path: id })(),
+    list: (query) => get(requests.users)({ query })(),
+    remove: (id) => remove(requests.users)({ path: id }),
+    update: (id) => update(requests.users)({ path: id }),
 };
 
 export const authorise = update(requests.authorise);

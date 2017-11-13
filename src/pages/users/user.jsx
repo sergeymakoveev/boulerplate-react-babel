@@ -15,12 +15,14 @@ import { PropTypesRoute, PropTypesUser } from 'proptypes';
 const VALIDATORS = {
     login: validators.pipe(
         validators.required,
-        validators.is.email
+        validators.is.alphanumeric,
+        validators.length.min(5),
     ),
+    name: validators.is.alphanumeric,
     email: validators.pipe(
         validators.required,
-        validators.is.email
-    )
+        validators.is.email,
+    ),
 };
 
 class User extends React.Component {
@@ -34,13 +36,9 @@ class User extends React.Component {
         handleSubmit: PropTypes.func,
     }
 
-    state = {
-        data: {}
-    };
-
     constructor(props) {
-        const { match: { params }, load } = props;
         super(props);
+        const { match: { params }, load } = props;
         console.warn('user: constructor', { props });
         load(params.id);
     }
@@ -57,10 +55,19 @@ class User extends React.Component {
     //     && dispatch(load(id));
     // }
 
-    // onSubmit = () => {
-    //     this.props.onSubmit
-    //     && this.props.onSubmit();
-    // }
+    onSubmit = (data) => {
+        const { create, update } = this.props;
+        +data.id
+        ? update(data.id, data)
+        : create(data);
+    }
+
+    onSubmitSuccess = (data) => {
+        this.onClose();
+        this.props.onSubmit
+        && this.props.onSubmit();
+        return data;
+    }
 
     onClose = () => {
         this.props.history.push('/users');
@@ -69,19 +76,17 @@ class User extends React.Component {
     }
 
     render() {
-        const props = this.props;
-        const user = props.data || {};
-        console.warn('user: render', {props});
+        const { handleSubmit, data={} } = this.props;
         return (
             <CommonDialog
                 contentStyle={{ width: '300px' }}
                 title={
-                    R.isEmpty(user)
+                    R.isEmpty(data)
                     ? 'New user'
-                    : `User: ${user.name}`
+                    : `User: ${data.name}`
                 }
                 onClose={this.onClose}
-                onSubmit={props.handleSubmit}
+                onSubmit={handleSubmit(this.onSubmit)}
             >
                 <Field
                     style={{ width: '100%' }}
@@ -94,6 +99,16 @@ class User extends React.Component {
                     }
                 />
                 <br />
+                <Field
+                    style={{ width: '100%' }}
+                    component={TextField}
+                    name="name"
+                    hintText="Name"
+                    floatingLabelText="Name"
+                    validate={
+                        VALIDATORS.name
+                    }
+                />
                 <Field
                     style={{ width: '100%' }}
                     component={TextField}
@@ -112,12 +127,14 @@ class User extends React.Component {
 export default connect(
     (state) => ({
         // pull initial values from account reducer
-        initialValues: state.users.show,
-        data: state.users.show,
+        initialValues: state.users.item,
+        data: state.users.item,
     }),
     // bind account loading action creator
     ({
-        load: ACTIONS.USERS_SHOW,
+        create: ACTIONS.USERS_CREATE,
+        load: ACTIONS.USERS_ITEM,
+        update: ACTIONS.USERS_UPDATE,
     }),
 )(
     reduxForm({
