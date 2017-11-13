@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import api from 'api/http';
 
 
@@ -20,22 +22,27 @@ export const ACTIONS = {
         ),
 
     USERS_CREATE:
-        (src) =>
+        (src, onSuccess = R.identity) =>
         (dispath) => (
             api.users
                 .create(src)
-                .then((data) => dispath({ type: TYPES.USERS_CREATE, data }))
+                .then(
+                    (data) => {
+                        dispath({ type: TYPES.USERS_CREATE, data });
+                        return onSuccess(data);
+                    }
+                )
         ),
 
     USERS_UPDATE:
-        (id, src) =>
+        (src, onSuccess = R.identity) =>
         (dispath) => (
             api.users
-                .update(id)(src)
+                .update(src.id)(src)
                 .then(
                     (data) => {
                         dispath({ type: TYPES.USERS_UPDATE, data });
-                        dispath(ACTIONS.USERS_LIST);
+                        return onSuccess(data);
                     }
                 )
         ),

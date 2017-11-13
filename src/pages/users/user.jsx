@@ -57,16 +57,14 @@ class User extends React.Component {
 
     onSubmit = (data) => {
         const { create, update } = this.props;
-        +data.id
-        ? update(data.id, data)
-        : create(data);
+        (+data.id ? update : create)(data, this.onSubmitSuccess);
     }
 
     onSubmitSuccess = (data) => {
+        const { list, onSubmit=R.identity } = this.props;
         this.onClose();
-        this.props.onSubmit
-        && this.props.onSubmit();
-        return data;
+        list();
+        return onSubmit(data);
     }
 
     onClose = () => {
@@ -132,6 +130,7 @@ export default connect(
     }),
     // bind account loading action creator
     ({
+        list: ACTIONS.USERS_LIST,
         create: ACTIONS.USERS_CREATE,
         load: ACTIONS.USERS_ITEM,
         update: ACTIONS.USERS_UPDATE,

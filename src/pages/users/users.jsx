@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -12,29 +14,28 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 
-import api from 'api/http';
-import { PropTypesRoute } from 'proptypes';
+import { PropTypesRoute, PropTypesUsers } from 'proptypes';
+import ACTIONS from './actions';
 
 import { routes } from 'pages';
 
 
-export class Users extends React.Component {
+class Users extends React.Component {
 
-    static propTypes = PropTypesRoute
-
-    state = {
-        users: []
-    };
+    static propTypes = {
+        ...PropTypesRoute,
+        list: PropTypesUsers,
+        load: PropTypes.any,
+    }
 
     constructor( props ) {
         super( props );
-        api.users
-            .list()
-            .then( (users) => this.setState({ users }) );
+        const { load } = props;
+        load();
     }
 
     render() {
-        console.warn({prooops: this.props });
+        const { list = [] } = this.props;
         return (
             <div>
                 <h1>
@@ -61,8 +62,8 @@ export class Users extends React.Component {
                     </TableHeader>
                     <TableBody>
                     {
-                        this.state.users
-                            .map(( user ) => (
+                        list.map(
+                            ( user ) => (
                                 <TableRow key={user.id}>
                                     <TableRowColumn>{ user.id }</TableRowColumn>
                                     <TableRowColumn>
@@ -73,7 +74,8 @@ export class Users extends React.Component {
                                     <TableRowColumn>{ user.email }</TableRowColumn>
                                     <TableRowColumn>{ user.login }</TableRowColumn>
                                 </TableRow>
-                            ))
+                            )
+                        )
                     }
                     </TableBody>
                 </Table>
@@ -82,4 +84,13 @@ export class Users extends React.Component {
     }
 }
 
-export default Users;
+export default
+    connect(
+        (state) => ({
+            list: state.users.list,
+        }),
+        // bind account loading action creator
+        ({
+            load: ACTIONS.USERS_LIST,
+        }),
+    )( Users );
