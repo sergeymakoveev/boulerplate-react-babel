@@ -47,7 +47,7 @@ export const validators = {
                 ? ''
                 : 'Введите email',
         alphanumeric:
-            (v) => is.alphaNumeric(v)
+            (v) => (/^[0-9a-zа-я.\- ]+$/i).test(v)
                 ? ''
                 : 'Допустимы только буквенно-цифровые символы',
     },
