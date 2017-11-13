@@ -105,21 +105,27 @@ class Layout extends React.Component {
                                 <NavLink to={routes.topics()}><MenuItem>Topics</MenuItem></NavLink>
                                 <NavLink to={routes.users()}><MenuItem>Users</MenuItem></NavLink>
                             </Drawer>
-                            <Switch>
-                                <Route path={routes.home()} exact={true} component={Home}/>
-                                <Route path={routes.about()} component={About}/>
-                                <Route path={routes.topics()} component={Topics}/>
-                                <Route path={routes.users()} component={Users}/>
-                                <Route
-                                    path="*"
-                                    render={
-                                        ({ location }) => (
-                                            <h3>404: {location.pathname}</h3>
-                                        )
-                                    }
-                                />
-                            </Switch>
-                            <Route path={`${routes.users()}/:id`} component={User} exact={true} />
+                            <main
+                                style={{
+                                    margin: '50px'
+                                }}
+                            >
+                                <Switch>
+                                    <Route path={routes.home()} exact={true} component={Home}/>
+                                    <Route path={routes.about()} component={About}/>
+                                    <Route path={routes.topics()} component={Topics}/>
+                                    <Route path={routes.users()} component={Users}/>
+                                    <Route
+                                        path="*"
+                                        render={
+                                            ({ location }) => (
+                                                <h3>404: {location.pathname}</h3>
+                                            )
+                                        }
+                                    />
+                                </Switch>
+                                <Route path={`${routes.users()}/:id`} component={User} exact={true} />
+                            </main>
                         </div>
                     )
                 }
