@@ -7,6 +7,7 @@ export const TYPES = {
     USERS_CREATE: 'USERS_CREATE',
     USERS_LIST: 'USERS_LIST',
     USERS_ITEM: 'USERS_ITEM',
+    USERS_REMOVE: 'USERS_REMOVE',
     USERS_UPDATE: 'USERS_UPDATE',
 };
 
@@ -29,6 +30,19 @@ export const ACTIONS = {
                 .then(
                     (data) => {
                         dispath({ type: TYPES.USERS_CREATE, data });
+                        return onSuccess(data);
+                    }
+                )
+        ),
+
+    USERS_REMOVE:
+        (src, onSuccess = R.identity) =>
+        (dispath) => (
+            api.users
+                .remove(src.id)()
+                .then(
+                    (data) => {
+                        dispath({ type: TYPES.USERS_REMOVE, data });
                         return onSuccess(data);
                     }
                 )

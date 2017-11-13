@@ -9,6 +9,7 @@ export const reducer = (state = {}, action) => {
             return { ...state, item: action.data };
         case TYPES.USERS_LIST:
             return { ...state, list: action.data };
+        case TYPES.USERS_REMOVE:
         default:
             return state;
     }

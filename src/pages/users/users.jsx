@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import IconButton from 'material-ui/IconButton';
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import EditIcon from 'material-ui/svg-icons/image/edit';
 import {
     Table,
     TableBody,
@@ -26,12 +29,22 @@ class Users extends React.Component {
         ...PropTypesRoute,
         list: PropTypesUsers,
         load: PropTypes.any,
+        remove: PropTypes.func,
     }
 
     constructor( props ) {
         super( props );
         const { load } = props;
         load();
+    }
+
+    onRemove = (id) => {
+        this.props.remove(id, this.onRemoveSuccess);
+    }
+
+    onRemoveSuccess = (data) => {
+        this.props.load();
+        return data;
     }
 
     render() {
@@ -58,21 +71,33 @@ class Users extends React.Component {
                             <TableHeaderColumn>Name</TableHeaderColumn>
                             <TableHeaderColumn>Email</TableHeaderColumn>
                             <TableHeaderColumn>Login</TableHeaderColumn>
+                            <TableHeaderColumn></TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
-                    <TableBody>
+                    <TableBody showRowHover={true}>
                     {
                         list.map(
                             ( user ) => (
                                 <TableRow key={user.id}>
                                     <TableRowColumn>{ user.id }</TableRowColumn>
-                                    <TableRowColumn>
-                                        <Link to={routes.users(user.id)}>
-                                            { user.name }
-                                        </Link>
-                                    </TableRowColumn>
+                                    <TableRowColumn>{ user.name }</TableRowColumn>
                                     <TableRowColumn>{ user.email }</TableRowColumn>
                                     <TableRowColumn>{ user.login }</TableRowColumn>
+                                    <TableRowColumn>
+                                        <IconButton
+                                            touch={true}
+                                            onClick={() => this.onRemove(user)}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                        <IconButton
+                                            touch={true}
+                                        >
+                                            <Link to={routes.users(user.id)}>
+                                                <EditIcon />
+                                            </Link>
+                                        </IconButton>
+                                    </TableRowColumn>
                                 </TableRow>
                             )
                         )
@@ -92,5 +117,6 @@ export default
         // bind account loading action creator
         ({
             load: ACTIONS.USERS_LIST,
+            remove: ACTIONS.USERS_REMOVE,
         }),
     )( Users );
