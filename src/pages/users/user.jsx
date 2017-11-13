@@ -85,7 +85,6 @@ class User extends React.Component {
                         VALIDATORS.login
                     }
                 />
-                <br />
                 <Field
                     style={{ width: '100%' }}
                     component={TextField}
