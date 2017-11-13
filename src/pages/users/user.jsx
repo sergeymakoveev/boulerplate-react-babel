@@ -43,18 +43,6 @@ class User extends React.Component {
         load(params.id);
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     const { load, dispatch } = nextProps;
-    //     const getId = R.path('match.params.id'.split('.'));
-    //     const id = getId(nextProps);
-    //     console.warn(
-    //         'componentWillReceiveProps',
-    //         { id, props: this.props, nextProps }
-    //     );
-    //     id !== getId(this.props)
-    //     && dispatch(load(id));
-    // }
-
     onSubmit = (data) => {
         const { create, update } = this.props;
         (+data.id ? update : create)(data, this.onSubmitSuccess);
