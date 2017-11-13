@@ -16,9 +16,10 @@ const VALIDATORS = {
     login: validators.pipe(
         validators.required,
         validators.is.alphanumeric,
+        validators.has.nospace,
         validators.length.min(5),
     ),
-    name: validators.is.alphanumeric,
+    name: validators.is.cyralphanumeric,
     email: validators.pipe(
         validators.required,
         validators.is.email,
