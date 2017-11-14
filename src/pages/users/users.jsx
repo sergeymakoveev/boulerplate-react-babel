@@ -7,7 +7,6 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
-import EditIcon from 'material-ui/svg-icons/image/edit';
 import {
     Table,
     TableBody,
@@ -38,8 +37,8 @@ class Users extends React.Component {
         load();
     }
 
-    onRemove = (id) => {
-        this.props.remove(id, this.onRemoveSuccess);
+    onRemove = (src) => {
+        this.props.remove(src, this.onRemoveSuccess);
     }
 
     onRemoveSuccess = (data) => {
@@ -48,7 +47,10 @@ class Users extends React.Component {
     }
 
     render() {
-        const { list = [] } = this.props;
+        const { list = [], history } = this.props;
+        const onEdit =
+            (user) =>
+            () => history.push(routes.users(user.id));
         return (
             <div>
                 <h1>
@@ -64,7 +66,10 @@ class Users extends React.Component {
                         </FloatingActionButton>
                     </Link>
                 </h1>
-                <Table>
+                <Table
+                    multiSelectable={true}
+                    onRowSelection={(e) => console.warn({e})}
+                >
                     <TableHeader>
                         <TableRow>
                             <TableHeaderColumn>ID</TableHeaderColumn>
@@ -77,12 +82,19 @@ class Users extends React.Component {
                     <TableBody showRowHover={true}>
                     {
                         list.map(
-                            ( user ) => (
-                                <TableRow key={user.id}>
-                                    <TableRowColumn>{ user.id }</TableRowColumn>
-                                    <TableRowColumn>{ user.name }</TableRowColumn>
-                                    <TableRowColumn>{ user.email }</TableRowColumn>
-                                    <TableRowColumn>{ user.login }</TableRowColumn>
+                            ( user ) => {
+                                const onClick = onEdit(user);
+                                return (
+                                    <TableRow
+                                        style={{
+                                            cursor: 'pointer'
+                                        }}
+                                        key={user.id}
+                                    >
+                                        <TableRowColumn><div onClick={onClick}>{user.id}</div></TableRowColumn>
+                                        <TableRowColumn><div onClick={onClick}>{user.name}</div></TableRowColumn>
+                                        <TableRowColumn><div onClick={onClick}>{user.email}</div></TableRowColumn>
+                                        <TableRowColumn><div onClick={onClick}>{user.login}</div></TableRowColumn>
                                     <TableRowColumn>
                                         <IconButton
                                             touch={true}
@@ -90,16 +102,10 @@ class Users extends React.Component {
                                         >
                                             <DeleteIcon />
                                         </IconButton>
-                                        <IconButton
-                                            touch={true}
-                                        >
-                                            <Link to={routes.users(user.id)}>
-                                                <EditIcon />
-                                            </Link>
-                                        </IconButton>
                                     </TableRowColumn>
                                 </TableRow>
-                            )
+                                );
+                            }
                         )
                     }
                     </TableBody>
