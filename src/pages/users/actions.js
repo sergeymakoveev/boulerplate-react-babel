@@ -37,16 +37,20 @@ export const ACTIONS = {
 
     USERS_REMOVE:
         (src, onSuccess = R.identity) =>
-        (dispath) => (
-            api.users
-                .remove(src.id)()
-                .then(
-                    (data) => {
-                        dispath({ type: TYPES.USERS_REMOVE, data });
-                        return onSuccess(data);
-                    }
+        (dispath) =>
+            Promise
+                .all(
+                    [].concat(src)
+                      .map(({id}) => api.users.remove(id)())
                 )
-        ),
+                // .then(
+                //     () => api.users.list()
+                // )
+                .then((data) => {
+                    dispath({ type: TYPES.USERS_REMOVE, data });
+                    onSuccess(data);
+                    return data;
+                }),
 
     USERS_UPDATE:
         (src, onSuccess = R.identity) =>
