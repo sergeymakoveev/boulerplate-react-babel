@@ -98,6 +98,7 @@ class Users extends React.Component {
                 ...(count ? {} : { display: 'none' })
             }
         };
+        const isAllSelected = R.equals(selected, R.pluck('id', list));
         const onEdit =
             (src) =>
             () => history.push(routes.users(src.id))
@@ -166,8 +167,8 @@ class Users extends React.Component {
                         <TableRow>
                             <TableHeaderColumn>
                                 <Checkbox
-                                    checked={false}
-                                    onCheck={onSelect('all')}
+                                    checked={isAllSelected}
+                                    onCheck={onSelect(isAllSelected ? 'none' : 'all')}
                                 />
                             </TableHeaderColumn>
                             <TableHeaderColumn>Name</TableHeaderColumn>
