@@ -5,15 +5,17 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import Checkbox from 'material-ui/Checkbox';
 import Badge from 'material-ui/Badge';
 import Toggle from 'material-ui/Toggle';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import VisibilityIcon from 'material-ui/svg-icons/action/visibility';
+import VisibilityOffIcon from 'material-ui/svg-icons/action/visibility-off';
 import {
     Table,
     TableBody,
-    TableHeader,
     TableHeaderColumn,
     TableRow,
     TableRowColumn,
@@ -79,53 +81,45 @@ class Users extends React.Component {
         this.setState({ selected });
     }
 
-    onSelect = (id) => {
-        const { list = [] } = this.props;
-        const { selected } = this.state;
-        const ids =
-            id === 'none'
-            ? []
-            : id === 'all'
-                ? R.pluck('id', list)
-                : selected.includes(id)
-                    ? R.reject(R.equals(id), selected)
-                    : [ ...selected, id ];
-        console.warn(selected, id, ids);
-        this.setState({ selected: ids });
-    }
-
-    onRemove = (src) =>
-        this.props.remove(src, this.onRemoveSuccess);
-
-    onRemoveSuccess = (data) => {
-        this.props.load();
-        return data;
-    }
-
     render() {
-        const { list = [], history } = this.props;
+        const { list = [], history, remove, load, patch } = this.props;
         const { selected } = this.state;
         const count = selected.length;
-        const getByIDs =
-            (ids) =>
-                R.filter(
-                    ({id}) => ids.includes(id),
-                    list
-                );
-        const badgeStyle = {
-            right: 20,
-            top: 20,
-            ...(count ? {} : { display: 'none' })
-        };
-        const onClick =
-            (user) =>
-            ({ target: { tagName='', type='' } }) => (
-                R.toLower(tagName) === 'td'
-                ? history.push(routes.users(user.id))
-                : R.toLower(type) === 'checkbox'
-                    ? this.onSelect(user.id)
-                    : false
+        const selected_items =
+            R.filter(
+                ({ id }) => selected.includes(id),
+                list
             );
+        const bageProps = {
+            badgeContent: count,
+            badgeStyle: {
+                right: 20,
+                top: 20,
+                ...(count ? {} : { display: 'none' })
+            }
+        };
+        const onEdit =
+            (src) =>
+            () => history.push(routes.users(src.id))
+        const onPatch =
+            (src, data) =>
+            () => patch(src, data, load);
+        const onRemove =
+            (src) =>
+            () => remove(src, load);
+        const onSelect =
+            (id) =>
+            () => this.setState({
+                selected: (
+                    id === 'none'
+                    ? []
+                    : id === 'all'
+                        ? R.pluck('id', list)
+                        : selected.includes(id)
+                            ? R.reject(R.equals(id), selected)
+                            : [...selected, id]
+                )
+            });
         return (
             <div>
                 <h1>Users</h1>
@@ -134,35 +128,54 @@ class Users extends React.Component {
                         <ContentAdd />
                     </FloatingActionButton>
                 </Link>
-                <Badge
-                    badgeContent={count}
-                    badgeStyle={badgeStyle}
-                >
+                <Badge {...bageProps}>
                     <FloatingActionButton
-                        title="delete"
+                        title="Delete selected"
                         disabled={!count}
-                        onClick={() => this.onRemove(getByIDs(selected))}
+                        onClick={onRemove(selected_items)}
                     >
                         <DeleteIcon />
                     </FloatingActionButton>
                 </Badge>
+                <Badge {...bageProps}>
+                    <FloatingActionButton
+                        title="Enable selected"
+                        disabled={!count}
+                        onClick={onPatch(selected_items, { enabled: true })}
+                    >
+                        <VisibilityIcon />
+                    </FloatingActionButton>
+                </Badge>
+                <Badge {...bageProps}>
+                    <FloatingActionButton
+                        title="Disable selected"
+                        disabled={!count}
+                        onClick={onPatch(selected_items, { enabled: false })}
+                    >
+                        <VisibilityOffIcon />
+                    </FloatingActionButton>
+                </Badge>
                 <Table
+                    style={{ width: 'inherit' }}
                     multiSelectable={true}
-                    onRowSelection={this.onSelect}
                 >
-                    <TableHeader>
+                    <TableBody
+                        showRowHover={true}
+                        displayRowCheckbox={false}
+                    >
                         <TableRow>
+                            <TableHeaderColumn>
+                                <Checkbox
+                                    checked={false}
+                                    onCheck={onSelect('all')}
+                                />
+                            </TableHeaderColumn>
                             <TableHeaderColumn>Name</TableHeaderColumn>
                             <TableHeaderColumn>Email</TableHeaderColumn>
                             <TableHeaderColumn>Login</TableHeaderColumn>
                             <TableHeaderColumn>Enabled</TableHeaderColumn>
                             <TableHeaderColumn></TableHeaderColumn>
                         </TableRow>
-                    </TableHeader>
-                    <TableBody
-                        deselectOnClickaway={false}
-                        showRowHover={true}
-                    >
                     {
                         list.map(
                             ( item ) => {
@@ -173,21 +186,26 @@ class Users extends React.Component {
                                         }}
                                         key={item.id}
                                         selected={selected.includes(item.id)}
-                                        onClick={onClick(item)}
-                                        selectable={false}
                                     >
-                                        <TableRowColumn>{item.name}</TableRowColumn>
-                                        <TableRowColumn>{item.email}</TableRowColumn>
-                                        <TableRowColumn>{item.login}</TableRowColumn>
+                                        <TableRowColumn>
+                                            <Checkbox
+                                                checked={selected.includes(item.id)}
+                                                onCheck={onSelect(item.id)}
+                                            />
+                                        </TableRowColumn>
+                                        <TableRowColumn onClick={onEdit(item)}>{item.name}</TableRowColumn>
+                                        <TableRowColumn onClick={onEdit(item)}>{item.email}</TableRowColumn>
+                                        <TableRowColumn onClick={onEdit(item)}>{item.login}</TableRowColumn>
                                         <TableRowColumn>
                                             <Toggle
-                                                defaultToggled={item.enabled}
+                                                toggled={item.enabled}
+                                                onToggle={onPatch(item, { enabled: !item.enabled })}
                                             />
                                         </TableRowColumn>
                                         <TableRowColumn>
                                             <IconButton
                                                 touch={true}
-                                                onClick={() => this.onRemove(item)}
+                                                onClick={onRemove(item)}
                                             >
                                                 <DeleteIcon />
                                             </IconButton>
@@ -212,6 +230,7 @@ export default
         // bind account loading action creator
         ({
             load: ACTIONS.USERS_LIST,
+            patch: ACTIONS.USERS_PATCH,
             remove: ACTIONS.USERS_REMOVE,
         }),
     )( Users );
