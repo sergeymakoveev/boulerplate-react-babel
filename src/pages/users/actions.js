@@ -37,10 +37,13 @@ export const ACTIONS = {
         ),
 
     USERS_PATCH:
-        (src, onSuccess = R.identity) =>
+        (src, patch, onSuccess = R.identity) =>
         (dispath) => (
-            api.users
-                .update(src.id)(src)
+            Promise
+                .all(
+                    [].concat(src)
+                        .map(({ id }) => api.users.patch(id)(patch))
+                )
                 .then(
                     (data) => {
                         dispath({ type: TYPES.USERS_PATCH, data });
@@ -48,7 +51,6 @@ export const ACTIONS = {
                     }
                 )
         ),
-
 
     USERS_REMOVE:
         (src, onSuccess = R.identity) =>
