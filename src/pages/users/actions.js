@@ -7,6 +7,7 @@ export const TYPES = {
     USERS_CREATE: 'USERS_CREATE',
     USERS_LIST: 'USERS_LIST',
     USERS_ITEM: 'USERS_ITEM',
+    USERS_PATCH: 'USERS_PATCH',
     USERS_REMOVE: 'USERS_REMOVE',
     USERS_UPDATE: 'USERS_UPDATE',
 };
@@ -34,6 +35,20 @@ export const ACTIONS = {
                     }
                 )
         ),
+
+    USERS_PATCH:
+        (src, onSuccess = R.identity) =>
+        (dispath) => (
+            api.users
+                .update(src.id)(src)
+                .then(
+                    (data) => {
+                        dispath({ type: TYPES.USERS_PATCH, data });
+                        return onSuccess(data);
+                    }
+                )
+        ),
+
 
     USERS_REMOVE:
         (src, onSuccess = R.identity) =>

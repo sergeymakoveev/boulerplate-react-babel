@@ -31,6 +31,10 @@ function get(r) {
     return r();
 }
 
+function patch(r) {
+    return r({ headers, method: 'PATCH' });
+}
+
 function post(r) {
     return r({ headers, method: 'POST' });
 }
@@ -52,6 +56,7 @@ export const users = {
     create: post(requests.users)(),
     item: (id) => get(requests.users)({ path: id })(),
     list: (query) => get(requests.users)({ query })(),
+    patch: (id) => patch(requests.users)({ path: id }),
     remove: (id) => remove(requests.users)({ path: id }),
     update: (id) => update(requests.users)({ path: id }),
 };

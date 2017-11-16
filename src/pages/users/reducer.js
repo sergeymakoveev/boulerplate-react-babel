@@ -6,6 +6,7 @@ export const reducer = (state = {}, action) => {
     switch (action.type) {
         case TYPES.USERS_CREATE:
         case TYPES.USERS_ITEM:
+        case TYPES.USERS_PATCH:
         case TYPES.USERS_UPDATE:
             return { ...state, item: data };
         case TYPES.USERS_LIST:
