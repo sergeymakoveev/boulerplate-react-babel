@@ -4,15 +4,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import ContentAdd from 'material-ui/svg-icons/content/add';
 import Checkbox from 'material-ui/Checkbox';
-import Badge from 'material-ui/Badge';
-import Toggle from 'material-ui/Toggle';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import IconDelete from 'material-ui/svg-icons/action/delete';
+import IconEdit from 'material-ui/svg-icons/image/edit';
 import IconButton from 'material-ui/IconButton';
-import DeleteIcon from 'material-ui/svg-icons/action/delete';
-import VisibilityIcon from 'material-ui/svg-icons/action/visibility';
-import VisibilityOffIcon from 'material-ui/svg-icons/action/visibility-off';
+import RaisedButton from 'material-ui/RaisedButton';
+import Toggle from 'material-ui/Toggle';
 import {
     Table,
     TableBody,
@@ -90,13 +87,12 @@ class Users extends React.Component {
                 ({ id }) => selected.includes(id),
                 list
             );
-        const bageProps = {
-            badgeContent: count,
-            badgeStyle: {
-                right: 20,
-                top: 20,
-                ...(count ? {} : { display: 'none' })
-            }
+        const buttonProps = {
+            disabled: !count,
+            primary: true,
+            style: {
+                marginRight: '20px',
+            },
         };
         const isAllSelected = R.equals(selected, R.pluck('id', list));
         const onEdit =
@@ -124,38 +120,33 @@ class Users extends React.Component {
         return (
             <div>
                 <h1>Users</h1>
-                <Link to={routes.users('new')}>
-                    <FloatingActionButton>
-                        <ContentAdd />
-                    </FloatingActionButton>
-                </Link>
-                <Badge {...bageProps}>
-                    <FloatingActionButton
+                <div>
+                    <Link to={routes.users('new')}>
+                        <RaisedButton
+                            {...buttonProps}
+                            label="Add"
+                            title="Add new user"
+                        />
+                    </Link>
+                    <RaisedButton
+                        {...buttonProps}
+                        label={`Delete (${count})`}
                         title="Delete selected"
-                        disabled={!count}
                         onClick={onRemove(selected_items)}
-                    >
-                        <DeleteIcon />
-                    </FloatingActionButton>
-                </Badge>
-                <Badge {...bageProps}>
-                    <FloatingActionButton
+                    />
+                    <RaisedButton
+                        {...buttonProps}
+                        label={`Enable (${count})`}
                         title="Enable selected"
-                        disabled={!count}
                         onClick={onPatch(selected_items, { enabled: true })}
-                    >
-                        <VisibilityIcon />
-                    </FloatingActionButton>
-                </Badge>
-                <Badge {...bageProps}>
-                    <FloatingActionButton
+                    />
+                    <RaisedButton
+                        {...buttonProps}
+                        label={`Disable (${count})`}
                         title="Disable selected"
-                        disabled={!count}
                         onClick={onPatch(selected_items, { enabled: false })}
-                    >
-                        <VisibilityOffIcon />
-                    </FloatingActionButton>
-                </Badge>
+                    />
+                </div>
                 <Table
                     style={{ width: 'inherit' }}
                     multiSelectable={true}
@@ -194,9 +185,9 @@ class Users extends React.Component {
                                                 onCheck={onSelect(item.id)}
                                             />
                                         </TableRowColumn>
-                                        <TableRowColumn onClick={onEdit(item)}>{item.name}</TableRowColumn>
-                                        <TableRowColumn onClick={onEdit(item)}>{item.email}</TableRowColumn>
-                                        <TableRowColumn onClick={onEdit(item)}>{item.login}</TableRowColumn>
+                                        <TableRowColumn>{item.name}</TableRowColumn>
+                                        <TableRowColumn>{item.email}</TableRowColumn>
+                                        <TableRowColumn>{item.login}</TableRowColumn>
                                         <TableRowColumn>
                                             <Toggle
                                                 toggled={item.enabled}
@@ -205,10 +196,16 @@ class Users extends React.Component {
                                         </TableRowColumn>
                                         <TableRowColumn>
                                             <IconButton
-                                                touch={true}
+                                                title="Delete"
                                                 onClick={onRemove(item)}
                                             >
-                                                <DeleteIcon />
+                                                <IconDelete />
+                                            </IconButton>
+                                            <IconButton
+                                                title="Delete"
+                                                onClick={onEdit(item)}
+                                            >
+                                                <IconEdit />
                                             </IconButton>
                                         </TableRowColumn>
                                     </TableRow>
