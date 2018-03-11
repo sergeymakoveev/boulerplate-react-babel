@@ -1,4 +1,5 @@
 import autoprefixer from 'autoprefixer';
+// import stylelint from 'stylelint';
 import StyleLintPlugin from 'stylelint-webpack-plugin';
 import webpack from 'webpack';
 import WebpackNotifierPlugin from 'webpack-notifier';
@@ -7,9 +8,10 @@ import WebpackNotifierPlugin from 'webpack-notifier';
 const
     DEV = process.env.NODE_ENV !== 'production',
     DIR = __dirname,
+    DIR_NODE_MODULES = `${DIR}/node_modules`,
     DIR_SRC = `${DIR}/src`,
     DIR_SRC_PAGES = `${DIR_SRC}/pages`,
-    DIR_SRC_EXTERNALS = `${DIR_SRC}/externals`,
+    // DIR_SRC_EXTERNALS = `${DIR_SRC}/externals`,
     DIR_PUBLIC = '/',
     DIR_DIST = `${DIR}/dist`;
 
@@ -63,7 +65,7 @@ export default {
     ].filter( (p) => p ),
 
     resolve: {
-        modules: ['node_modules', DIR_SRC],
+        modules: [DIR_NODE_MODULES, DIR_SRC],
         extensions: ['.json', '.js', '.jsx', '.scss', '.css']
     },
 
@@ -87,6 +89,17 @@ export default {
                 loader: 'eslint-loader',
                 include: DIR_SRC
             },
+            // {
+            //     test: /\.scss$/,
+            //     include: DIR_SRC,
+            //     enforce: 'pre',
+            //     use: [{
+            //         loader: 'postcss-loader',
+            //         options: {
+            //             plugins: [stylelint]
+            //         }
+            //     }]
+            // },
             {
                 test: /\.js$/,
                 include: DIR_SRC,
@@ -109,7 +122,8 @@ export default {
                     (sourceMap) => ([
                         'style-loader',
                         `css-loader?sourceMap=${sourceMap}`,
-                        { loader: 'postcss-loader',
+                        {
+                            loader: 'postcss-loader',
                             options: {
                                 sourceMap,
                                 plugins: [autoprefixer]
@@ -124,7 +138,8 @@ export default {
                     (sourceMap) => ([
                         'style-loader',
                         `css-loader?sourceMap=${sourceMap}`,
-                        { loader: 'postcss-loader',
+                        {
+                            loader: 'postcss-loader',
                             options: {
                                 sourceMap,
                                 plugins: [autoprefixer]
