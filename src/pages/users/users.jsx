@@ -202,7 +202,7 @@ class Users extends React.Component {
                                                     <IconDelete />
                                                 </IconButton>
                                                 <IconButton
-                                                    title="Delete"
+                                                    title="Edit"
                                                     onClick={onEdit(item)}
                                                 >
                                                     <IconEdit />
