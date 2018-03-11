@@ -168,51 +168,51 @@ class Users extends React.Component {
                             <TableHeaderColumn>Enabled</TableHeaderColumn>
                             <TableHeaderColumn></TableHeaderColumn>
                         </TableRow>
-                    {
-                        list.map(
-                            ( item ) => {
-                                return (
-                                    <TableRow
-                                        style={{
-                                            cursor: 'pointer'
-                                        }}
-                                        key={item.id}
-                                        selected={selected.includes(item.id)}
-                                    >
-                                        <TableRowColumn>
-                                            <Checkbox
-                                                checked={selected.includes(item.id)}
-                                                onCheck={onSelect(item.id)}
-                                            />
-                                        </TableRowColumn>
-                                        <TableRowColumn>{item.name}</TableRowColumn>
-                                        <TableRowColumn>{item.email}</TableRowColumn>
-                                        <TableRowColumn>{item.login}</TableRowColumn>
-                                        <TableRowColumn>
-                                            <Toggle
-                                                toggled={item.enabled}
-                                                onToggle={onPatch(item, { enabled: !item.enabled })}
-                                            />
-                                        </TableRowColumn>
-                                        <TableRowColumn>
-                                            <IconButton
-                                                title="Delete"
-                                                onClick={onRemove(item)}
-                                            >
-                                                <IconDelete />
-                                            </IconButton>
-                                            <IconButton
-                                                title="Delete"
-                                                onClick={onEdit(item)}
-                                            >
-                                                <IconEdit />
-                                            </IconButton>
-                                        </TableRowColumn>
-                                    </TableRow>
-                                );
-                            }
-                        )
-                    }
+                        {
+                            list.map(
+                                ( item ) => {
+                                    return (
+                                        <TableRow
+                                            style={{
+                                                cursor: 'pointer'
+                                            }}
+                                            key={item.id}
+                                            selected={selected.includes(item.id)}
+                                        >
+                                            <TableRowColumn>
+                                                <Checkbox
+                                                    checked={selected.includes(item.id)}
+                                                    onCheck={onSelect(item.id)}
+                                                />
+                                            </TableRowColumn>
+                                            <TableRowColumn>{item.name}</TableRowColumn>
+                                            <TableRowColumn>{item.email}</TableRowColumn>
+                                            <TableRowColumn>{item.login}</TableRowColumn>
+                                            <TableRowColumn>
+                                                <Toggle
+                                                    toggled={item.enabled}
+                                                    onToggle={onPatch(item, { enabled: !item.enabled })}
+                                                />
+                                            </TableRowColumn>
+                                            <TableRowColumn>
+                                                <IconButton
+                                                    title="Delete"
+                                                    onClick={onRemove(item)}
+                                                >
+                                                    <IconDelete />
+                                                </IconButton>
+                                                <IconButton
+                                                    title="Delete"
+                                                    onClick={onEdit(item)}
+                                                >
+                                                    <IconEdit />
+                                                </IconButton>
+                                            </TableRowColumn>
+                                        </TableRow>
+                                    );
+                                }
+                            )
+                        }
                     </TableBody>
                 </Table>
             </div>
