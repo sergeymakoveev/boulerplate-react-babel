@@ -11,6 +11,7 @@ function request(url) {
 
 export const routes = {
     about: request('about'),
+    categories: request('/categories'),
     home: request('/'),
     topics: request('/topics'),
     users: request('/users'),

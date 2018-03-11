@@ -28,6 +28,7 @@ import SignIn from 'components/signin';
 import About from 'pages/about';
 import Home from 'pages/home';
 import Topics from 'pages/topics';
+import Categories from 'pages/categories';
 import { User, Users } from 'pages/users';
 
 const THEME = {
@@ -102,6 +103,7 @@ class Layout extends React.Component {
                                 />
                                 <NavLink to={routes.home()} exact={true} ><MenuItem>Home</MenuItem></NavLink>
                                 <NavLink to={routes.about()}><MenuItem>About</MenuItem></NavLink>
+                                <NavLink to={routes.categories()}><MenuItem>Categories</MenuItem></NavLink>
                                 <NavLink to={routes.topics()}><MenuItem>Topics</MenuItem></NavLink>
                                 <NavLink to={routes.users()}><MenuItem>Users</MenuItem></NavLink>
                             </Drawer>
@@ -113,6 +115,7 @@ class Layout extends React.Component {
                                 <Switch>
                                     <Route path={routes.home()} exact={true} component={Home}/>
                                     <Route path={routes.about()} component={About}/>
+                                    <Route path={routes.categories()} component={Categories} />
                                     <Route path={routes.topics()} component={Topics}/>
                                     <Route path={routes.users()} component={Users}/>
                                     <Route
