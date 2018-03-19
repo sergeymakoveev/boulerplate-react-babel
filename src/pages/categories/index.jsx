@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import R from 'ramda';
+import * as R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Route } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { Link, Route } from 'react-router-dom';
 
 
 
-class Topic extends React.PureComponent {
+class Category extends React.PureComponent {
 
     static propTypes = {
         match: PropTypes.object
@@ -39,7 +39,7 @@ class Categories extends React.PureComponent {
         const { match } = this.props;
         return (
             <div>
-                <h2>Topics</h2>
+                <h2>Categories</h2>
                 <ul>
                     <li>
                         <Link to={`${match.url}/rendering`}>
@@ -59,12 +59,12 @@ class Categories extends React.PureComponent {
                 </ul>
                 <Route
                     path={`${match.url}/:topicId`}
-                    component={Topic}
+                    component={Category}
                 />
                 <Route
                     exact={true}
                     path={match.url}
-                    render={() => <h3>Please select a topic.</h3>}
+                    render={() => <h3>Please select a category.</h3>}
                 />
                 <Route
                     exact={true}
