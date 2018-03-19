@@ -7,6 +7,7 @@ import { BrowserRouter as Router, NavLink, Route, Switch } from 'react-router-do
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import { Provider } from 'react-redux';
+import Loadable from 'react-loadable';
 
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
@@ -23,13 +24,15 @@ import store from 'store';
 import { routes } from 'pages';
 
 // import DATA from 'data.json';
+import Loading from 'components/loading';
 import Menu from 'components/menu';
 import SignIn from 'components/signin';
 import About from 'pages/about';
 import Home from 'pages/home';
-import Topics from 'pages/topics';
-import Categories from 'pages/categories';
+// import Topics from 'pages/topics';
+// import Categories from 'pages/categories';
 import { User, Users } from 'pages/users';
+
 
 const THEME = {
     ...lightBaseTheme,
@@ -43,6 +46,14 @@ const THEME = {
 
 injectTapEventPlugin();
 
+const TopicsLoadable = Loadable({
+    loader: () => new Promise((resolve) => setTimeout(() => resolve(import('pages/topics')), 3000)),
+    loading: Loading
+})
+const CategoriesLoadable = Loadable({
+    loader: () => import('pages/categories'),
+    loading: Loading
+})
 
 class Layout extends React.Component {
 
@@ -115,8 +126,8 @@ class Layout extends React.Component {
                                 <Switch>
                                     <Route path={routes.home()} exact={true} component={Home}/>
                                     <Route path={routes.about()} component={About}/>
-                                    <Route path={routes.categories()} component={Categories} />
-                                    <Route path={routes.topics()} component={Topics}/>
+                                    <Route path={routes.categories()} component={CategoriesLoadable} />
+                                    <Route path={routes.topics()} component={TopicsLoadable}/>
                                     <Route path={routes.users()} component={Users}/>
                                     <Route
                                         path="*"
