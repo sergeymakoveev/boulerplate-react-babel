@@ -160,6 +160,7 @@ export default {
             {
                 test: /\.html$/,
                 use: [
+                    // eslint-disable-next-line no-useless-escape
                     'file-loader?name=[1].html?[hash]&regExp=pages/(.+)\.html$',
                     'extract-loader',
                     { loader: 'html-loader',
