@@ -2,7 +2,7 @@ import fp from 'lodash/fp';
 import is from 'is_js';
 
 
-export const validators = {
+const validators = {
     pipe:
         (...args) =>
             (v) => (
