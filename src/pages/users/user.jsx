@@ -4,7 +4,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 
-import { TextField, validators } from 'externals/redux-form-material-ui';
+import { TextField } from 'externals/redux-form-material-ui';
+import validators from 'helpers/form-validators';
 
 import CommonDialog from 'components/dialog';
 
