@@ -58,13 +58,17 @@ export const ACTIONS = {
             Promise
                 .all(
                     [].concat(src)
-                      .map(({id}) => api.users.remove(id)())
+                      .map(
+                          ({id}) =>
+                            api.users
+                                .remove(id)()
+                                .then(() => dispath({ type: TYPES.USERS_REMOVE, id }))
+                        )
                 )
                 // .then(
                 //     () => api.users.list()
                 // )
                 .then((data) => {
-                    dispath({ type: TYPES.USERS_REMOVE, data });
                     onSuccess(data);
                     return data;
                 }),
