@@ -1,42 +1,59 @@
 import * as R from 'ramda';
 
 import api from 'api/http';
+import { createSyncAction } from 'helpers/redux';
 
 
 export const TYPES = {
     USERS_CREATE: 'USERS_CREATE',
+    USERS_CREATED: 'USERS_CREATED',
     USERS_LIST: 'USERS_LIST',
-    USERS_ITEM: 'USERS_ITEM',
+    USERS_LIST_RECEIVED: 'USERS_LIST_RECEIVED',
+    USERS_ITEM_RECEIVED: 'USERS_ITEM_RECEIVED',
     USERS_PATCH: 'USERS_PATCH',
+    USERS_PATCHED: 'USERS_PATCHED',
     USERS_REMOVE: 'USERS_REMOVE',
+    USERS_REMOVED: 'USERS_REMOVED',
     USERS_UPDATE: 'USERS_UPDATE',
+    USERS_UPDATED: 'USERS_UPDATED',
 };
 
+// Sync actions creators
+const ACTIONS = {
+    LIST_RECEIVED: createSyncAction(TYPES.USERS_LIST_RECEIVED),
+    CREATED: createSyncAction(TYPES.USERS_CREATED),
+    ITEM_RECEIVED: createSyncAction(TYPES.USERS_ITEM_RECEIVED),
+    PATCHED: createSyncAction(TYPES.USERS_PATCHED),
+    REMOVED: createSyncAction(TYPES.USERS_REMOVED),
+    UPDATED: createSyncAction(TYPES.USERS_UPDATED),
+};
 
-export const ACTIONS = {
+export default {
 
-    USERS_LIST:
+    ...ACTIONS,
+
+    LIST:
         () =>
         (dispath) => (
             api.users
                 .list()
-                .then((data) => dispath({ type: TYPES.USERS_LIST, data }))
+                .then((data) => dispath(ACTIONS.LIST_RECEIVED({ data })))
         ),
 
-    USERS_CREATE:
+    CREATE:
         (src, onSuccess = R.identity) =>
         (dispath) => (
             api.users
                 .create(src)
                 .then(
                     (data) => {
-                        dispath({ type: TYPES.USERS_CREATE, data });
+                        dispath(ACTIONS.CREATED({ data }))
                         return onSuccess(data);
                     }
                 )
         ),
 
-    USERS_PATCH:
+    PATCH:
         (src, patch, onSuccess = R.identity) =>
         (dispath) => (
             Promise
@@ -46,13 +63,13 @@ export const ACTIONS = {
                 )
                 .then(
                     (data) => {
-                        dispath({ type: TYPES.USERS_PATCH, data });
+                        dispath(ACTIONS.PATCHED({ data }));
                         return onSuccess(data);
                     }
                 )
         ),
 
-    USERS_REMOVE:
+    REMOVE:
         (src, onSuccess = R.identity) =>
         (dispath) =>
             Promise
@@ -62,7 +79,7 @@ export const ACTIONS = {
                           ({id}) =>
                             api.users
                                 .remove(id)()
-                                .then(() => dispath({ type: TYPES.USERS_REMOVE, id }))
+                                .then(() => dispath(ACTIONS.REMOVED({ id })))
                         )
                 )
                 // .then(
@@ -73,30 +90,27 @@ export const ACTIONS = {
                     return data;
                 }),
 
-    USERS_UPDATE:
+    UPDATE:
         (src, onSuccess = R.identity) =>
         (dispath) => (
             api.users
                 .update(src.id)(src)
                 .then(
                     (data) => {
-                        dispath({ type: TYPES.USERS_UPDATE, data });
+                        dispath(ACTIONS.UPDATED({ data }));
                         return onSuccess(data);
                     }
                 )
         ),
 
-    USERS_ITEM:
+    ITEM:
         (id) =>
         (dispath) => (
             +id
             ? api.users
                 .item(id)
-                .then((data) => dispath({ type: TYPES.USERS_ITEM, data }))
-            : dispath({ type: TYPES.USERS_ITEM, data: {} })
+                .then((data) => dispath(ACTIONS.ITEM_RECEIVED({ data })))
+            : dispath(dispath(ACTIONS.ITEM_RECEIVED({ data: {} })))
         ),
 
 };
-
-
-export default ACTIONS;

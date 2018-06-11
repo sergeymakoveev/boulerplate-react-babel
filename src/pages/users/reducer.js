@@ -3,17 +3,17 @@ import { TYPES } from './actions';
 
 
 export const reducer = (state = {}, action) => {
-    const { data, id } = action;
+    const { type, data, id } = action;
     const { list } = state;
-    switch (action.type) {
-        case TYPES.USERS_CREATE:
-        case TYPES.USERS_ITEM:
-        case TYPES.USERS_PATCH:
-        case TYPES.USERS_UPDATE:
+    switch (type) {
+        case TYPES.USERS_CREATED:
+        case TYPES.USERS_ITEM_RECEIVED:
+        case TYPES.USERS_PATCHED:
+        case TYPES.USERS_UPDATEED:
             return { ...state, item: data };
-        case TYPES.USERS_LIST:
+        case TYPES.USERS_LIST_RECEIVED:
             return { ...state, list: data };
-        case TYPES.USERS_REMOVE:
+        case TYPES.USERS_REMOVED:
             return { ...state, list: R.reject(R.propEq('id', id), list) };
         default:
             return state;

@@ -227,8 +227,8 @@ export default
         }),
         // bind account loading action creator
         ({
-            load: ACTIONS.USERS_LIST,
-            patch: ACTIONS.USERS_PATCH,
-            remove: ACTIONS.USERS_REMOVE,
+            load: ACTIONS.LIST,
+            patch: ACTIONS.PATCH,
+            remove: ACTIONS.REMOVE,
         }),
     )( Users );

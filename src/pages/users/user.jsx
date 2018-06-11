@@ -119,10 +119,10 @@ export default connect(
     }),
     // bind account loading action creator
     ({
-        list: ACTIONS.USERS_LIST,
-        create: ACTIONS.USERS_CREATE,
-        load: ACTIONS.USERS_ITEM,
-        update: ACTIONS.USERS_UPDATE,
+        list: ACTIONS.LIST,
+        create: ACTIONS.CREATE,
+        load: ACTIONS.ITEM,
+        update: ACTIONS.UPDATE,
     }),
 )(
     reduxForm({
