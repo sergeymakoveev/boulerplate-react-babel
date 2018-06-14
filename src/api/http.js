@@ -48,11 +48,11 @@ function remove(r) {
 }
 
 const requests = {
-    authorise: request('/authorise'),
+    auth: request('/auth'),
     users: request('/users'),
 };
 
-export const users = {
+const users = {
     create: post(requests.users)(),
     item: (id) => get(requests.users)({ path: id })(),
     list: (query) => get(requests.users)({ query })(),
@@ -61,10 +61,12 @@ export const users = {
     update: (id) => update(requests.users)({ path: id }),
 };
 
-export const authorise = update(requests.authorise);
-
-export const api = {
-    authorise, users
+const auth = {
+    signin: () => get(requests.auth)({ path: 'signin' })(),
+    signout: get(requests.auth)({ path: 'signout' }),
 };
 
-export default api;
+
+export default {
+    auth, users
+};

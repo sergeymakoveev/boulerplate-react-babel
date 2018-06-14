@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
-import { reduxForm, Field } from 'redux-form';
-import { TextField } from 'externals/redux-form-material-ui';
+import { ACTIONS } from 'models/auth';
+
+import { Form, Field } from 'react-final-form';
+import { TextField } from 'externals/material-ui.final-form';
 import validators from 'helpers/form-validators';
 
 import { CommonDialog } from 'components/dialog';
@@ -22,49 +25,52 @@ const VALIDATORS = {
 class SignIn extends React.PureComponent {
 
     static propTypes = {
-        handleSubmit: PropTypes.func
+        signin: PropTypes.func
     }
 
     render() {
-        const { handleSubmit /*, pristine, submitting */} = this.props;
         return (
-            <CommonDialog
-                contentStyle={{ width: '300px' }}
-                title="Sign In"
-                onSubmit={handleSubmit}
-                labelSubmit="Sign In"
-                labelCancel={false}
-            >
-                <Field
-                    style={{ width: '100%' }}
-                    component={TextField}
-                    name="login"
-                    hintText="Login"
-                    floatingLabelText="Login"
-                    validate={
-                        VALIDATORS.login
-                    }
-                />
-                <br />
-                <Field
-                    style={{ width: '100%' }}
-                    component={TextField}
-                    type="password"
-                    name="password"
-                    hintText="Password"
-                    floatingLabelText="Password"
-                    validate={
-                        VALIDATORS.password
-                    }
-                />
-            </CommonDialog>
+            <Form onSubmit={this.props.signin}>
+                {({ handleSubmit /*, submitting, pristine, invalid, form*/ }) => (
+                    <CommonDialog
+                        contentStyle={{ width: '300px' }}
+                        title="Sign In"
+                        onSubmit={handleSubmit}
+                        labelSubmit="Sign In"
+                        labelCancel={false}
+                    >
+                        <Field
+                            style={{ width: '100%' }}
+                            component={TextField}
+                            name="login"
+                            hintText="Login"
+                            floatingLabelText="Login"
+                            validate={
+                                VALIDATORS.login
+                            }
+                        />
+                        <br />
+                        <Field
+                            style={{ width: '100%' }}
+                            component={TextField}
+                            type="password"
+                            name="password"
+                            hintText="Password"
+                            floatingLabelText="Password"
+                            validate={
+                                VALIDATORS.password
+                            }
+                        />
+                    </CommonDialog>
+                )}
+            </Form>
         );
     }
-
 }
 
-export default reduxForm({
-    form: 'FormSignIn',
-    // validate,
-    // asyncValidate,
-})(SignIn);
+export default connect(
+    () => ({}),
+    {
+        signin: ACTIONS.SIGNIN
+    }
+)(SignIn);

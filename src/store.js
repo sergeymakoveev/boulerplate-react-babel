@@ -5,10 +5,12 @@ import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import { REDUCER as users } from 'models/users';
+import { REDUCER as auth } from 'models/auth';
 
 
 export const store = createStore(
     combineReducers({
+        auth,
         form,
         users,
     }),

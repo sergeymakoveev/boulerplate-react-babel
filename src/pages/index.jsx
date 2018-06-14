@@ -19,14 +19,13 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
-import api from 'api/http';
 import store from 'store';
 import { routes } from 'pages';
 
 // import DATA from 'data.json';
+import Auth from 'components/auth';
 import Loading from 'components/loading';
 import Menu from 'components/menu';
-import SignIn from 'components/signin';
 import About from 'pages/about';
 import Home from 'pages/home';
 // import Topics from 'pages/topics';
@@ -55,11 +54,11 @@ const CategoriesLoadable = Loadable({
     loading: Loading
 })
 
+
 class Layout extends React.Component {
 
     state = {
         drawer: false,
-        user: {},
         title: 'React-Babel boulerplate'
     };
 
@@ -79,21 +78,7 @@ class Layout extends React.Component {
         return (
             <Provider store={ store }>
                 <Router>
-                {
-                    !this.state.user
-                    ? (
-                        <SignIn
-                            onSubmit={
-                                (data) => {
-                                    api.authorise(data)
-                                    .then(
-                                        (user) => this.setState({ user })
-                                    )
-                                }
-                            }
-                        />
-                    )
-                    : (
+                    <Auth>
                         <div>
                             <AppBar
                                 title={this.state.title}
@@ -141,8 +126,7 @@ class Layout extends React.Component {
                                 <Route path={`${routes.users()}/:id`} component={User} exact={true} />
                             </main>
                         </div>
-                    )
-                }
+                    </Auth>
                 </Router>
             </Provider>
         );
