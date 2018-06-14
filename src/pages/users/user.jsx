@@ -9,7 +9,7 @@ import validators from 'helpers/form-validators';
 
 import CommonDialog from 'components/dialog';
 
-import ACTIONS from './actions';
+import { ACTIONS } from 'models/users';
 import { PropTypesRoute, PropTypesUser } from 'proptypes';
 
 

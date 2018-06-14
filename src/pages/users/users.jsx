@@ -19,7 +19,7 @@ import {
 } from 'material-ui/Table';
 
 import { PropTypesRoute, PropTypesUsers } from 'proptypes';
-import ACTIONS from './actions';
+import { ACTIONS } from 'models/users';
 
 import { routes } from 'pages';
 

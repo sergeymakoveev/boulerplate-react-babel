@@ -4,7 +4,7 @@ import { reducer as form } from 'redux-form';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 
-import { reducer as users } from 'pages/users/reducer';
+import { REDUCER as users } from 'models/users';
 
 
 export const store = createStore(

@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import { TYPES } from './actions';
 
 
-export const reducer = (state = {}, action) => {
+const reducer = (state = {}, action) => {
     const { type, data, id } = action;
     const { list } = state;
     switch (type) {
