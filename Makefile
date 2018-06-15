@@ -4,11 +4,24 @@ SHELL = /bin/bash
 
 APP=REACT-BABEL
 DIR=${PWD}
+DIR-API=${DIR}/../api
 DIR-SRC=${DIR}/src
 DIR-DIST=${DIR}/dist
 DIR-NPM=${DIR}/node_modules
 
-start: develop
+start:
+	@gnome-terminal \
+		--tab-with-profile="tab"\
+			--working-directory="${DIR}"\
+			--title="${APP}-api"\
+			--command="make api"\
+		--tab-with-profile="tab"\
+			--working-directory="${DIR}"\
+			--title="${APP}-frontend"\
+			--command="make develop"
+
+api:
+	@$(MAKE) -C ${DIR-API}
 
 develop:
 	@webpack-dev-server --inline --hot
