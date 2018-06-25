@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Form, Field } from 'react-final-form';
 
 import { ACTIONS } from 'models/auth';
-
-import { Form, Field } from 'react-final-form';
 import { TextField } from 'externals/material-ui.final-form';
 import validators from 'helpers/form-validators';
 
@@ -18,7 +17,6 @@ const VALIDATORS = {
     ),
     password: validators.pipe(
         validators.required,
-        validators.length.min(5)
     )
 };
 
