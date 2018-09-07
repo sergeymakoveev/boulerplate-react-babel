@@ -18,12 +18,19 @@ export class TextField extends React.PureComponent {
     }
 
     render() {
-        // eslint-disable-next-line no-unused-vars
-        const { input, render, meta: { touched, error }, ...custom } = this.props;
+        const {
+            // eslint-disable-next-line no-unused-vars
+            render,
+            meta: { touched, error },
+            input: { name, value, ...inputProps },
+            ...custom
+        } = this.props;
         return (
             <_TextField
-                {...input}
+                {...inputProps}
                 {...custom}
+                name={name}
+                value={value}
                 errorText={ touched && error }
             />
         );
