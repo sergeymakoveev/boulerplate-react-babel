@@ -220,15 +220,13 @@ class Users extends React.Component {
     }
 }
 
-export default
-    connect(
-        (state) => ({
-            list: state.users.list,
-        }),
-        // bind account loading action creator
-        ({
-            load: ACTIONS.LIST,
-            patch: ACTIONS.PATCH,
-            remove: ACTIONS.REMOVE,
-        }),
-    )( Users );
+export default connect(
+    (state) => ({
+        list: state.users.list,
+    }),
+    {
+        load: ACTIONS.LIST,
+        patch: ACTIONS.PATCH,
+        remove: ACTIONS.REMOVE,
+    },
+)( Users );
