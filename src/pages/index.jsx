@@ -49,73 +49,69 @@ class Layout extends React.Component {
         title: 'React-Babel boulerplate'
     };
 
-    toggleDrawer = () => {
+    toggleDrawer = () =>
         this.setState({ drawer: !this.state.drawer });
-    }
 
-    render() {
-        return (
-            <Provider store={store}>
-                <Router>
-                    <Auth>
-                        <div>
-                            <AppBar
-                                title={this.state.title}
-                                iconElementRight={
-                                    <Menu />
-                                }
-                                onLeftIconButtonTouchTap={ this.toggleDrawer }
-                            />
-                            <Drawer
-                                docked={false}
-                                open={this.state.drawer}
-                                onRequestChange={ this.toggleDrawer }
-                            >
-                                <AppBar
-                                    iconElementLeft={<span />}
-                                    iconElementRight={<IconButton><NavigationMenu /></IconButton>}
-                                    onRightIconButtonTouchTap={ this.toggleDrawer }
-                                />
-                                <NavLink to={routes.home()} exact={true} ><MenuItem>Home</MenuItem></NavLink>
-                                <NavLink to={routes.about()}><MenuItem>About</MenuItem></NavLink>
-                                <NavLink to={routes.categories()}><MenuItem>Categories</MenuItem></NavLink>
-                                <NavLink to={routes.topics()}><MenuItem>Topics</MenuItem></NavLink>
-                                <NavLink to={routes.users()}><MenuItem>Users</MenuItem></NavLink>
-                            </Drawer>
-                            <main
-                                style={{
-                                    margin: '50px'
-                                }}
-                            >
-                                <Switch>
-                                    <Route path={routes.home()} exact component={Home}/>
-                                    <Route path={routes.about()} component={About}/>
-                                    <Route path={routes.categories()} component={CategoriesLoadable} />
-                                    <Route path={routes.topics()} component={TopicsLoadable}/>
-                                    <Route path={routes.users()} component={Users}/>
-                                    <Route
-                                        path="*"
-                                        render={
-                                            ({ location }) => (
-                                                <h3>404: {location.pathname}</h3>
-                                            )
-                                        }
-                                    />
-                                </Switch>
-                                <Route path={`${routes.users()}/:id`} exact component={User} />
-                            </main>
-                        </div>
-                    </Auth>
-                </Router>
-            </Provider>
-        );
-    }
+    render = () =>
+        <div>
+            <AppBar
+                title={this.state.title}
+                iconElementRight={
+                    <Menu />
+                }
+                onLeftIconButtonTouchTap={ this.toggleDrawer }
+            />
+            <Drawer
+                docked={false}
+                open={this.state.drawer}
+                onRequestChange={ this.toggleDrawer }
+            >
+                <AppBar
+                    iconElementLeft={<span />}
+                    iconElementRight={<IconButton><NavigationMenu /></IconButton>}
+                    onRightIconButtonTouchTap={ this.toggleDrawer }
+                />
+                <NavLink to={routes.home()} exact={true} ><MenuItem>Home</MenuItem></NavLink>
+                <NavLink to={routes.about()}><MenuItem>About</MenuItem></NavLink>
+                <NavLink to={routes.categories()}><MenuItem>Categories</MenuItem></NavLink>
+                <NavLink to={routes.topics()}><MenuItem>Topics</MenuItem></NavLink>
+                <NavLink to={routes.users()}><MenuItem>Users</MenuItem></NavLink>
+            </Drawer>
+            <main
+                style={{
+                    margin: '50px'
+                }}
+            >
+                <Switch>
+                    <Route path={routes.home()} exact component={Home}/>
+                    <Route path={routes.about()} component={About}/>
+                    <Route path={routes.categories()} component={CategoriesLoadable} />
+                    <Route path={routes.topics()} component={TopicsLoadable}/>
+                    <Route path={routes.users()} component={Users}/>
+                    <Route
+                        path="*"
+                        render={
+                            ({ location }) => (
+                                <h3>404: {location.pathname}</h3>
+                            )
+                        }
+                    />
+                </Switch>
+                <Route path={`${routes.users()}/:id`} exact component={User} />
+            </main>
+        </div>;
 }
 
 
 ReactDOM.render(
     <MuiTheme>
-        <Layout />
+        <Provider store={store}>
+            <Router>
+                <Auth>
+                    <Layout />
+                </Auth>
+            </Router>
+        </Provider>
     </MuiTheme>,
     document.getElementById('layout')
 );
