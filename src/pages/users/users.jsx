@@ -69,7 +69,7 @@ class Users extends React.Component {
         props.load();
     }
 
-    componentWillReceiveProps({ list }){
+    UNSAFE_componentWillReceiveProps({ list }){
         const ids = R.pluck('id', list);
         const selected = R.filter(
             (id) => ids.includes(id),
