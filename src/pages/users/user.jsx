@@ -3,9 +3,9 @@ import * as R from 'ramda';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
+import { Form, Field } from 'react-final-form';
 
-import { TextField } from 'externals/redux-form-material-ui';
+import { TextField } from 'externals/material-ui.final-form';
 import validators from 'helpers/form-validators';
 
 import CommonDialog from 'components/dialog';
@@ -65,49 +65,56 @@ class User extends React.Component {
     }
 
     render() {
-        const { handleSubmit, data={} } = this.props;
+        const { data={} } = this.props;
         return (
-            <CommonDialog
-                contentStyle={{ width: '300px' }}
-                title={
-                    R.isEmpty(data)
-                    ? 'New user'
-                    : `User: ${data.name}`
-                }
-                onClose={this.onClose}
-                onSubmit={handleSubmit(this.onSubmit)}
+            <Form
+                initialValues={data}
+                onSubmit={this.onSubmit}
             >
-                <Field
-                    style={{ width: '100%' }}
-                    component={TextField}
-                    name="login"
-                    hintText="Login"
-                    floatingLabelText="Login"
-                    validate={
-                        VALIDATORS.login
-                    }
-                />
-                <Field
-                    style={{ width: '100%' }}
-                    component={TextField}
-                    name="name"
-                    hintText="Name"
-                    floatingLabelText="Name"
-                    validate={
-                        VALIDATORS.name
-                    }
-                />
-                <Field
-                    style={{ width: '100%' }}
-                    component={TextField}
-                    name="email"
-                    hintText="Email"
-                    floatingLabelText="Email"
-                    validate={
-                        VALIDATORS.email
-                    }
-                />
-            </CommonDialog>
+                {({ handleSubmit /*, submitting, pristine, invalid, form*/ }) => (
+                    <CommonDialog
+                        contentStyle={{ width: '300px' }}
+                        title={
+                            R.isEmpty(data)
+                            ? 'New user'
+                            : `User: ${data.name}`
+                        }
+                        onClose={this.onClose}
+                        onSubmit={handleSubmit}
+                    >
+                        <Field
+                            style={{ width: '100%' }}
+                            component={TextField}
+                            name="login"
+                            hintText="Login"
+                            floatingLabelText="Login"
+                            validate={
+                                VALIDATORS.login
+                            }
+                        />
+                        <Field
+                            style={{ width: '100%' }}
+                            component={TextField}
+                            name="name"
+                            hintText="Name"
+                            floatingLabelText="Name"
+                            validate={
+                                VALIDATORS.name
+                            }
+                        />
+                        <Field
+                            style={{ width: '100%' }}
+                            component={TextField}
+                            name="email"
+                            hintText="Email"
+                            floatingLabelText="Email"
+                            validate={
+                                VALIDATORS.email
+                            }
+                        />
+                    </CommonDialog>
+                )}
+            </Form>
         );
     }
 }
@@ -115,7 +122,6 @@ class User extends React.Component {
 export default connect(
     (state) => ({
         // pull initial values from account reducer
-        initialValues: state.users.item,
         data: state.users.item,
     }),
     // bind account loading action creator
@@ -125,11 +131,4 @@ export default connect(
         load: ACTIONS.ITEM,
         update: ACTIONS.UPDATE,
     }),
-)(
-    reduxForm({
-        form: 'FormUser',
-        enableReinitialize: true,
-        // validate,
-        // asyncValidate,
-    })(User)
-);
+)(User);
