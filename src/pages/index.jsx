@@ -13,16 +13,13 @@ import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import { indigo500, indigo700 } from 'material-ui/styles/colors';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
 import store from 'store';
 import { routes } from 'pages';
 
 // import DATA from 'data.json';
+import { MuiTheme } from 'externals/material-ui';
 import Auth from 'components/auth';
 import Loading from 'components/loading';
 import Menu from 'components/menu';
@@ -32,16 +29,6 @@ import Home from 'pages/home';
 // import Categories from 'pages/categories';
 import { User, Users } from 'pages/users';
 
-
-const THEME = {
-    ...lightBaseTheme,
-    palette: {
-        ...lightBaseTheme.palette,
-        pickerHeaderColor: indigo500,
-        primary1Color: indigo500,
-        primary2Color: indigo700
-    }
-};
 
 injectTapEventPlugin();
 
@@ -62,21 +49,13 @@ class Layout extends React.Component {
         title: 'React-Babel boulerplate'
     };
 
-    toggleDrawer() {
+    toggleDrawer = () => {
         this.setState({ drawer: !this.state.drawer });
     }
 
-    constructor( props ) {
-        super( props );
-        this.toggleDrawer = this.toggleDrawer.bind(this);
-    }
-
-    // componentDidMount() {
-    // }
-
     render() {
         return (
-            <Provider store={ store }>
+            <Provider store={store}>
                 <Router>
                     <Auth>
                         <div>
@@ -109,7 +88,7 @@ class Layout extends React.Component {
                                 }}
                             >
                                 <Switch>
-                                    <Route path={routes.home()} exact={true} component={Home}/>
+                                    <Route path={routes.home()} exact component={Home}/>
                                     <Route path={routes.about()} component={About}/>
                                     <Route path={routes.categories()} component={CategoriesLoadable} />
                                     <Route path={routes.topics()} component={TopicsLoadable}/>
@@ -123,7 +102,7 @@ class Layout extends React.Component {
                                         }
                                     />
                                 </Switch>
-                                <Route path={`${routes.users()}/:id`} component={User} exact={true} />
+                                <Route path={`${routes.users()}/:id`} exact component={User} />
                             </main>
                         </div>
                     </Auth>
@@ -135,10 +114,8 @@ class Layout extends React.Component {
 
 
 ReactDOM.render(
-    <MuiThemeProvider
-        muiTheme={getMuiTheme(THEME)}
-    >
+    <MuiTheme>
         <Layout />
-    </MuiThemeProvider>,
+    </MuiTheme>,
     document.getElementById('layout')
 );

@@ -1,1 +1,1 @@
-import './index.scss';
+export { Theme as MuiTheme } from './index.jsx';
