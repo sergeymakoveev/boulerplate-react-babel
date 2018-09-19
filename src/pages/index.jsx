@@ -3,10 +3,11 @@ import './index.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, NavLink, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { NavLink, Route, Switch } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import { Provider } from 'react-redux';
 import Loadable from 'react-loadable';
 
 import AppBar from 'material-ui/AppBar';
@@ -15,7 +16,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
-import store from 'store';
+import store, { history } from 'store';
 import { routes } from 'pages';
 
 // import DATA from 'data.json';
@@ -96,13 +97,12 @@ class Layout extends React.Component {
         </Auth>;
 }
 
-
 ReactDOM.render(
     <Provider store={store}>
         <MuiTheme>
-            <Router>
+            <ConnectedRouter history={history}>
                 <Layout />
-            </Router>
+            </ConnectedRouter>
         </MuiTheme>
     </Provider>,
     document.getElementById('layout')
