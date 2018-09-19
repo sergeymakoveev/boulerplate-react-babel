@@ -7,7 +7,8 @@
     "url": "git@git.assembla.com:rrmmo.git"
   },
   "author": "CodeInside <info@codeinside.ru>",
-  "license": "Commercial",
+  "license": "UNLICENSED",
+  "private": true,
   "keywords": [
     "webpack",
     "babel",
