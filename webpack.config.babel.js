@@ -171,7 +171,7 @@ export default {
     },
 
     devServer: {
-        // port: 3001,
+        port: 8888,
         historyApiFallback: {
             rewrites: [
                 // { from: /^\/js/, to: '/js' },
@@ -179,7 +179,7 @@ export default {
             ]
         },
         proxy: {
-            '/api': 'http://localhost:3000'
+            '/api': 'http://localhost:3333'
         },
         host: '0.0.0.0'
     }
