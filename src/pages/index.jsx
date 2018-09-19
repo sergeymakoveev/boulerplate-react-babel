@@ -53,12 +53,10 @@ class Layout extends React.Component {
         this.setState({ drawer: !this.state.drawer });
 
     render = () =>
-        <div>
+        <Auth>
             <AppBar
                 title={this.state.title}
-                iconElementRight={
-                    <Menu />
-                }
+                iconElementRight={<Menu />}
                 onLeftIconButtonTouchTap={ this.toggleDrawer }
             />
             <Drawer
@@ -71,17 +69,13 @@ class Layout extends React.Component {
                     iconElementRight={<IconButton><NavigationMenu /></IconButton>}
                     onRightIconButtonTouchTap={ this.toggleDrawer }
                 />
-                <NavLink to={routes.home()} exact={true} ><MenuItem>Home</MenuItem></NavLink>
+                <NavLink to={routes.home()} exact ><MenuItem>Home</MenuItem></NavLink>
                 <NavLink to={routes.about()}><MenuItem>About</MenuItem></NavLink>
                 <NavLink to={routes.categories()}><MenuItem>Categories</MenuItem></NavLink>
                 <NavLink to={routes.topics()}><MenuItem>Topics</MenuItem></NavLink>
                 <NavLink to={routes.users()}><MenuItem>Users</MenuItem></NavLink>
             </Drawer>
-            <main
-                style={{
-                    margin: '50px'
-                }}
-            >
+            <main id="main">
                 <Switch>
                     <Route path={routes.home()} exact component={Home}/>
                     <Route path={routes.about()} component={About}/>
@@ -99,19 +93,17 @@ class Layout extends React.Component {
                 </Switch>
                 <Route path={`${routes.users()}/:id`} exact component={User} />
             </main>
-        </div>;
+        </Auth>;
 }
 
 
 ReactDOM.render(
-    <MuiTheme>
-        <Provider store={store}>
+    <Provider store={store}>
+        <MuiTheme>
             <Router>
-                <Auth>
-                    <Layout />
-                </Auth>
+                <Layout />
             </Router>
-        </Provider>
-    </MuiTheme>,
+        </MuiTheme>
+    </Provider>,
     document.getElementById('layout')
 );

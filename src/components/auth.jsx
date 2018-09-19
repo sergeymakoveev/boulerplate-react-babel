@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import fp from 'lodash/fp';
 
 import React from 'react';
 import { connect } from 'react-redux';
@@ -13,14 +13,15 @@ class Auth extends React.PureComponent {
 
     static propTypes = {
         auth: PropTypesUser,
-        children: PropTypes.element.isRequired,
+        children: PropTypes.node.isRequired,
     }
 
     render() {
+        const { auth, children } = this.props;
         return (
-            R.isEmpty(this.props.auth)
+            fp.isEmpty(auth)
             ? <SignIn />
-            : this.props.children
+            : <div>{children}</div>
         );
     }
 

@@ -10,7 +10,7 @@ function request(url) {
 }
 
 export const routes = {
-    about: request('about'),
+    about: request('/about'),
     categories: request('/categories'),
     home: request('/'),
     topics: request('/topics'),
