@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { NavLink, Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux'
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Loadable from 'react-loadable';
 
@@ -30,8 +29,6 @@ import Home from 'pages/home';
 // import Categories from 'pages/categories';
 import { User, Users } from 'pages/users';
 
-
-injectTapEventPlugin();
 
 const TopicsLoadable = Loadable({
     loader: () => new Promise((resolve) => setTimeout(() => resolve(import('pages/topics')), 3000)),
