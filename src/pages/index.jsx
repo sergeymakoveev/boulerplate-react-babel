@@ -9,6 +9,7 @@ import { ConnectedRouter } from 'react-router-redux'
 
 import Loadable from 'react-loadable';
 
+import { APIConnector } from 'api';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
@@ -96,11 +97,13 @@ class Layout extends React.Component {
 
 ReactDOM.render(
     <Provider store={store}>
-        <MuiTheme>
-            <ConnectedRouter history={history}>
-                <Layout />
-            </ConnectedRouter>
-        </MuiTheme>
+        <APIConnector>
+            <MuiTheme>
+                <ConnectedRouter history={history}>
+                    <Layout />
+                </ConnectedRouter>
+            </MuiTheme>
+        </APIConnector>
     </Provider>,
     document.getElementById('layout')
 );

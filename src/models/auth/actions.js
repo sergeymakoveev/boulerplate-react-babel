@@ -1,4 +1,4 @@
-import api from 'api/http';
+import API from 'api';
 import { createSyncAction } from 'helpers/redux';
 
 
@@ -22,7 +22,7 @@ export default {
     SIGNIN:
         (req) =>
         (dispath) => (
-            api.auth
+            API.rest.auth
                 .signin(req)
                 .then((data) => dispath(ACTIONS.SIGNEDIN({ data })))
         ),
@@ -30,7 +30,7 @@ export default {
     SIGNOUT:
         () =>
         (dispath) => (
-            api.auth
+            API.rest.auth
                 .signout()
                 .then(
                     () => dispath(ACTIONS.SIGNEDOUT())

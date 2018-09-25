@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import api from 'api/http';
+import API from 'api';
 import { createSyncAction } from 'helpers/redux';
 
 
@@ -35,7 +35,7 @@ export default {
     LIST:
         () =>
         (dispath) => (
-            api.users
+            API.rest.users
                 .list()
                 .then((data) => dispath(ACTIONS.LIST_RECEIVED({ data })))
         ),
@@ -43,7 +43,7 @@ export default {
     CREATE:
         (src, onSuccess = R.identity) =>
         (dispath) => (
-            api.users
+            API.rest.users
                 .create(src)
                 .then(
                     (data) => {
@@ -54,12 +54,12 @@ export default {
         ),
 
     PATCH:
-        (src, patch, onSuccess = R.identity) =>
+        (src, body, onSuccess = R.identity) =>
         (dispath) => (
             Promise
                 .all(
                     [].concat(src)
-                        .map(({ id }) => api.users.patch(id)(patch))
+                        .map(({ id }) => API.rest.users.patch({ id, body }))
                 )
                 .then(
                     (data) => {
@@ -77,13 +77,13 @@ export default {
                     [].concat(src)
                       .map(
                           ({id}) =>
-                            api.users
+                            API.rest.users
                                 .remove(id)()
                                 .then(() => dispath(ACTIONS.REMOVED({ id })))
                         )
                 )
                 // .then(
-                //     () => api.users.list()
+                //     () => API.rest.users.list()
                 // )
                 .then((data) => {
                     onSuccess(data);
@@ -91,10 +91,10 @@ export default {
                 }),
 
     UPDATE:
-        (src, onSuccess = R.identity) =>
+        ({id, ...body}, onSuccess = R.identity) =>
         (dispath) => (
-            api.users
-                .update(src.id)(src)
+            API.rest.users
+                .update({ id, body })
                 .then(
                     (data) => {
                         dispath(ACTIONS.UPDATED({ data }));
@@ -107,7 +107,7 @@ export default {
         (id) =>
         (dispath) => (
             +id
-            ? api.users
+            ? API.rest.users
                 .item(id)
                 .then((data) => dispath(ACTIONS.ITEM_RECEIVED({ data })))
             : dispath(dispath(ACTIONS.ITEM_RECEIVED({ data: {} })))

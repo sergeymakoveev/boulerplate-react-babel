@@ -18,8 +18,8 @@ const THEME = {
 };
 
 // eslint-disable-next-line react/prop-types
-export const Theme = ({ children=[] }) => (
+export const Theme = ({ children }) => (
     <MuiThemeProvider muiTheme={getMuiTheme(THEME)}>
-    { children }
+        { children }
     </MuiThemeProvider>
 );
