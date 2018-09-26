@@ -1,5 +1,9 @@
 {
   extends: "stylelint-config-standard",
+  ignoreFiles: [
+    "**/*.js",
+    "**/*.jsx"
+  ],
   rules: {
     indentation: 4,
     max-empty-lines: 2,
