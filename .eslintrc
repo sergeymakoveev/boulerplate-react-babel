@@ -28,6 +28,7 @@
         "no-use-before-define": 1,
         "comma-dangle": [
             2, "always-multiline"
-        ]
+        ],
+        "react/jsx-boolean-value": 2
     }
 }

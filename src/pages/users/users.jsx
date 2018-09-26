@@ -148,11 +148,11 @@ class Users extends React.Component {
                     />
                 </div>
                 <Table
+                    multiSelectable
                     style={{ width: 'inherit' }}
-                    multiSelectable={true}
                 >
                     <TableBody
-                        showRowHover={true}
+                        showRowHover
                         displayRowCheckbox={false}
                     >
                         <TableRow>
