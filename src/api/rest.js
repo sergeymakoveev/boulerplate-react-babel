@@ -107,7 +107,7 @@ const API = (props) => {
     const remove = method('DELETE');
 
     const crud = (url) => ({
-        create: post({ url })(),
+        create: (body) => post({ url })({ body }),
         item: (id) => get({ url, path: id })(),
         list: (query={}) => get({ url, query })(),
         patch: ({ id, body }) => patch({ url, path: id })({ body }),
