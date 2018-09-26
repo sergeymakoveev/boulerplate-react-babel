@@ -25,6 +25,9 @@
         "no-extra-semi": 1,
         "no-underscore-dangle": 0,
         "no-unreachable": 2,
-        "no-use-before-define": 1
+        "no-use-before-define": 1,
+        "comma-dangle": [
+            2, "always-multiline"
+        ]
     }
 }

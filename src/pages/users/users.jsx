@@ -61,7 +61,7 @@ class Users extends React.Component {
     }
 
     state = {
-        selected: []
+        selected: [],
     }
 
     constructor( props ) {
@@ -115,7 +115,7 @@ class Users extends React.Component {
                         : selected.includes(id)
                             ? R.reject(R.equals(id), selected)
                             : [...selected, id]
-                )
+                ),
             });
         return (
             <div>
@@ -173,9 +173,7 @@ class Users extends React.Component {
                                 ( item ) => {
                                     return (
                                         <TableRow
-                                            style={{
-                                                cursor: 'pointer'
-                                            }}
+                                            style={{ cursor: 'pointer' }}
                                             key={item.id}
                                             selected={selected.includes(item.id)}
                                         >
