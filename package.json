@@ -17,6 +17,18 @@
     "redux",
     "stylelint"
   ],
+  "engines": {
+    "node": ">= 8.11.1",
+    "npm": ">= 6.4.1"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --inline --hot",
+    "clean": "npm run clean-dist; npm run clean-modules; exit 0",
+    "clean-dist": "rm -rf dist; exit 0",
+    "clean-modules": "rm -rf node_modules; rm package-lock.json; exit 0",
+    "build": "npm run clean-dist; webpack",
+    "build-production": "npm run clean; npm i && NODE_ENV=production webpack -p"
+  },
   "devDependencies": {
     "autoprefixer": "^7.2.6",
     "axios": "^0.18.0",
@@ -66,13 +78,5 @@
     "webpack": "^3.12.0",
     "webpack-dev-server": "^2.11.3",
     "webpack-notifier": "^1.6.0"
-  },
-  "scripts": {
-    "start": "webpack-dev-server --inline --hot",
-    "clean": "npm run clean-dist; npm run clean-modules; exit 0",
-    "clean-dist": "rm -rf dist; exit 0",
-    "clean-modules": "rm -rf node_modules; rm package-lock.json; exit 0",
-    "build": "npm run clean-dist; webpack",
-    "build-production": "npm run clean; npm i && NODE_ENV=production webpack -p"
   }
 }
