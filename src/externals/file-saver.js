@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import R from 'ramda';
 import { saveAs } from 'file-saver';
 
 export const save_response =

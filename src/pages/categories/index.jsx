@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import * as R from 'ramda';
+import R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Route } from 'react-router-dom';

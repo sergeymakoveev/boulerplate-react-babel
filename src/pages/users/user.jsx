@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import R from 'ramda';
 
 import PropTypes from 'prop-types';
 import React from 'react';

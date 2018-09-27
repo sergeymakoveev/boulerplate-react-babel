@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import R from 'ramda';
 
 import API from 'api';
 import { createSyncAction } from 'helpers/redux';
