@@ -1,9 +1,10 @@
-import R from 'ramda';
+import * as R from 'ramda';
+
 
 export const path =
-    ( data ) =>
-    ( path ) => R.flip( R.path )( data, path.split('.') );
+    (data) =>
+        (p) => R.flip(R.path)(data, p.split('.'));
 
 export default {
-    path
+    path,
 };

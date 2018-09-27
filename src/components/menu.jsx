@@ -11,25 +11,25 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 
 class Menu extends React.PureComponent {
-
     static propTypes = {
         signout: PropTypes.func,
     }
 
-    render(){
+    render() {
+        const { signout } = this.props;
         return (
             <IconMenu
                 iconButtonElement={
                     <IconButton><MoreVertIcon /></IconButton>
                 }
-                targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
             >
                 <MenuItem primaryText="Refresh" />
                 <MenuItem primaryText="Help" />
                 <MenuItem
                     primaryText="Sign out"
-                    onClick={this.props.signout}
+                    onClick={signout}
                 />
             </IconMenu>
         );
@@ -39,6 +39,6 @@ class Menu extends React.PureComponent {
 export default connect(
     () => ({}),
     {
-        signout: ACTIONS.SIGNOUT
+        signout: ACTIONS.SIGNOUT,
     }
 )(Menu);

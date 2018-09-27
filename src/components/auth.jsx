@@ -10,7 +10,6 @@ import SignIn from 'components/signin';
 
 
 class Auth extends React.PureComponent {
-
     static propTypes = {
         auth: PropTypesUser,
         children: PropTypes.node.isRequired,
@@ -20,11 +19,10 @@ class Auth extends React.PureComponent {
         const { auth, children } = this.props;
         return (
             fp.isEmpty(auth)
-            ? <SignIn />
-            : <div>{children}</div>
+                ? <SignIn />
+                : <div>{children}</div>
         );
     }
-
 }
 
 export default connect(

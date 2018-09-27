@@ -1,11 +1,10 @@
 import qs from 'query-string';
 
+
 function request(url) {
     return (path = '', query = {}) => {
-        query = qs.stringify(query);
-        query = query ? `?${query}` : '';
-        path = path ? `/${path}` : '';
-        return `${url}${path}${query}`;
+        const query_string = qs.stringify(query);
+        return `${url}${path ? `/${path}` : ''}${query_string ? `?${query_string}` : ''}`;
     };
 }
 
@@ -15,6 +14,6 @@ export const routes = {
     home: request('/'),
     topics: request('/topics'),
     users: request('/users'),
-}
+};
 
 export default routes;

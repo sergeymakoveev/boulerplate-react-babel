@@ -7,7 +7,7 @@ import { ACTIONS } from 'models/auth';
 import { TextField } from 'externals/material-ui.final-form';
 import validators from 'helpers/form-validators';
 
-import { CommonDialog } from 'components/dialog';
+import CommonDialog from 'components/dialog';
 
 
 const VALIDATORS = {
@@ -17,19 +17,19 @@ const VALIDATORS = {
     ),
     password: validators.pipe(
         validators.required,
-    )
+    ),
 };
 
 class SignIn extends React.PureComponent {
-
     static propTypes = {
-        signin: PropTypes.func
+        signin: PropTypes.func,
     }
 
     render() {
+        const { signin } = this.props;
         return (
-            <Form onSubmit={this.props.signin}>
-                {({ handleSubmit /*, submitting, pristine, invalid, form*/ }) => (
+            <Form onSubmit={signin}>
+                {({ handleSubmit /* , submitting, pristine, invalid, form */ }) => (
                     <CommonDialog
                         contentStyle={{ width: '300px' }}
                         title="Sign In"
@@ -69,6 +69,6 @@ class SignIn extends React.PureComponent {
 export default connect(
     () => ({}),
     {
-        signin: ACTIONS.SIGNIN
+        signin: ACTIONS.SIGNIN,
     }
 )(SignIn);

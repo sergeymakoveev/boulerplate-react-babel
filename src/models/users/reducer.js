@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { TYPES } from './actions';
 
 
@@ -18,6 +18,6 @@ const reducer = (state = {}, action) => {
         default:
             return state;
     }
-}
+};
 
 export default reducer;

@@ -5,7 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { NavLink, Route, Switch } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux'
+import { ConnectedRouter } from 'react-router-redux';
 
 import Loadable from 'react-loadable';
 
@@ -33,66 +33,74 @@ import { User, Users } from 'pages/users';
 
 const TopicsLoadable = Loadable({
     loader: () => new Promise((resolve) => setTimeout(() => resolve(import('pages/topics')), 3000)),
-    loading: Loading
-})
+    loading: Loading,
+});
 const CategoriesLoadable = Loadable({
     loader: () => import('pages/categories'),
-    loading: Loading
-})
+    loading: Loading,
+});
 
 
 class Layout extends React.Component {
-
     state = {
         drawer: false,
-        title: 'React-Babel boulerplate'
+        title: 'React-Babel boulerplate',
     };
 
     toggleDrawer = () =>
-        this.setState({ drawer: !this.state.drawer });
+        this.setState(
+            (state) => ({ drawer: !state.drawer })
+        );
 
-    render = () =>
-        <Auth>
-            <AppBar
-                title={this.state.title}
-                iconElementRight={<Menu />}
-                onLeftIconButtonTouchTap={ this.toggleDrawer }
-            />
-            <Drawer
-                docked={false}
-                open={this.state.drawer}
-                onRequestChange={ this.toggleDrawer }
-            >
+    render() {
+        const { title, drawer } = this.state;
+        return (
+            <Auth>
                 <AppBar
-                    iconElementLeft={<span />}
-                    iconElementRight={<IconButton><NavigationMenu /></IconButton>}
-                    onRightIconButtonTouchTap={ this.toggleDrawer }
+                    title={title}
+                    iconElementRight={<Menu />}
+                    onLeftIconButtonTouchTap={this.toggleDrawer}
                 />
-                <NavLink to={routes.home()} exact ><MenuItem>Home</MenuItem></NavLink>
-                <NavLink to={routes.about()}><MenuItem>About</MenuItem></NavLink>
-                <NavLink to={routes.categories()}><MenuItem>Categories</MenuItem></NavLink>
-                <NavLink to={routes.topics()}><MenuItem>Topics</MenuItem></NavLink>
-                <NavLink to={routes.users()}><MenuItem>Users</MenuItem></NavLink>
-            </Drawer>
-            <main id="main">
-                <Switch>
-                    <Route path={routes.home()} exact component={Home}/>
-                    <Route path={routes.about()} component={About}/>
-                    <Route path={routes.categories()} component={CategoriesLoadable} />
-                    <Route path={routes.topics()} component={TopicsLoadable}/>
-                    <Route path={routes.users()} component={Users}/>
-                    <Route
-                        path="*"
-                        render={
-                            ({ location }) => (
-                                <h3>404: {location.pathname}</h3>
-                            )
-                        }
+                <Drawer
+                    docked={false}
+                    open={drawer}
+                    onRequestChange={this.toggleDrawer}
+                >
+                    <AppBar
+                        iconElementLeft={<span />}
+                        iconElementRight={<IconButton><NavigationMenu /></IconButton>}
+                        onRightIconButtonTouchTap={this.toggleDrawer}
                     />
-                </Switch>
-                <Route path={`${routes.users()}/:id`} exact component={User} />
-            </main>
-        </Auth>;
+                    <NavLink to={routes.home()} exact><MenuItem>Home</MenuItem></NavLink>
+                    <NavLink to={routes.about()}><MenuItem>About</MenuItem></NavLink>
+                    <NavLink to={routes.categories()}><MenuItem>Categories</MenuItem></NavLink>
+                    <NavLink to={routes.topics()}><MenuItem>Topics</MenuItem></NavLink>
+                    <NavLink to={routes.users()}><MenuItem>Users</MenuItem></NavLink>
+                </Drawer>
+                <main id="main">
+                    <Switch>
+                        <Route path={routes.home()} exact component={Home} />
+                        <Route path={routes.about()} component={About} />
+                        <Route path={routes.categories()} component={CategoriesLoadable} />
+                        <Route path={routes.topics()} component={TopicsLoadable} />
+                        <Route path={routes.users()} component={Users} />
+                        <Route
+                            path="*"
+                            render={
+                                ({ location }) => (
+                                    <h3>
+                                        404:
+                                        {location.pathname}
+                                    </h3>
+                                )
+                            }
+                        />
+                    </Switch>
+                    <Route path={`${routes.users()}/:id`} exact component={User} />
+                </main>
+            </Auth>
+        );
+    }
 }
 
 ReactDOM.render(

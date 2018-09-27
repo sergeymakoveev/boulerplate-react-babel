@@ -1,1 +1,1 @@
-export const createSyncAction = type => payload => ({ type, ...payload });
+export const createSyncAction = (type) => (payload) => ({ type, ...payload });

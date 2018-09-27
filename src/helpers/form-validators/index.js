@@ -1,1 +1,1 @@
-export { default as default } from './validators-lodash';
+export { default } from './validators-lodash';

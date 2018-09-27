@@ -1,18 +1,16 @@
-import PropTypes from 'prop-types';
-import R from 'ramda';
+import * as R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Link, Route } from 'react-router-dom';
 
 // import DATA from 'data.json';
 // import * as DATA from './data.json';
 
 
-
 class Category extends React.PureComponent {
-
     static propTypes = {
-        match: PropTypes.object
+        match: ReactRouterPropTypes.match.isRequired,
     }
 
     render() {
@@ -23,14 +21,12 @@ class Category extends React.PureComponent {
             </div>
         );
     }
-
 }
 
 
 class Categories extends React.PureComponent {
-
     static propTypes = {
-        match: PropTypes.object
+        match: ReactRouterPropTypes.match.isRequired,
     }
 
     render() {
@@ -62,12 +58,12 @@ class Categories extends React.PureComponent {
                     component={Category}
                 />
                 <Route
-                    exact={true}
+                    exact
                     path={match.url}
                     render={() => <h3>Please select a category.</h3>}
                 />
                 <Route
-                    exact={true}
+                    exact
                     path={`${match.url}/components`}
                     render={() => <h3>COMPONENTS!!!</h3>}
                 />
@@ -76,15 +72,14 @@ class Categories extends React.PureComponent {
     }
 }
 
-export default
-    connect(
-        (state, props) => {
-            console.warn('mapStateToProps', {state, props});
-            return { a:1, b:2 };
-        },
-        // bind account loading action creator
-        (dispath, props) => {
-            console.warn('mapDispatchToProps', { dispath, props });
-            return { c: 3, d: 4 };
-        }
-    )(Categories);
+export default connect(
+    (state, props) => {
+        console.warn('mapStateToProps', { state, props });
+        return { a: 1, b: 2 };
+    },
+    // bind account loading action creator
+    (dispath, props) => {
+        console.warn('mapDispatchToProps', { dispath, props });
+        return { c: 3, d: 4 };
+    }
+)(Categories);

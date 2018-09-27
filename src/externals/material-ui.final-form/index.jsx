@@ -1,20 +1,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { default as _TextField } from 'material-ui/TextField';
-
+import MUITextField from 'material-ui/TextField';
 
 
 export class TextField extends React.PureComponent {
-
     static propTypes = {
-        input: PropTypes.object,
+        input: PropTypes.shape({
+            name: PropTypes.string,
+            value: PropTypes.string,
+        }),
         render: PropTypes.func,
         label: PropTypes.string,
         meta: PropTypes.shape({
             touched: PropTypes.bool,
-            error: PropTypes.string
-        })
+            error: PropTypes.string,
+        }),
     }
 
     render() {
@@ -26,14 +27,13 @@ export class TextField extends React.PureComponent {
             ...custom
         } = this.props;
         return (
-            <_TextField
+            <MUITextField
                 {...inputProps}
                 {...custom}
                 name={name}
                 value={value}
-                errorText={ touched && error }
+                errorText={touched && error}
             />
         );
     }
-
 }

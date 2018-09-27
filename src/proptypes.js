@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+
 export const PropTypesUser = PropTypes.shape({
     id: PropTypes.number,
     login: PropTypes.string,
@@ -15,6 +16,13 @@ export const PropTypesRoute = {
     match: PropTypes.object,
 };
 
+export const PropTypesChildren = (
+    PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]).isRequired
+);
+
 export default {
-    user: PropTypesUser
+    user: PropTypesUser,
 };

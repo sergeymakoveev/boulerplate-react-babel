@@ -9,16 +9,18 @@ import { REDUCER as auth } from 'models/auth';
 
 // import { browserHistory } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+
+
 export const history = createBrowserHistory();
 
-export const store = createStore(
+const store = createStore(
     combineReducers({
         auth,
         users,
         router,
     }),
     composeWithDevTools(
-        applyMiddleware (
+        applyMiddleware(
             routerMiddleware(history),
             thunk,
             createLogger(),

@@ -21,20 +21,20 @@ export default {
 
     SIGNIN:
         (req) =>
-        (dispath) => (
-            API.rest.auth
-                .signin(req)
-                .then((data) => dispath(ACTIONS.SIGNEDIN({ data })))
-        ),
+            (dispath) => (
+                API.rest.auth
+                    .signin(req)
+                    .then((data) => dispath(ACTIONS.SIGNEDIN({ data })))
+            ),
 
     SIGNOUT:
         () =>
-        (dispath) => (
-            API.rest.auth
-                .signout()
-                .then(
-                    () => dispath(ACTIONS.SIGNEDOUT())
-                )
-        ),
+            (dispath) => (
+                API.rest.auth
+                    .signout()
+                    .then(
+                        () => dispath(ACTIONS.SIGNEDOUT())
+                    )
+            ),
 
 };

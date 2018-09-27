@@ -1,10 +1,11 @@
 import fp from 'lodash/fp';
 import { saveAs } from 'file-saver';
 
+
 export const CONTENT_TYPES = {
     json: 'application/json',
     formdata: 'multipart/form-data',
-}
+};
 
 export const saveAsFile = fp.curry(
     (response, filename) =>
@@ -26,7 +27,7 @@ export const getContentDispositionFilename = fp.curry(
             fp.defaultTo(''),
             fp.split(';'),
             fp.map(fp.trim),
-            fp.find(v => /^filename=/i.test(v)),
+            fp.find((v) => /^filename=/i.test(v)),
             fp.split('='),
             fp.last,
             fp.defaultTo(fallback),

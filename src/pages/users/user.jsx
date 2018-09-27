@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -29,14 +29,11 @@ const VALIDATORS = {
 };
 
 class User extends React.Component {
-
     static propTypes = {
         ...PropTypesRoute,
-        dispatch: PropTypes.func,
         initialValues: PropTypesUser,
         load: PropTypes.func,
         onClose: PropTypes.func,
-        handleSubmit: PropTypes.func,
     }
 
     constructor(props) {
@@ -52,32 +49,32 @@ class User extends React.Component {
     }
 
     onSubmitSuccess = (data) => {
-        const { list, onSubmit=R.identity } = this.props;
+        const { list, onSubmit = R.identity } = this.props;
         this.onClose();
         list();
         return onSubmit(data);
     }
 
     onClose = () => {
-        this.props.history.push('/users');
-        this.props.onClose
-        && this.props.onClose();
+        const { history, onClose } = this.props;
+        history.push('/users');
+        onClose && onClose();
     }
 
     render() {
-        const { data={} } = this.props;
+        const { data = {} } = this.props;
         return (
             <Form
                 initialValues={data}
                 onSubmit={this.onSubmit}
             >
-                {({ handleSubmit /*, submitting, pristine, invalid, form*/ }) => (
+                {({ handleSubmit /* , submitting, pristine, invalid, form */ }) => (
                     <CommonDialog
                         contentStyle={{ width: '300px' }}
                         title={
                             R.isEmpty(data)
-                            ? 'New user'
-                            : `User: ${data.name}`
+                                ? 'New user'
+                                : `User: ${data.name}`
                         }
                         onClose={this.onClose}
                         onSubmit={handleSubmit}

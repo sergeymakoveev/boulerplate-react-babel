@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import R from 'ramda';
+import * as R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -22,7 +22,6 @@ import { PropTypesRoute, PropTypesUsers } from 'proptypes';
 import { ACTIONS } from 'models/users';
 
 import { routes } from 'pages';
-
 
 
 // class Countered extends React.Component {
@@ -52,7 +51,6 @@ import { routes } from 'pages';
 
 
 class Users extends React.Component {
-
     static propTypes = {
         ...PropTypesRoute,
         list: PropTypesUsers,
@@ -64,29 +62,29 @@ class Users extends React.Component {
         selected: [],
     }
 
-    constructor( props ) {
-        super( props );
+    constructor(props) {
+        super(props);
         props.load();
     }
 
-    UNSAFE_componentWillReceiveProps({ list }){
-        const ids = R.pluck('id', list);
-        const selected = R.filter(
-            (id) => ids.includes(id),
-            this.state.selected
-        );
-        this.setState({ selected });
-    }
+    // UNSAFE_componentWillReceiveProps({ list }) {
+    //     const ids = R.pluck('id', list);
+    //     this.setState((state) => ({
+    //         selected: R.filter(
+    //             (id) => ids.includes(id),
+    //             state.selected
+    //         ),
+    //     }));
+    // }
 
     render() {
         const { list = [], history, remove, load, patch } = this.props;
         const { selected } = this.state;
         const count = selected.length;
-        const selected_items =
-            R.filter(
-                ({ id }) => selected.includes(id),
-                list
-            );
+        const selected_items = R.filter(
+            ({ id }) => selected.includes(id),
+            list
+        );
         const buttonProps = {
             disabled: !count,
             primary: true,
@@ -97,26 +95,26 @@ class Users extends React.Component {
         const isAllSelected = R.equals(selected, R.pluck('id', list));
         const onEdit =
             (src) =>
-            () => history.push(routes.users(src.id))
+                () => history.push(routes.users(src.id));
         const onPatch =
             (src, data) =>
-            () => patch(src, data, load);
+                () => patch(src, data, load);
         const onRemove =
             (src) =>
-            () => remove(src, load);
+                () => remove(src, load);
         const onSelect =
             (id) =>
-            () => this.setState({
-                selected: (
-                    id === 'none'
-                    ? []
-                    : id === 'all'
-                        ? R.pluck('id', list)
-                        : selected.includes(id)
-                            ? R.reject(R.equals(id), selected)
-                            : [...selected, id]
-                ),
-            });
+                () => this.setState({
+                    selected: (
+                        id === 'none'
+                            ? []
+                            : id === 'all'
+                                ? R.pluck('id', list)
+                                : selected.includes(id)
+                                    ? R.reject(R.equals(id), selected)
+                                    : [...selected, id]
+                    ),
+                });
         return (
             <div>
                 <h1>Users</h1>
@@ -166,49 +164,47 @@ class Users extends React.Component {
                             <TableHeaderColumn>Email</TableHeaderColumn>
                             <TableHeaderColumn>Login</TableHeaderColumn>
                             <TableHeaderColumn>Enabled</TableHeaderColumn>
-                            <TableHeaderColumn></TableHeaderColumn>
+                            <TableHeaderColumn />
                         </TableRow>
                         {
                             list.map(
-                                ( item ) => {
-                                    return (
-                                        <TableRow
-                                            style={{ cursor: 'pointer' }}
-                                            key={item.id}
-                                            selected={selected.includes(item.id)}
-                                        >
-                                            <TableRowColumn>
-                                                <Checkbox
-                                                    checked={selected.includes(item.id)}
-                                                    onCheck={onSelect(item.id)}
-                                                />
-                                            </TableRowColumn>
-                                            <TableRowColumn>{item.name}</TableRowColumn>
-                                            <TableRowColumn>{item.email}</TableRowColumn>
-                                            <TableRowColumn>{item.login}</TableRowColumn>
-                                            <TableRowColumn>
-                                                <Toggle
-                                                    toggled={item.enabled}
-                                                    onToggle={onPatch(item, { enabled: !item.enabled })}
-                                                />
-                                            </TableRowColumn>
-                                            <TableRowColumn>
-                                                <IconButton
-                                                    title="Delete"
-                                                    onClick={onRemove(item)}
-                                                >
-                                                    <IconDelete />
-                                                </IconButton>
-                                                <IconButton
-                                                    title="Edit"
-                                                    onClick={onEdit(item)}
-                                                >
-                                                    <IconEdit />
-                                                </IconButton>
-                                            </TableRowColumn>
-                                        </TableRow>
-                                    );
-                                }
+                                (item) => (
+                                    <TableRow
+                                        style={{ cursor: 'pointer' }}
+                                        key={item.id}
+                                        selected={selected.includes(item.id)}
+                                    >
+                                        <TableRowColumn>
+                                            <Checkbox
+                                                checked={selected.includes(item.id)}
+                                                onCheck={onSelect(item.id)}
+                                            />
+                                        </TableRowColumn>
+                                        <TableRowColumn>{item.name}</TableRowColumn>
+                                        <TableRowColumn>{item.email}</TableRowColumn>
+                                        <TableRowColumn>{item.login}</TableRowColumn>
+                                        <TableRowColumn>
+                                            <Toggle
+                                                toggled={item.enabled}
+                                                onToggle={onPatch(item, { enabled: !item.enabled })}
+                                            />
+                                        </TableRowColumn>
+                                        <TableRowColumn>
+                                            <IconButton
+                                                title="Delete"
+                                                onClick={onRemove(item)}
+                                            >
+                                                <IconDelete />
+                                            </IconButton>
+                                            <IconButton
+                                                title="Edit"
+                                                onClick={onEdit(item)}
+                                            >
+                                                <IconEdit />
+                                            </IconButton>
+                                        </TableRowColumn>
+                                    </TableRow>
+                                )
                             )
                         }
                     </TableBody>
@@ -227,4 +223,4 @@ export default connect(
         patch: ACTIONS.PATCH,
         remove: ACTIONS.REMOVE,
     },
-)( Users );
+)(Users);

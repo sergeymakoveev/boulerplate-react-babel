@@ -1,17 +1,15 @@
-import PropTypes from 'prop-types';
-import R from 'ramda';
+import * as R from 'ramda';
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 // import DATA from 'data.json';
 // import * as DATA from './data.json';
 
 
-
 class Topic extends React.PureComponent {
-
     static propTypes = {
-        match: PropTypes.object
+        match: ReactRouterPropTypes.match.isRequired,
     }
 
     render() {
@@ -22,14 +20,11 @@ class Topic extends React.PureComponent {
             </div>
         );
     }
-
 }
 
-
 class Topics extends React.PureComponent {
-
     static propTypes = {
-        match: PropTypes.object
+        match: ReactRouterPropTypes.match.isRequired,
     }
 
     render() {
@@ -59,12 +54,12 @@ class Topics extends React.PureComponent {
                     component={Topic}
                 />
                 <Route
-                    exact={true}
+                    exact
                     path={match.url}
                     render={() => <h3>Please select a topic.</h3>}
                 />
                 <Route
-                    exact={true}
+                    exact
                     path={`${match.url}/components`}
                     render={() => <h3>COMPONENTS!!!</h3>}
                 />
