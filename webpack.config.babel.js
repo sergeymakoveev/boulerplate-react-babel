@@ -5,17 +5,16 @@ import webpack from 'webpack';
 import WebpackNotifierPlugin from 'webpack-notifier';
 
 
-const
-    DEV = process.env.NODE_ENV !== 'production',
-    DIR = __dirname,
-    DIR_NODE_MODULES = `${DIR}/node_modules`,
-    DIR_SRC = `${DIR}/src`,
-    DIR_SRC_PAGES = `${DIR_SRC}/pages`,
-    // DIR_SRC_EXTERNALS = `${DIR_SRC}/externals`,
-    DIR_PUBLIC = '/',
-    DIR_DIST = `${DIR}/dist`;
+const DEV = process.env.NODE_ENV !== 'production';
+const DIR = __dirname;
+const DIR_NODE_MODULES = `${DIR}/node_modules`;
+const DIR_SRC = `${DIR}/src`;
+const DIR_SRC_PAGES = `${DIR_SRC}/pages`;
+// const DIR_SRC_EXTERNALS = `${DIR_SRC}/externals`;
+const DIR_PUBLIC = '/';
+const DIR_DIST = `${DIR}/dist`;
 
-//// noParse:  wrapRegexp(/\/node_modules\/(angular\/angular)/, 'noParse')
+// // noParse:  wrapRegexp(/\/node_modules\/(angular\/angular)/, 'noParse')
 // function wrapRegexp(regexp, label) {
 //     regexp.test = function(path) {
 //         console.log(`[${label}]: ${path}`);
@@ -34,14 +33,14 @@ export default {
 
     entry: {
         // ...( DEV ? { test: `${DIR_SRC_PAGES}/test` } : {} ),
-        index: `${DIR_SRC_PAGES}/index.jsx`
+        index: `${DIR_SRC_PAGES}/index.jsx`,
     },
 
     output: {
         path: DIR_DIST,
         publicPath: DIR_PUBLIC,
         filename: '[name].entry.js',
-        library: '[name]'
+        library: '[name]',
     },
 
     // Проброс внешних библиотек в виде виртуальных npm-пакетов
@@ -51,29 +50,31 @@ export default {
     // },
 
     plugins: [
-        new StyleLintPlugin({syntax: 'scss'}),
+        new StyleLintPlugin({ syntax: 'scss' }),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.optimize.CommonsChunkPlugin({ name: 'common' }),
         // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        DEV ? new WebpackNotifierPlugin({alwaysNotify: true})
-            : new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false,
-                                                                drop_console: true } }),
+        DEV
+            ? new WebpackNotifierPlugin({ alwaysNotify: true })
+            : new webpack.optimize.UglifyJsPlugin({
+                compress: { warnings: false, drop_console: true },
+            }),
         // Импорт npm-модулей в глобальную область видимости
         // new webpack.ProvidePlugin({
         //     $: 'jquery'
         // })
-    ].filter( (p) => p ),
+    ].filter((p) => p),
 
     resolve: {
         modules: [DIR_NODE_MODULES, DIR_SRC],
-        extensions: ['.json', '.js', '.jsx', '.scss', '.css']
+        extensions: ['.json', '.js', '.jsx', '.scss', '.css'],
     },
 
     module: {
 
         // для ускорения сборки
         // wrapRegexp(/\/node_modules\/moment/, 'noParse')
-        noParse: [ /\/node_modules\/moment\/moment\.js/ ],
+        noParse: [/\/node_modules\/moment\/moment\.js/],
 
         rules: [
             // {
@@ -87,7 +88,7 @@ export default {
                 test: /\.jsx?$/,
                 enforce: 'pre',
                 loader: 'eslint-loader',
-                include: DIR_SRC
+                include: DIR_SRC,
             },
             // {
             //     test: /\.scss$/,
@@ -136,11 +137,11 @@ export default {
                             loader: 'postcss-loader',
                             options: {
                                 sourceMap,
-                                plugins: [autoprefixer]
-                            }
-                        }
+                                plugins: [autoprefixer],
+                            },
+                        },
                     ])
-                )(DEV)
+                )(DEV),
             },
             {
                 test: /\.scss$/,
@@ -152,20 +153,20 @@ export default {
                             loader: 'postcss-loader',
                             options: {
                                 sourceMap,
-                                plugins: [autoprefixer]
-                            }
+                                plugins: [autoprefixer],
+                            },
                         },
-                        `sass-loader?sourceMap=${sourceMap}`
+                        `sass-loader?sourceMap=${sourceMap}`,
                     ])
-                )(DEV)
+                )(DEV),
             },
             {
                 test: /\.(gif|png|jpg|svg|ttf|eot|woff|woff2)$/,
-                use: 'url-loader?name=[path][name].[ext]?[hash]&limit=4096'
+                use: 'url-loader?name=[path][name].[ext]?[hash]&limit=4096',
             },
             {
                 test: /\.ico$/,
-                use: 'file-loader?name=[name].[ext]?[hash]'
+                use: 'file-loader?name=[name].[ext]?[hash]',
             },
             {
                 test: /\.html$/,
@@ -173,11 +174,13 @@ export default {
                     // eslint-disable-next-line no-useless-escape
                     'file-loader?name=[1].html?[hash]&regExp=pages/(.+)\.html$',
                     'extract-loader',
-                    { loader: 'html-loader',
-                      options: { attrs: ['img:src', 'link:href'] } }
-                ]
-            }
-        ]
+                    {
+                        loader: 'html-loader',
+                        options: { attrs: ['img:src', 'link:href'] },
+                    },
+                ],
+            },
+        ],
     },
 
     devServer: {
@@ -185,13 +188,13 @@ export default {
         historyApiFallback: {
             rewrites: [
                 // { from: /^\/js/, to: '/js' },
-                { from: /./, to: '/' }
-            ]
+                { from: /./, to: '/' },
+            ],
         },
         proxy: {
-            '/api': 'http://localhost:3333'
+            '/api': 'http://localhost:3333',
         },
-        host: '0.0.0.0'
-    }
+        host: '0.0.0.0',
+    },
 
 };
