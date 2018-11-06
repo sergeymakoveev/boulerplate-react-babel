@@ -104,17 +104,27 @@ export default {
                 test: /\.js$/,
                 include: DIR_SRC,
                 loader: 'babel-loader',
-                query: {
-                    presets: ['env', 'stage-0']
-                }
+                // query: {
+                //     presets: [
+                //         // it set in .babelrc
+                //         '@babel/preset-env',
+                //     ],
+                // },
             },
             {
                 test: /\.jsx$/,
                 include: DIR_SRC,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['env', 'stage-0', 'react']
-                }
+                    presets: [
+                        // it set in .babelrc
+                        // '@babel/preset-env',
+                        '@babel/preset-react',
+                    ],
+                    plugins: [
+                        '@babel/plugin-proposal-class-properties',
+                    ],
+                },
             },
             {
                 test: /\.css$/,
