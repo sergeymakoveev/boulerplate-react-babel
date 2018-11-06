@@ -5,6 +5,7 @@ SHELL = /bin/bash
 APP=REACT-BABEL
 DIR=${PWD}
 DIR-API=${DIR}/../api
+DIR-API-CI=${DIR}/../api-ci
 DIR-SRC=${DIR}/src
 DIR-DIST=${DIR}/dist
 DIR-NPM=${DIR}/node_modules
@@ -14,7 +15,7 @@ start:
 		--tab-with-profile="tab"\
 			--working-directory="${DIR}"\
 			--title="${APP}-api"\
-			--command="make api"\
+			--command="make api-ci"\
 		--tab-with-profile="tab"\
 			--working-directory="${DIR}"\
 			--title="${APP}-frontend"\
@@ -22,6 +23,9 @@ start:
 
 api:
 	@$(MAKE) -C ${DIR-API}
+
+api-ci:
+	@$(MAKE) -C ${DIR-API-CI}
 
 develop:
 	@webpack-dev-server --inline --hot
