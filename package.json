@@ -21,6 +21,11 @@
     "node": ">= 8.11.1",
     "npm": ">= 6.4.1"
   },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "IE 10"
+  ],
   "scripts": {
     "start": "webpack-dev-server --inline --hot",
     "clean": "npm run clean-dist; npm run clean-modules; exit 0",
@@ -48,7 +53,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
-    "extract-loader": "^1.0.2",
+    "extract-loader": "^3.0.0",
     "file-loader": "^1.1.11",
     "node-sass": "^4.10.0",
     "postcss-loader": "^2.1.6",
@@ -57,9 +62,11 @@
     "stylelint": "^8.4.0",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-webpack-plugin": "^0.10.5",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^0.6.2",
-    "webpack": "^3.12.0",
-    "webpack-dev-server": "^2.11.3",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
     "webpack-notifier": "^1.7.0"
   },
   "dependencies": {

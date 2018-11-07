@@ -1,8 +1,7 @@
 import autoprefixer from 'autoprefixer';
-// import stylelint from 'stylelint';
 import StyleLintPlugin from 'stylelint-webpack-plugin';
-import webpack from 'webpack';
 import WebpackNotifierPlugin from 'webpack-notifier';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 
 
 const DEV = process.env.NODE_ENV !== 'production';
@@ -29,6 +28,7 @@ export default {
     context: DIR_SRC,
 
     // watch: DEV,
+    mode: DEV ? 'development' : 'production',
     devtool: DEV ? 'inline-source-map' : false,
 
     entry: {
@@ -49,16 +49,28 @@ export default {
     //     jquery: '$',
     // },
 
+    optimization: {
+        // noEmitOnErrors: false,
+        minimizer: [
+            new UglifyJsPlugin({
+                uglifyOptions: {
+                    compress: {
+                        warnings: 'verbose',
+                        drop_console: true,
+                        drop_debugger: true,
+                    },
+                },
+            }),
+        ],
+    },
+
     plugins: [
         new StyleLintPlugin({ syntax: 'scss' }),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.optimize.CommonsChunkPlugin({ name: 'common' }),
-        // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        DEV
-            ? new WebpackNotifierPlugin({ alwaysNotify: true })
-            : new webpack.optimize.UglifyJsPlugin({
-                compress: { warnings: false, drop_console: true },
-            }),
+        ...(
+            DEV
+                ? [new WebpackNotifierPlugin({ alwaysNotify: true })]
+                : []
+        ),
         // Импорт npm-модулей в глобальную область видимости
         // new webpack.ProvidePlugin({
         //     $: 'jquery'
@@ -78,17 +90,16 @@ export default {
 
         rules: [
             // {
-            //     test: /\.json$/,
             //     enforce: 'pre',
-            //     use: 'tslint-loader',
             //     include: DIR_SRC,
-            //     exclude: DIR_SRC_EXTERNALS
+            //     test: /\.json$/,
+            //     use: 'eslint-loader',
             // },
             {
-                test: /\.jsx?$/,
                 enforce: 'pre',
-                loader: 'eslint-loader',
+                test: /\.jsx?$/,
                 include: DIR_SRC,
+                loader: 'eslint-loader',
             },
             // {
             //     test: /\.scss$/,
@@ -105,12 +116,11 @@ export default {
                 test: /\.js$/,
                 include: DIR_SRC,
                 loader: 'babel-loader',
-                // query: {
-                //     presets: [
-                //         // it set in .babelrc
-                //         '@babel/preset-env',
-                //     ],
-                // },
+                query: {
+                    presets: [
+                        '@babel/preset-env',
+                    ],
+                },
             },
             {
                 test: /\.jsx$/,
@@ -118,8 +128,7 @@ export default {
                 loader: 'babel-loader',
                 query: {
                     presets: [
-                        // it set in .babelrc
-                        // '@babel/preset-env',
+                        '@babel/preset-env',
                         '@babel/preset-react',
                     ],
                     plugins: [
