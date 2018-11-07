@@ -21,11 +21,7 @@
     "node": ">= 8.11.1",
     "npm": ">= 6.4.1"
   },
-  "browserslist": [
-    "last 1 version",
-    "> 1%",
-    "IE 11"
-  ],
+  "browserslist": "defaults",
   "scripts": {
     "start": "webpack-dev-server --inline --hot",
     "clean": "npm run clean-dist; npm run clean-modules; exit 0",
