@@ -1,4 +1,4 @@
-import qs from 'query-string';
+import qs from 'qs';
 import axios from 'axios';
 
 import { saveAsFile, checkContentType, getContentDispositionFilename, isHasBody, CONTENT_TYPES } from './http-helpers';
