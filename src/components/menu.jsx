@@ -1,13 +1,15 @@
+import fp from 'lodash/fp';
+
 import PropTypes from 'prop-types';
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { ACTIONS } from 'models/auth';
 
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenu from '@material-ui/icons/MoreVert';
+import IconButton from '@material-ui/core/IconButton';
+import MUIMenu from '@material-ui/core/Menu';
+import MUIMenuItem from '@material-ui/core/MenuItem';
 
 
 class Menu extends React.PureComponent {
@@ -15,23 +17,49 @@ class Menu extends React.PureComponent {
         signout: PropTypes.func,
     }
 
+    state = {
+        anchorEl: null,
+    };
+
+    toggle = (state) => ({ currentTarget }) => {
+        this.setState(({ anchorEl }) => ({
+            anchorEl: (
+                fp.isUndefined(state)
+                    ? anchorEl
+                        ? null
+                        : currentTarget
+                    : state
+            ),
+        }));
+    };
+
     render() {
         const { signout } = this.props;
+        const { anchorEl } = this.state;
+        const open = Boolean(anchorEl);
         return (
-            <IconMenu
-                iconButtonElement={
-                    <IconButton><MoreVertIcon /></IconButton>
-                }
-                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-            >
-                <MenuItem primaryText="Refresh" />
-                <MenuItem primaryText="Help" />
-                <MenuItem
-                    primaryText="Sign out"
-                    onClick={signout}
-                />
-            </IconMenu>
+            <React.Fragment>
+                <IconButton
+                    aria-label="More"
+                    aria-owns={open ? 'menu-appbar' : undefined}
+                    aria-haspopup="true"
+                    color="inherit"
+                    onClick={this.toggle()}
+                >
+                    <IconMenu />
+                </IconButton>
+                { anchorEl && (
+                    <MUIMenu
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={this.toggle(false)}
+                    >
+                        <MUIMenuItem>Refresh</MUIMenuItem>
+                        <MUIMenuItem>Help</MUIMenuItem>
+                        <MUIMenuItem onClick={signout}>Sign out</MUIMenuItem>
+                    </MUIMenu>
+                )}
+            </React.Fragment>
         );
     }
 }

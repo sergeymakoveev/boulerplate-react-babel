@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 import { PropTypesChildren } from 'proptypes';
 
@@ -42,37 +45,49 @@ class CommonDialog extends React.Component {
     }
 
     render() {
-        const { children, ...props } = this.props;
+        const { children, title, text, onSubmit, labelSubmit, labelCancel, ...props } = this.props;
         const { open } = this.state;
         return (
             <Dialog
-                actions={[
-                    props.labelCancel
-                    && (
-                        <FlatButton
-                            primary
-                            key="b-cancel"
-                            label={props.labelCancel}
-                            onClick={this.onClose}
-                        />
-                    ),
-                    props.labelSubmit
-                    && (
-                        <RaisedButton
-                            primary
-                            type="submit"
-                            key="b-submit"
-                            label={props.labelSubmit}
-                            onClick={props.onSubmit}
-                        />
-                    ),
-                ]}
-                modal={false}
                 open={open}
-                onRequestClose={this.onClose}
+                onClose={this.onClose}
                 {...props}
             >
-                { children }
+                {
+                    title
+                    && <DialogTitle>{ title }</DialogTitle>
+                }
+                <DialogContent>
+                    {
+                        text
+                        && <DialogContentText>{ text }</DialogContentText>
+                    }
+                    { children }
+                </DialogContent>
+                <DialogActions>
+                    {[
+                        labelCancel && (
+                            <Button
+                                color="primary"
+                                key="b-cancel"
+                                onClick={this.onClose}
+                            >
+                                {labelCancel}
+                            </Button>
+                        ),
+                        labelSubmit && (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                key="b-submit"
+                                onClick={onSubmit}
+                            >
+                                {labelSubmit}
+                            </Button>
+                        ),
+                    ]}
+                </DialogActions>
             </Dialog>
         );
     }

@@ -22,7 +22,10 @@ const VALIDATORS = {
 
 class SignIn extends React.PureComponent {
     static propTypes = {
-        signin: PropTypes.func,
+        signin: PropTypes.func.isRequired,
+        classes: PropTypes.shape({
+            dialog: PropTypes.string,
+        }),
     }
 
     render() {
@@ -31,7 +34,6 @@ class SignIn extends React.PureComponent {
             <Form onSubmit={signin}>
                 {({ handleSubmit /* , submitting, pristine, invalid, form */ }) => (
                     <CommonDialog
-                        contentStyle={{ width: '300px' }}
                         title="Sign In"
                         onSubmit={handleSubmit}
                         labelSubmit="Sign In"
@@ -41,20 +43,19 @@ class SignIn extends React.PureComponent {
                             style={{ width: '100%' }}
                             component={TextField}
                             name="login"
-                            hintText="Login"
-                            floatingLabelText="Login"
+                            label="Login"
                             validate={
                                 VALIDATORS.login
                             }
                         />
+                        <br />
                         <br />
                         <Field
                             style={{ width: '100%' }}
                             component={TextField}
                             type="password"
                             name="password"
-                            hintText="Password"
-                            floatingLabelText="Password"
+                            label="Password"
                             validate={
                                 VALIDATORS.password
                             }

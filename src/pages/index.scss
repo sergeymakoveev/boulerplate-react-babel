@@ -1,9 +1,10 @@
-@import '~normalize.css';
+// replace it to externals/material-ui
+// @import '~normalize.css';
+
 @import '~pages/variables.scss';
 
-
-#main {
-    margin: 50px;
+html,
+body,
+#layout {
+    height: 100%;
 }
-
-

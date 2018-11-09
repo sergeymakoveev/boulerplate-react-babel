@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import MUITextField from 'material-ui/TextField';
+import MUITextField from '@material-ui/core/TextField';
 
 
 export class TextField extends React.PureComponent {
@@ -32,7 +32,8 @@ export class TextField extends React.PureComponent {
                 {...custom}
                 name={name}
                 value={value}
-                errorText={touched && error}
+                error={Boolean(touched && error)}
+                helperText={touched && error}
             />
         );
     }
