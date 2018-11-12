@@ -78,7 +78,7 @@ export default {
                             .map(
                                 ({ id }) =>
                                     API.rest.users
-                                        .remove(id)()
+                                        .remove(id)
                                         .then(() => dispath(ACTIONS.REMOVED({ id })))
                             )
                     )
