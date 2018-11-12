@@ -70,7 +70,6 @@ class User extends React.Component {
             >
                 {({ handleSubmit /* , submitting, pristine, invalid, form */ }) => (
                     <CommonDialog
-                        contentStyle={{ width: '300px' }}
                         title={
                             R.isEmpty(data)
                                 ? 'New user'
@@ -83,28 +82,29 @@ class User extends React.Component {
                             style={{ width: '100%' }}
                             component={TextField}
                             name="login"
-                            hintText="Login"
-                            floatingLabelText="Login"
+                            label="Login"
                             validate={
                                 VALIDATORS.login
                             }
                         />
+                        <br />
+                        <br />
                         <Field
                             style={{ width: '100%' }}
                             component={TextField}
                             name="name"
-                            hintText="Name"
-                            floatingLabelText="Name"
+                            label="Name"
                             validate={
                                 VALIDATORS.name
                             }
                         />
+                        <br />
+                        <br />
                         <Field
                             style={{ width: '100%' }}
                             component={TextField}
                             name="email"
-                            hintText="Email"
-                            floatingLabelText="Email"
+                            label="Email"
                             validate={
                                 VALIDATORS.email
                             }

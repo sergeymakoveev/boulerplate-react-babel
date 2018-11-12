@@ -35,6 +35,7 @@ import store, { history } from 'store';
 import { routes } from 'pages';
 import About from 'pages/about';
 import Home from 'pages/home';
+import { User, Users } from 'pages/users';
 
 import Menu from 'components/menu';
 import Auth from 'components/auth';
@@ -148,6 +149,7 @@ class Layout extends React.Component {
                     <Switch>
                         <Route path={routes.home()} exact component={Home} />
                         <Route path={routes.about()} component={About} />
+                        <Route path={routes.users()} component={Users} />
                         <Route
                             path="*"
                             render={
@@ -160,6 +162,7 @@ class Layout extends React.Component {
                             }
                         />
                     </Switch>
+                    <Route path={routes.users(':id')} exact component={User} />
                 </main>
             </div>
         );

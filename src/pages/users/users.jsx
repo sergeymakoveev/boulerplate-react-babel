@@ -1,22 +1,23 @@
+import fp from 'lodash/fp';
+
 import PropTypes from 'prop-types';
-import * as R from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Checkbox from 'material-ui/Checkbox';
-import IconDelete from 'material-ui/svg-icons/action/delete';
-import IconEdit from 'material-ui/svg-icons/image/edit';
-import IconButton from 'material-ui/IconButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import Toggle from 'material-ui/Toggle';
-import {
-    Table,
-    TableBody,
-    TableHeaderColumn,
-    TableRow,
-    TableRowColumn,
-} from 'material-ui/Table';
+import Checkbox from '@material-ui/core/Checkbox';
+import IconDelete from '@material-ui/icons/Delete';
+import IconEdit from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+// import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+// import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Switch from '@material-ui/core/Switch';
 
 import { PropTypesRoute, PropTypesUsers } from 'proptypes';
 import { ACTIONS } from 'models/users';
@@ -81,18 +82,19 @@ class Users extends React.Component {
         const { list = [], history, remove, load, patch } = this.props;
         const { selected } = this.state;
         const count = selected.length;
-        const selected_items = R.filter(
+        const selected_items = fp.filter(
             ({ id }) => selected.includes(id),
             list
         );
         const buttonProps = {
+            variant: 'contained',
             disabled: !count,
-            primary: true,
+            color: 'primary',
             style: {
                 marginRight: '20px',
             },
         };
-        const isAllSelected = R.equals(selected, R.pluck('id', list));
+        const isAllSelected = !fp.isEmpty(selected) && fp.isEqual(selected, fp.map('id', list));
         const onEdit =
             (src) =>
                 () => history.push(routes.users(src.id));
@@ -109,9 +111,9 @@ class Users extends React.Component {
                         id === 'none'
                             ? []
                             : id === 'all'
-                                ? R.pluck('id', list)
+                                ? fp.map('id', list)
                                 : selected.includes(id)
-                                    ? R.reject(R.equals(id), selected)
+                                    ? fp.reject(fp.isEqual(id), selected)
                                     : [...selected, id]
                     ),
                 });
@@ -120,76 +122,82 @@ class Users extends React.Component {
                 <h1>Users</h1>
                 <div>
                     <Link to={routes.users('new')}>
-                        <RaisedButton
+                        <Button
                             {...buttonProps}
-                            label="Add"
                             title="Add new user"
-                        />
+                        >
+                            Add
+                        </Button>
                     </Link>
-                    <RaisedButton
+                    <Button
                         {...buttonProps}
-                        label={`Delete (${count})`}
                         title="Delete selected"
                         onClick={onRemove(selected_items)}
-                    />
-                    <RaisedButton
+                    >
+                        {`Delete (${count})`}
+                    </Button>
+                    <Button
                         {...buttonProps}
-                        label={`Enable (${count})`}
                         title="Enable selected"
                         onClick={onPatch(selected_items, { enabled: true })}
-                    />
-                    <RaisedButton
+                    >
+                        {`Enable (${count})`}
+                    </Button>
+                    <Button
                         {...buttonProps}
-                        label={`Disable (${count})`}
                         title="Disable selected"
                         onClick={onPatch(selected_items, { enabled: false })}
-                    />
+                    >
+                        {`Disable (${count})`}
+                    </Button>
                 </div>
                 <Table
-                    multiSelectable
                     style={{ width: 'inherit' }}
                 >
-                    <TableBody
-                        showRowHover
-                        displayRowCheckbox={false}
-                    >
+                    <TableHead>
                         <TableRow>
-                            <TableHeaderColumn>
+                            <TableCell>
                                 <Checkbox
+                                    color="primary"
                                     checked={isAllSelected}
-                                    onCheck={onSelect(isAllSelected ? 'none' : 'all')}
+                                    onChange={onSelect(isAllSelected ? 'none' : 'all')}
                                 />
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>Name</TableHeaderColumn>
-                            <TableHeaderColumn>Email</TableHeaderColumn>
-                            <TableHeaderColumn>Login</TableHeaderColumn>
-                            <TableHeaderColumn>Enabled</TableHeaderColumn>
-                            <TableHeaderColumn />
+                            </TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Email</TableCell>
+                            <TableCell>Login</TableCell>
+                            <TableCell>Enabled</TableCell>
+                            <TableCell>Actions</TableCell>
                         </TableRow>
+                    </TableHead>
+                    <TableBody>
                         {
                             list.map(
                                 (item) => (
                                     <TableRow
+                                        hover
                                         style={{ cursor: 'pointer' }}
                                         key={item.id}
                                         selected={selected.includes(item.id)}
                                     >
-                                        <TableRowColumn>
+                                        <TableCell>
                                             <Checkbox
+                                                color="primary"
                                                 checked={selected.includes(item.id)}
-                                                onCheck={onSelect(item.id)}
+                                                onChange={onSelect(item.id)}
                                             />
-                                        </TableRowColumn>
-                                        <TableRowColumn>{item.name}</TableRowColumn>
-                                        <TableRowColumn>{item.email}</TableRowColumn>
-                                        <TableRowColumn>{item.login}</TableRowColumn>
-                                        <TableRowColumn>
-                                            <Toggle
-                                                toggled={item.enabled}
-                                                onToggle={onPatch(item, { enabled: !item.enabled })}
+                                        </TableCell>
+                                        <TableCell>{item.name}</TableCell>
+                                        <TableCell>{item.email}</TableCell>
+                                        <TableCell>{item.login}</TableCell>
+                                        <TableCell>
+                                            <Switch
+                                                color="primary"
+                                                checked={item.enabled}
+                                                onChange={onPatch(item, { enabled: !item.enabled })}
                                             />
-                                        </TableRowColumn>
-                                        <TableRowColumn>
+                                        </TableCell>
+                                        <TableCell>
                                             <IconButton
                                                 title="Delete"
                                                 onClick={onRemove(item)}
@@ -202,7 +210,7 @@ class Users extends React.Component {
                                             >
                                                 <IconEdit />
                                             </IconButton>
-                                        </TableRowColumn>
+                                        </TableCell>
                                     </TableRow>
                                 )
                             )
