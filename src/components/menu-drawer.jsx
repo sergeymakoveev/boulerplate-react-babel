@@ -35,7 +35,10 @@ ListItemLink.propTypes = {
     to: PropTypes.string,
     path: PropTypes.string,
     exact: PropTypes.string,
-    children: PropTypes.arrayOf(PropTypes.node).isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.arrayOf(PropTypes.node).isRequired,
+    ]).isRequired,
 };
 
 const Menu = ({ route }) => {
@@ -55,7 +58,6 @@ const Menu = ({ route }) => {
                 <ListItemText primary="Users" />
             </ListItemLink>
             <ListItemLink to="/experiments" path={path}>
-                <ListItemIcon><IconUsers /></ListItemIcon>
                 <ListItemText primary="Experiments" />
             </ListItemLink>
         </List>
