@@ -20,7 +20,11 @@ import { routes } from 'pages';
 const ListItemLink = ({ children, to, path, exact }) => {
     const selected = Boolean(matchPath(to, { path, exact: path === '/' || exact }));
     return (
-        <Link to={to} exact={exact}>
+        <Link
+            style={{ textDecoration: 'none' }}
+            to={to}
+            exact={exact}
+        >
             <ListItem button selected={selected}>
                 {children}
             </ListItem>
