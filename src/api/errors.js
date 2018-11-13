@@ -1,34 +1,59 @@
 /* eslint no-proto: 0 */
 
-export class NotAuthorizedError extends Error {
+export class ErrorNotAuthorized extends Error {
     constructor(response) {
         super('Ошибка авторизации');
         this.response = response;
-
-        this.name = 'NotAuthorizedError';
-        this.constructor = NotAuthorizedError;
-        this.__proto__ = NotAuthorizedError.prototype;
+        this.name = 'ErrorNotAuthorized';
+        this.constructor = ErrorNotAuthorized;
+        this.__proto__ = ErrorNotAuthorized.prototype;
     }
 }
 
-export class ForbiddenError extends Error {
+export class ErrorForbidden extends Error {
     constructor(response) {
         super('Операция запрещена');
         this.response = response;
-
-        this.name = 'ForbiddenError';
-        this.constructor = ForbiddenError;
-        this.__proto__ = ForbiddenError.prototype;
+        this.name = 'ErrorForbidden';
+        this.constructor = ErrorForbidden;
+        this.__proto__ = ErrorForbidden.prototype;
     }
 }
 
-export class UnknownError extends Error {
+export class ErrorBadRequest extends Error {
+    constructor(response) {
+        super('Некорректный запрос');
+        this.response = response;
+        this.name = 'ErrorBadRequest';
+        this.constructor = ErrorBadRequest;
+        this.__proto__ = ErrorBadRequest.prototype;
+    }
+}
+
+export class ErrorBackend extends Error {
+    constructor(response) {
+        super('Ошибка сервера');
+        this.response = response;
+        this.name = 'ErrorBackend';
+        this.constructor = ErrorBackend;
+        this.__proto__ = ErrorBackend.prototype;
+    }
+}
+
+export class ErrorUnknown extends Error {
     constructor(response, message) {
         super(message || 'Неизвестная ошибка');
         this.response = response;
-
-        this.name = 'UnknownError';
-        this.constructor = UnknownError;
-        this.__proto__ = UnknownError.prototype;
+        this.name = 'ErrorUnknown';
+        this.constructor = ErrorUnknown;
+        this.__proto__ = ErrorUnknown.prototype;
     }
 }
+
+export default {
+    BadRequest: ErrorBadRequest,
+    Backend: ErrorBackend,
+    Forbidden: ErrorForbidden,
+    NotAuthorized: ErrorNotAuthorized,
+    Unknown: ErrorUnknown,
+};

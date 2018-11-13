@@ -2,7 +2,7 @@ import qs from 'qs';
 import axios from 'axios';
 
 import { saveAsFile, checkContentType, getContentDispositionFilename, isHasBody, CONTENT_TYPES } from './http-helpers';
-import { NotAuthorizedError, ForbiddenError, UnknownError } from './errors';
+import Errors from './errors';
 
 
 const URL_BASE = '/api';
@@ -64,21 +64,16 @@ const request__ = ({ auth }) =>
                     case 204:
                         return null;
                     case 401:
-                        throw new NotAuthorizedError(response);
+                        throw new Errors.NotAuthorized(response);
                     case 403:
-                        throw new ForbiddenError(response);
+                        throw new Errors.Forbidden(response);
                     case 400:
+                        throw new Errors.BadRequest(response);
                     case 500:
-                        if (response_json
-                            && response_json.Message) {
-                            throw new Error(
-                                response_json.Message
-                            );
-                        }
+                        throw new Errors.Backend(response);
                     // eslint-disable-next-line no-fallthrough
                     default:
-                        console.error('Unexpected HTTP response', response);
-                        throw new UnknownError(response, response.data);
+                        throw new Errors.Unknown(response, response.data);
                 }
             };
 
