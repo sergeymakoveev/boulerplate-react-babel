@@ -1,89 +1,121 @@
 import './index.html';
 import './index.scss';
 
+/* _eslint-disable no-unused-vars */
+
+import fp from 'lodash/fp';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { NavLink, Route, Switch } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import { Route, Switch } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 
-import Loadable from 'react-loadable';
+import AppBar from '@material-ui/core/AppBar';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconMenu from '@material-ui/icons/Menu';
 
 import { APIConnector } from 'api';
-import AppBar from 'material-ui/AppBar';
-import Drawer from 'material-ui/Drawer';
-import IconButton from 'material-ui/IconButton';
-import MenuItem from 'material-ui/MenuItem';
-import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import { history, store } from 'store';
 
-import store, { history } from 'store';
 import { routes } from 'pages';
-
-// import DATA from 'data.json';
-import { MuiTheme } from 'externals/material-ui';
-import Auth from 'components/auth';
-import Loading from 'components/loading';
-import Menu from 'components/menu';
 import About from 'pages/about';
 import Home from 'pages/home';
-// import Topics from 'pages/topics';
-// import Categories from 'pages/categories';
 import { User, Users } from 'pages/users';
+import Experiments from 'pages/experiments';
+
+import { MenuDrawer, MenuToolbar } from 'components';
+import Auth from 'components/auth';
+
+import { MuiTheme } from 'externals/material-ui';
+import { stopPropagation } from 'helpers';
 
 
-const TopicsLoadable = Loadable({
-    loader: () => new Promise((resolve) => setTimeout(() => resolve(import('pages/topics')), 3000)),
-    loading: Loading,
+const styles_layout = (theme) => ({
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1,
+    },
+    main: {
+        padding: theme.spacing.unit * 3,
+    },
+    toolbar: theme.mixins.toolbar,
+    title: {
+        flexGrow: 1,
+    },
+    overlay: {
+        height: '100%',
+    },
 });
-const CategoriesLoadable = Loadable({
-    loader: () => import('pages/categories'),
-    loading: Loading,
-});
-
 
 class Layout extends React.Component {
+    static propTypes = {
+        classes: PropTypes.shape({
+            appBar: PropTypes.string,
+            main: PropTypes.string,
+            overlay: PropTypes.string,
+        }),
+    };
+
     state = {
         drawer: false,
         title: 'React-Babel boulerplate',
     };
 
-    toggleDrawer = () =>
-        this.setState(
-            (state) => ({ drawer: !state.drawer })
-        );
+    toggleDrawer = (state) => () => {
+        this.setState(({ drawer }) => ({
+            drawer: fp.isUndefined(state) ? !drawer : state,
+        }));
+    };
 
     render() {
         const { title, drawer } = this.state;
+        const { classes } = this.props;
         return (
-            <Auth>
-                <AppBar
-                    title={title}
-                    iconElementRight={<Menu />}
-                    onLeftIconButtonTouchTap={this.toggleDrawer}
-                />
+            <div
+                role="presentation"
+                className={classes.overlay}
+                onClick={this.toggleDrawer(false)}
+            >
+                <AppBar position="fixed" className={classes.appBar}>
+                    <Toolbar disableGutters>
+                        <IconButton
+                            color="inherit"
+                            aria-label="Menu"
+                            onClick={stopPropagation(this.toggleDrawer())}
+                        >
+                            <IconMenu />
+                        </IconButton>
+                        <Typography
+                            className={classes.title}
+                            variant="h6"
+                            color="inherit"
+                            noWrap
+                        >
+                            {title}
+                        </Typography>
+                        <MenuToolbar />
+                    </Toolbar>
+                </AppBar>
                 <Drawer
-                    docked={false}
+                    variant="persistent"
+                    anchor="left"
                     open={drawer}
-                    onRequestChange={this.toggleDrawer}
                 >
-                    <AppBar
-                        iconElementLeft={<span />}
-                        iconElementRight={<IconButton><NavigationMenu /></IconButton>}
-                        onRightIconButtonTouchTap={this.toggleDrawer}
-                    />
-                    <NavLink to={routes.home()} exact><MenuItem>Home</MenuItem></NavLink>
-                    <NavLink to={routes.about()}><MenuItem>About</MenuItem></NavLink>
-                    <NavLink to={routes.categories()}><MenuItem>Categories</MenuItem></NavLink>
-                    <NavLink to={routes.topics()}><MenuItem>Topics</MenuItem></NavLink>
-                    <NavLink to={routes.users()}><MenuItem>Users</MenuItem></NavLink>
+                    <div className={classes.toolbar} />
+                    <MenuDrawer />
                 </Drawer>
-                <main id="main">
+                <main className={classes.main}>
+                    <div className={classes.toolbar} />
                     <Switch>
                         <Route path={routes.home()} exact component={Home} />
                         <Route path={routes.about()} component={About} />
-                        <Route path={routes.categories()} component={CategoriesLoadable} />
-                        <Route path={routes.topics()} component={TopicsLoadable} />
                         <Route path={routes.users()} component={Users} />
+                        <Route path="/experiments" component={Experiments} />
                         <Route
                             path="*"
                             render={
@@ -96,20 +128,24 @@ class Layout extends React.Component {
                             }
                         />
                     </Switch>
-                    <Route path={`${routes.users()}/:id`} exact component={User} />
+                    <Route path={routes.users(':id')} exact component={User} />
                 </main>
-            </Auth>
+            </div>
         );
     }
 }
+
+const LayoutStyled = withStyles(styles_layout, { withTheme: true })(Layout);
 
 ReactDOM.render(
     <Provider store={store}>
         <APIConnector>
             <MuiTheme>
-                <ConnectedRouter history={history}>
-                    <Layout />
-                </ConnectedRouter>
+                <Auth>
+                    <ConnectedRouter history={history}>
+                        <LayoutStyled />
+                    </ConnectedRouter>
+                </Auth>
             </MuiTheme>
         </APIConnector>
     </Provider>,
