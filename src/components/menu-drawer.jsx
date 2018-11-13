@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-
-
 import { Link } from 'react-router-dom';
 
 import List from '@material-ui/core/List';
@@ -20,7 +18,6 @@ const ListItemLink = ({ children, to, path, exact }) => {
     const selected = path === '/' || exact
         ? path === to
         : path.startsWith(to);
-    console.warn({ path, to, selected });
     return (
         <Link
             style={{ textDecoration: 'none' }}
