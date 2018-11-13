@@ -1,14 +1,9 @@
 import React from 'react';
-import RefreshIndicator from 'material-ui/RefreshIndicator';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const Loading = () => (
-    <RefreshIndicator
-        size={400}
-        left={100}
-        top={100}
-        status="loading"
-    />
+    <CircularProgress color="secondary" />
 );
 
 export default Loading;
