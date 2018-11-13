@@ -28,7 +28,7 @@ const VALIDATORS = {
     ),
 };
 
-class User extends React.Component {
+class Page extends React.Component {
     static propTypes = {
         ...PropTypesRoute,
         initialValues: PropTypesUser,
@@ -128,4 +128,4 @@ export default connect(
         load: ACTIONS.ITEM,
         update: ACTIONS.UPDATE,
     }),
-)(User);
+)(Page);

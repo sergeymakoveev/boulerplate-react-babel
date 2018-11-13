@@ -51,7 +51,7 @@ import { routes } from 'pages';
 // }
 
 
-class Users extends React.Component {
+class Page extends React.Component {
     static propTypes = {
         ...PropTypesRoute,
         list: PropTypesUsers,
@@ -235,4 +235,4 @@ export default connect(
         patch: ACTIONS.PATCH,
         remove: ACTIONS.REMOVE,
     },
-)(Users);
+)(Page);
