@@ -8,26 +8,17 @@ import fp from 'lodash/fp';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { Provider, connect } from 'react-redux';
-import { matchPath } from 'react-router';
-import { NavLink, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-
-import IconHome from '@material-ui/icons/Home';
 import IconMenu from '@material-ui/icons/Menu';
-import IconInfo from '@material-ui/icons/Info';
-import IconUsers from '@material-ui/icons/People';
 
 import { APIConnector } from 'api';
 import { history, store } from 'store';
@@ -37,14 +28,14 @@ import About from 'pages/about';
 import Home from 'pages/home';
 import { User, Users } from 'pages/users';
 
-import Menu from 'components/menu';
+import { MenuDrawer, MenuToolbar } from 'components';
 import Auth from 'components/auth';
 
 import { MuiTheme } from 'externals/material-ui';
 import { stopPropagation } from 'helpers';
 
 
-const styles = (theme) => ({
+const styles_layout = (theme) => ({
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
     },
@@ -58,20 +49,6 @@ const styles = (theme) => ({
     overlay: {
         height: '100%',
     },
-});
-
-const Link = connect(
-    ({ router }) => ({ route: router.location })
-)(({ children, to, route, exact }) => {
-    const { pathname: path } = route;
-    const selected = Boolean(matchPath(to, { path, exact: path === '/' || exact }));
-    return (
-        <NavLink to={to} exact={exact}>
-            <ListItem button selected={selected}>
-                {children}
-            </ListItem>
-        </NavLink>
-    );
 });
 
 class Layout extends React.Component {
@@ -120,7 +97,7 @@ class Layout extends React.Component {
                         >
                             {title}
                         </Typography>
-                        <Menu />
+                        <MenuToolbar />
                     </Toolbar>
                 </AppBar>
                 <Drawer
@@ -129,20 +106,7 @@ class Layout extends React.Component {
                     open={drawer}
                 >
                     <div className={classes.toolbar} />
-                    <List component="nav">
-                        <Link to={routes.home()} exact>
-                            <ListItemIcon><IconHome /></ListItemIcon>
-                            <ListItemText primary="Home" />
-                        </Link>
-                        <Link to={routes.about()}>
-                            <ListItemIcon><IconInfo /></ListItemIcon>
-                            <ListItemText primary="About" />
-                        </Link>
-                        <Link to={routes.users()}>
-                            <ListItemIcon><IconUsers /></ListItemIcon>
-                            <ListItemText primary="Users" />
-                        </Link>
-                    </List>
+                    <MenuDrawer />
                 </Drawer>
                 <main className={classes.main}>
                     <div className={classes.toolbar} />
@@ -169,7 +133,7 @@ class Layout extends React.Component {
     }
 }
 
-const LayoutStyled = withStyles(styles, { withTheme: true })(Layout);
+const LayoutStyled = withStyles(styles_layout, { withTheme: true })(Layout);
 
 ReactDOM.render(
     <Provider store={store}>
