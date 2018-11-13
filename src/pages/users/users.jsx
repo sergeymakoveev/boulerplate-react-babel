@@ -121,12 +121,16 @@ class Users extends React.Component {
             <div>
                 <h1>Users</h1>
                 <div>
-                    <Link to={routes.users('new')}>
+                    <Link
+                        style={{ textDecoration: 'none' }}
+                        to={routes.users('new')}
+                    >
                         <Button
                             {...buttonProps}
+                            disabled={false}
                             title="Add new user"
                         >
-                            Add
+                        Add
                         </Button>
                     </Link>
                     <Button
