@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { Provider, connect } from 'react-redux';
 import { matchPath } from 'react-router';
 import { NavLink, Route, Switch } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import { ConnectedRouter } from 'connected-react-router';
 
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
@@ -30,7 +30,7 @@ import IconInfo from '@material-ui/icons/Info';
 import IconUsers from '@material-ui/icons/People';
 
 import { APIConnector } from 'api';
-import store, { history } from 'store';
+import { history, store } from 'store';
 
 import { routes } from 'pages';
 import About from 'pages/about';
@@ -175,11 +175,11 @@ ReactDOM.render(
     <Provider store={store}>
         <APIConnector>
             <MuiTheme>
-                <ConnectedRouter history={history}>
-                    <Auth>
+                <Auth>
+                    <ConnectedRouter history={history}>
                         <LayoutStyled />
-                    </Auth>
-                </ConnectedRouter>
+                    </ConnectedRouter>
+                </Auth>
             </MuiTheme>
         </APIConnector>
     </Provider>,
