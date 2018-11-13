@@ -201,7 +201,7 @@ export default {
             ],
         },
         proxy: {
-            '/api': 'http://localhost:3333',
+            '/api': 'http://localhost:8080',
         },
         host: '0.0.0.0',
     },
