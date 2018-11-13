@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 
 import { Link } from 'react-router-dom';
-import { matchPath } from 'react-router';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -18,7 +17,10 @@ import { routes } from 'pages';
 
 
 const ListItemLink = ({ children, to, path, exact }) => {
-    const selected = Boolean(matchPath(to, { path, exact: path === '/' || exact }));
+    const selected = path === '/' || exact
+        ? path === to
+        : path.startsWith(to);
+    console.warn({ path, to, selected });
     return (
         <Link
             style={{ textDecoration: 'none' }}
@@ -38,7 +40,6 @@ ListItemLink.propTypes = {
     exact: PropTypes.string,
     children: PropTypes.arrayOf(PropTypes.node).isRequired,
 };
-
 
 const Menu = ({ route }) => {
     const { pathname: path } = route;
