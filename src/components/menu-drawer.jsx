@@ -57,6 +57,10 @@ const Menu = ({ route }) => {
                 <ListItemIcon><IconUsers /></ListItemIcon>
                 <ListItemText primary="Users" />
             </ListItemLink>
+            <ListItemLink to="/experiments" path={path}>
+                <ListItemIcon><IconUsers /></ListItemIcon>
+                <ListItemText primary="Experiments" />
+            </ListItemLink>
         </List>
     );
 };

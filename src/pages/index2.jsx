@@ -27,6 +27,7 @@ import { routes } from 'pages';
 import About from 'pages/about';
 import Home from 'pages/home';
 import { User, Users } from 'pages/users';
+import Experiments from 'pages/experiments';
 
 import { MenuDrawer, MenuToolbar } from 'components';
 import Auth from 'components/auth';
@@ -114,6 +115,7 @@ class Layout extends React.Component {
                         <Route path={routes.home()} exact component={Home} />
                         <Route path={routes.about()} component={About} />
                         <Route path={routes.users()} component={Users} />
+                        <Route path="/experiments" component={Experiments} />
                         <Route
                             path="*"
                             render={
