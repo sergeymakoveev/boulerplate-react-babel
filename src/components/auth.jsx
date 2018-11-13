@@ -9,21 +9,16 @@ import { PropTypesUser } from 'proptypes';
 import SignIn from 'components/signin';
 
 
-class Auth extends React.PureComponent {
-    static propTypes = {
-        auth: PropTypesUser,
-        children: PropTypes.node.isRequired,
-    }
+const Auth = ({ auth, children }) => (
+    fp.isEmpty(auth)
+        ? <SignIn />
+        : <div>{children}</div>
+);
 
-    render() {
-        const { auth, children } = this.props;
-        return (
-            fp.isEmpty(auth)
-                ? <SignIn />
-                : <div>{children}</div>
-        );
-    }
-}
+Auth.propTypes = {
+    auth: PropTypesUser,
+    children: PropTypes.node.isRequired,
+};
 
 export default connect(
     ({ auth }) => ({ auth }),
