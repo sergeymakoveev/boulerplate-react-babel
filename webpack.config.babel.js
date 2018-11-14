@@ -194,6 +194,12 @@ export default {
 
     devServer: {
         port: 8888,
+        // before: (app) => {
+        //     app.use((req, res, next) => {
+        //         console.log(`${req.method} ${req.url}`);
+        //         next();
+        //     });
+        // },
         historyApiFallback: {
             rewrites: [
                 // { from: /^\/js/, to: '/js' },
@@ -201,7 +207,17 @@ export default {
             ],
         },
         proxy: {
-            '/api': 'http://localhost:8080',
+            '/api': {
+                target: 'http://localhost:8080',
+                pathRewrite: { '^/api': '' },
+                logLevel: 'debug',
+                // bypass: (req, res, proxyOptions) => {
+                // https://www.npmjs.com/package/json-stringify-safe
+                // https://www.npmjs.com/package/fx
+                //     console.log(`${req.method} ${req.url}`);
+                //     fx(JSON.parse(json_stringify_safe(res)));
+                // },
+            },
         },
         host: '0.0.0.0',
     },

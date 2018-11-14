@@ -28,6 +28,7 @@ api-ci:
 	@$(MAKE) -C ${DIR-API-CI}
 
 develop:
+	@# @DEBUG='express:router' webpack-dev-server --inline --hot
 	@webpack-dev-server --inline --hot
 
 build: clean-dist
