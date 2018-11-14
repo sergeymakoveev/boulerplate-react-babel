@@ -11,7 +11,7 @@ import CommonDialog from 'components/dialog';
 
 
 const VALIDATORS = {
-    login: validators.pipe(
+    username: validators.pipe(
         validators.required,
         validators.is.email
     ),
@@ -42,7 +42,7 @@ class SignIn extends React.PureComponent {
                         <Field
                             style={{ width: '100%' }}
                             component={TextField}
-                            name="login"
+                            name="username"
                             label="Login"
                             validate={
                                 VALIDATORS.login

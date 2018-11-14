@@ -1,11 +1,15 @@
-import qs from 'qs';
 import axios from 'axios';
+import fp from 'lodash/fp';
+import qs from 'qs';
 
 import { saveAsFile, checkContentType, getContentDispositionFilename, isHasBody, CONTENT_TYPES } from './http-helpers';
 import Errors from './errors';
 
 
 const URL_BASE = '/api';
+const BASIC = {
+    username: 'default', password: 'secret',
+};
 
 const request__ = ({ auth }) =>
     ({
@@ -19,13 +23,15 @@ const request__ = ({ auth }) =>
         onUploadProgress,
         onDownloadProgress,
     }) =>
-        ({ body, saveAs } = {}) => {
+        ({ body, saveAs, basic } = {}) => {
             const { access_token, token_type } = auth;
             const hasBody = isHasBody(method);
             const data = body && hasBody && (
                 contentType === CONTENT_TYPES.json
                     ? JSON.stringify(body)
-                    : body
+                    : contentType === CONTENT_TYPES.form
+                        ? qs.stringify(body)
+                        : body
             );
             const url_path = path ? `/${path}` : '';
             const url_query = qs.stringify({ ...query, ...!hasBody && body }, { arrayFormat: 'repeat' });
@@ -34,6 +40,7 @@ const request__ = ({ auth }) =>
             const request = {
                 method,
                 ...data && { data },
+                ...basic && { auth: basic },
                 headers: {
                     Accept: CONTENT_TYPES.json,
                     ...hasBody && { 'Content-Type': contentType },
@@ -49,6 +56,7 @@ const request__ = ({ auth }) =>
             const resolve = (response) => {
                 const isContentType = checkContentType(response);
                 const response_json = isContentType(CONTENT_TYPES.json) && response.data;
+                const response_content = fp.get('content', response_json);
                 switch (response.status) {
                     case 200:
                     case 201:
@@ -59,7 +67,7 @@ const request__ = ({ auth }) =>
                                     response,
                                     getContentDispositionFilename(response, saveAs),
                                 )
-                                : (response_json || response)
+                                : (response_content || response_json || response)
                         );
                     case 204:
                         return null;
@@ -135,7 +143,16 @@ const API = (props) => {
     });
 
     const auth = (url) => ({
-        signin: ({ login, password }) => post({ url, path: 'signin' })({ body: { login, password } }),
+        signin: ({ username, password }) => (
+            post({
+                url,
+                path: 'token',
+                contentType: CONTENT_TYPES.form,
+            })({
+                basic: BASIC,
+                body: { username, password, grant_type: 'password' },
+            })
+        ),
         signout: () => get({ url, path: 'signout' })(),
     });
 
@@ -157,9 +174,9 @@ const API = (props) => {
         post: (args) => post(args)(args),
         put: (args) => put(args)(args),
         patch: (args) => patch(args)(args),
-        auth: auth('/auth'),
+        auth: auth('/oauth'),
         // dicts: dicts('/dicts'),
-        users: crud('/users'),
+        users: crud('/accounts'),
     };
 };
 
