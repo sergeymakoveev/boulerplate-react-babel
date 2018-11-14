@@ -5,6 +5,7 @@ import { saveAs } from 'file-saver';
 export const CONTENT_TYPES = {
     json: 'application/json',
     formdata: 'multipart/form-data',
+    form: 'application/x-www-form-urlencoded',
 };
 
 export const saveAsFile = fp.curry(
