@@ -1,9 +1,15 @@
 import PropTypes from 'prop-types';
 
 
+export const PropTypesAuth = PropTypes.shape({
+    access_token: PropTypes.string,
+    refresh_token: PropTypes.string,
+    token_type: PropTypes.string,
+});
+
 export const PropTypesUser = PropTypes.shape({
     id: PropTypes.number,
-    login: PropTypes.string,
+    active: PropTypes.bool,
     name: PropTypes.string,
     email: PropTypes.string,
 });
