@@ -25,6 +25,8 @@ import { ACTIONS } from 'models/users';
 import { routes } from 'pages';
 
 
+const getName = (...args) => fp.pipe(fp.compact, fp.join(' '))(args);
+
 // class Countered extends React.Component {
 
 //     static propTypes = {
@@ -142,17 +144,17 @@ class Page extends React.Component {
                     </Button>
                     <Button
                         {...buttonProps}
-                        title="Enable selected"
-                        onClick={onPatch(selected_items, { enabled: true })}
+                        title="Activate selected"
+                        onClick={onPatch(selected_items, { active: true })}
                     >
-                        {`Enable (${count})`}
+                        {`Activate (${count})`}
                     </Button>
                     <Button
                         {...buttonProps}
-                        title="Disable selected"
-                        onClick={onPatch(selected_items, { enabled: false })}
+                        title="Deactivate selected"
+                        onClick={onPatch(selected_items, { active: false })}
                     >
-                        {`Disable (${count})`}
+                        {`Deactivate (${count})`}
                     </Button>
                 </div>
                 <Table
@@ -169,8 +171,7 @@ class Page extends React.Component {
                             </TableCell>
                             <TableCell>Name</TableCell>
                             <TableCell>Email</TableCell>
-                            <TableCell>Login</TableCell>
-                            <TableCell>Enabled</TableCell>
+                            <TableCell>Active</TableCell>
                             <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -191,14 +192,15 @@ class Page extends React.Component {
                                                 onChange={onSelect(item.id)}
                                             />
                                         </TableCell>
-                                        <TableCell>{item.name}</TableCell>
+                                        <TableCell>
+                                            {getName(item.lastName, item.firstName)}
+                                        </TableCell>
                                         <TableCell>{item.email}</TableCell>
-                                        <TableCell>{item.login}</TableCell>
                                         <TableCell>
                                             <Switch
                                                 color="primary"
-                                                checked={item.enabled}
-                                                onChange={onPatch(item, { enabled: !item.enabled })}
+                                                checked={item.active}
+                                                onChange={onPatch(item, { active: !item.active })}
                                             />
                                         </TableCell>
                                         <TableCell>
