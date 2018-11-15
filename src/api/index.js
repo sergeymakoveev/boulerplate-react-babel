@@ -10,7 +10,7 @@ export const APIConnector = connect(
 )(
     ({ children, ...props }) => {
         API.rest = RestAPI(props);
-        console.warn('APIConnector: ', props.auth);
+        console.info('APIConnector: ', props.auth);
         return children;
     }
 );
