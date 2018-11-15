@@ -3,9 +3,7 @@ import API from 'api';
 
 
 export const TYPES = {
-    AUTH_SIGNIN: 'AUTH_SIGNIN',
     AUTH_SIGNEDIN: 'AUTH_SIGNEDIN',
-    AUTH_SIGNOUT: 'AUTH_SIGNOUT',
     AUTH_SIGNEDOUT: 'AUTH_SIGNEDOUT',
 };
 
