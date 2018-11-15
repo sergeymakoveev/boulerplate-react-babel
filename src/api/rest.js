@@ -153,7 +153,7 @@ const API = (props) => {
                 body: { username, password, grant_type: 'password' },
             })
         ),
-        signout: () => get({ url, path: 'signout' })(),
+        signout: () => remove({ url, path: 'token' })(),
     });
 
     // const dicts = (url) => ({
