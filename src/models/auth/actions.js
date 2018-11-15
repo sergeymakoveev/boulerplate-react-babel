@@ -15,28 +15,29 @@ function storeTokens({ access_token, refresh_token, token_type } = {}) {
 }
 
 const ACTIONS = {
-    CHECK: () => {
-        const data = fp.omitBy(
-            fp.isEmpty,
-            {
-                access_token: localStorage.getItem('access_token') || '',
-                refresh_token: localStorage.getItem('refresh_token') || '',
-                token_type: localStorage.getItem('token_type') || '',
-            }
-        );
-        return { type: TYPES.AUTH_SIGNEDIN, data };
-    },
+    CHECK:
+        () => {
+            const data = fp.omitBy(
+                fp.isEmpty,
+                {
+                    access_token: localStorage.getItem('access_token') || '',
+                    refresh_token: localStorage.getItem('refresh_token') || '',
+                    token_type: localStorage.getItem('token_type') || '',
+                }
+            );
+            return { type: TYPES.AUTH_SIGNEDIN, data };
+        },
     SIGNIN:
         (req) =>
             (dispath) => (
                 API.rest.auth.signin(req)
                     .then((data) => dispath(ACTIONS.SIGNEDIN({ data })))
             ),
-    // SIGNEDIN: createSyncAction(TYPES.AUTH_SIGNEDIN),
-    SIGNEDIN: ({ data }) => {
-        storeTokens(data);
-        return { type: TYPES.AUTH_SIGNEDIN, data };
-    },
+    SIGNEDIN:
+        ({ data }) => {
+            storeTokens(data);
+            return { type: TYPES.AUTH_SIGNEDIN, data };
+        },
     SIGNOUT:
         () =>
             (dispath) => (
@@ -46,11 +47,11 @@ const ACTIONS = {
                         () => dispath(ACTIONS.SIGNEDOUT())
                     )
             ),
-    SIGNEDOUT: () => {
-        storeTokens();
-        return { type: TYPES.AUTH_SIGNEDOUT };
-    },
-
+    SIGNEDOUT:
+        () => {
+            storeTokens();
+            return { type: TYPES.AUTH_SIGNEDOUT };
+        },
 };
 
 export default ACTIONS;
