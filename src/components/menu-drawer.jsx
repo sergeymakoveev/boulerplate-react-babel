@@ -35,10 +35,7 @@ ListItemLink.propTypes = {
     to: PropTypes.string,
     path: PropTypes.string,
     exact: PropTypes.string,
-    children: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.arrayOf(PropTypes.node).isRequired,
-    ]).isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 const Menu = ({ route }) => {
