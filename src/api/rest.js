@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import fp from 'lodash/fp';
 import qs from 'qs';
@@ -11,99 +12,100 @@ const BASIC = {
     username: 'default', password: 'secret',
 };
 
-const request__ = ({ auth }) =>
-    ({
-        url = (() => { throw new Error('Url is not specified'); })(),
+const API = (props) => {
+    const { access_token, token_type, refresh_token } = props.auth || {};
+
+    const request = ({
+        basic,
+        body,
+        contentType = CONTENT_TYPES.json,
+        headers = {},
+        method = 'POST',
+        onDownloadProgress,
+        onUploadProgress,
         path = '',
         query = {},
-        method = 'POST',
-        headers = {},
-        contentType = CONTENT_TYPES.json,
         responseType,
-        onUploadProgress,
-        onDownloadProgress,
-    }) =>
-        ({ body, saveAs, basic } = {}) => {
-            const { access_token, token_type } = auth;
-            const hasBody = isHasBody(method);
-            const data = body && hasBody && (
-                contentType === CONTENT_TYPES.json
-                    ? JSON.stringify(body)
-                    : contentType === CONTENT_TYPES.form
-                        ? qs.stringify(body)
-                        : body
-            );
-            const url_path = path ? `/${path}` : '';
-            const url_query = qs.stringify({ ...query, ...!hasBody && body }, { arrayFormat: 'repeat' });
-            const url_request = [URL_BASE, url, url_path, url_query ? '?' : '', url_query].join('');
+        saveAs,
+        url = (() => { throw new Error('Url is not specified'); })(),
+    }) => {
+        const hasBody = isHasBody(method);
+        const data = body && hasBody && (
+            contentType === CONTENT_TYPES.json
+                ? JSON.stringify(body)
+                : contentType === CONTENT_TYPES.form
+                    ? qs.stringify(body)
+                    : body
+        );
+        const url_path = path ? `/${path}` : '';
+        const url_query = qs.stringify({ ...query, ...!hasBody && body }, { arrayFormat: 'repeat' });
+        const url_request = [URL_BASE, url, url_path, url_query ? '?' : '', url_query].join('');
 
-            const request = {
-                method,
-                ...data && { data },
-                ...basic && { auth: basic },
-                headers: {
-                    Accept: CONTENT_TYPES.json,
-                    ...hasBody && { 'Content-Type': contentType },
-                    ...access_token && { Authorization: `${token_type} ${access_token}` },
-                    ...headers,
-                },
-                responseType,
-                onUploadProgress,
-                onDownloadProgress,
-                url: url_request,
-            };
-
-            const resolve = (response) => {
-                const isContentType = checkContentType(response);
-                const response_json = isContentType(CONTENT_TYPES.json) && response.data;
-                const response_content = fp.get('content', response_json);
-                switch (response.status) {
-                    case 200:
-                    case 201:
-                    case 202:
-                        return (
-                            saveAs
-                                ? saveAsFile(
-                                    response,
-                                    getContentDispositionFilename(response, saveAs),
-                                )
-                                : (response_content || response_json || response)
-                        );
-                    case 204:
-                        return null;
-                    case 401:
-                        throw new Errors.NotAuthorized(response);
-                    case 403:
-                        throw new Errors.Forbidden(response);
-                    case 400:
-                        throw new Errors.BadRequest(response);
-                    case 500:
-                        throw new Errors.Backend(response);
-                    // eslint-disable-next-line no-fallthrough
-                    default:
-                        throw new Errors.Unknown(response, response.data);
-                }
-            };
-
-            // let response;
-            // try {
-            //     response = await axios(request);
-            // } catch (error) {
-            //     response = error.response;
-            // }
-
-            return (
-                axios(request)
-                    .then(resolve, ({ response }) => resolve(response))
-            );
+        const opts = {
+            method,
+            ...data && { data },
+            ...basic && { auth: basic },
+            headers: {
+                Accept: CONTENT_TYPES.json,
+                ...hasBody && { 'Content-Type': contentType },
+                ...access_token && { Authorization: `${token_type} ${access_token}` },
+                ...headers,
+            },
+            responseType,
+            onUploadProgress,
+            onDownloadProgress,
+            url: url_request,
         };
 
-const API = (props) => {
-    const request_ = request__(props);
+        const resolve = (response) => {
+            const isContentType = checkContentType(response);
+            const response_json = isContentType(CONTENT_TYPES.json) && response.data;
+            const response_content = fp.get('content', response_json);
+            switch (response.status) {
+                case 200:
+                case 201:
+                case 202:
+                    return (
+                        saveAs
+                            ? saveAsFile(
+                                response,
+                                getContentDispositionFilename(response, saveAs),
+                            )
+                            : (response_content || response_json || response)
+                    );
+                case 204:
+                    return null;
+                default:
+                    console.warn(`Unknown response status: ${response.status}\n`, response);
+                    return null;
+            }
+        };
+
+        const reject = ({ response }) => {
+            switch (response.status) {
+                case 401:
+                    throw new Errors.NotAuthorized(response);
+                case 403:
+                    throw new Errors.Forbidden(response);
+                case 400:
+                    throw new Errors.BadRequest(response);
+                case 500:
+                    throw new Errors.Backend(response);
+                // eslint-disable-next-line no-fallthrough
+                default:
+                    throw new Errors.Unknown(response, response.data);
+            }
+        };
+
+        return (
+            axios(opts)
+                .then(resolve, reject)
+        );
+    };
 
     const method =
         (name) => (args) =>
-            request_({ ...args, method: name });
+            request({ ...args, method: name });
 
     const get = method('GET');
     const post = method('POST');
@@ -112,18 +114,19 @@ const API = (props) => {
     const remove = method('DELETE');
 
     const crud = (url) => ({
-        create: (body) => post({ url })({ body }),
-        item: (id) => get({ url, path: id })(),
-        list: (query = {}) => get({ url, query })(),
-        patch: ({ id, body }) => patch({ url, path: id })({ body }),
-        remove: (id) => remove({ url, path: id })(),
-        update: ({ id, body }) => put({ url, path: id })({ body }),
+        create: (body) => post({ url, body }),
+        item: (id) => get({ url, path: id }),
+        list: (query = {}) => get({ url, query }),
+        patch: ({ id, body }) => patch({ url, path: id, body }),
+        remove: (id) => remove({ url, path: id }),
+        update: ({ id, body }) => put({ url, path: id, body }),
         download: (id, onDownloadProgress) => get({
             url,
             path: id,
             responseType: 'blob',
             onDownloadProgress,
-        })({ saveAs: `download-${id}.file` }),
+            saveAs: `download-${id}.file`,
+        }),
         upload: (files, onUploadProgress) =>
             window.Promise.all(
                 files.map(
@@ -136,24 +139,32 @@ const API = (props) => {
                             path: 'upload',
                             contentType: CONTENT_TYPES.formdata,
                             onUploadProgress,
-                        })({ body });
+                            body,
+                        });
                     }
                 )
             ),
     });
 
     const auth = (url) => ({
+        reconnect: () => (
+            post({
+                url,
+                path: 'token',
+                contentType: CONTENT_TYPES.form,
+                body: { grant_type: 'refresh_token', refresh_token },
+            })
+        ),
         signin: ({ username, password }) => (
             post({
                 url,
                 path: 'token',
                 contentType: CONTENT_TYPES.form,
-            })({
                 basic: BASIC,
-                body: { username, password, grant_type: 'password' },
+                body: { grant_type: 'password', username, password },
             })
         ),
-        signout: () => remove({ url, path: 'token' })(),
+        signout: () => remove({ url, path: 'token' }),
     });
 
     // const dicts = (url) => ({
@@ -169,11 +180,11 @@ const API = (props) => {
 
 
     return {
-        get: (args) => get(args)(args),
-        remove: (args) => remove(args)(args),
-        post: (args) => post(args)(args),
-        put: (args) => put(args)(args),
-        patch: (args) => patch(args)(args),
+        get,
+        remove,
+        post,
+        put,
+        patch,
         auth: auth('/oauth'),
         // dicts: dicts('/dicts'),
         users: crud('/accounts'),
