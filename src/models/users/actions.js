@@ -37,7 +37,7 @@ export default {
             (dispath) => (
                 API.rest.users
                     .list()
-                    .then((data) => dispath(ACTIONS.LIST_RECEIVED({ data })))
+                    .then((data) => { dispath(ACTIONS.LIST_RECEIVED({ data })); })
             ),
 
     CREATE:
@@ -79,7 +79,7 @@ export default {
                                 ({ id }) =>
                                     API.rest.users
                                         .remove(id)
-                                        .then(() => dispath(ACTIONS.REMOVED({ id })))
+                                        .then(() => { dispath(ACTIONS.REMOVED({ id })); })
                             )
                     )
                     // .then(
@@ -109,8 +109,8 @@ export default {
                 +id
                     ? API.rest.users
                         .item(id)
-                        .then((data) => dispath(ACTIONS.ITEM_RECEIVED({ data })))
-                    : dispath(dispath(ACTIONS.ITEM_RECEIVED({ data: {} })))
+                        .then((data) => { dispath(ACTIONS.ITEM_RECEIVED({ data })); })
+                    : dispath(ACTIONS.ITEM_RECEIVED({ data: {} }))
             ),
 
 };
