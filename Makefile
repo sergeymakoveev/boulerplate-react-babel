@@ -25,7 +25,8 @@ api:
 	@$(MAKE) -C ${DIR-API}
 
 api-ci:
-	@$(MAKE) -C ${DIR-API-CI}
+	@#$(MAKE) -C ${DIR-API-CI}
+	@$(MAKE) -C ${DIR-API-CI} debug
 
 develop:
 	@# @DEBUG='express:router' webpack-dev-server --inline --hot
