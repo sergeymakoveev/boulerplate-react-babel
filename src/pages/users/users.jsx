@@ -23,9 +23,8 @@ import { PropTypesRoute, PropTypesUsers } from 'proptypes';
 import { ACTIONS } from 'models/users';
 
 import { routes } from 'pages';
+import { getName } from 'pages/users';
 
-
-const getName = (...args) => fp.pipe(fp.compact, fp.join(' '))(args);
 
 // class Countered extends React.Component {
 
@@ -69,16 +68,6 @@ class Page extends React.Component {
         super(props);
         props.load();
     }
-
-    // UNSAFE_componentWillReceiveProps({ list }) {
-    //     const ids = R.pluck('id', list);
-    //     this.setState((state) => ({
-    //         selected: R.filter(
-    //             (id) => ids.includes(id),
-    //             state.selected
-    //         ),
-    //     }));
-    // }
 
     render() {
         const { list = [], history, remove, load, patch } = this.props;
