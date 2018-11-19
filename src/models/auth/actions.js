@@ -27,11 +27,23 @@ const ACTIONS = {
             );
             return { type: TYPES.AUTH_SIGNEDIN, data };
         },
+    RECONNECT:
+        (cb) =>
+            (dispath) => (
+                API.rest.auth.reconnect()
+                    .then(
+                        (data) => {
+                            dispath(ACTIONS.SIGNEDIN({ data }));
+                            return cb(data);
+                        },
+                        () => { dispath(ACTIONS.SIGNEDOUT()); }
+                    )
+            ),
     SIGNIN:
         (req) =>
             (dispath) => (
                 API.rest.auth.signin(req)
-                    .then((data) => dispath(ACTIONS.SIGNEDIN({ data })))
+                    .then((data) => { dispath(ACTIONS.SIGNEDIN({ data })); })
             ),
     SIGNEDIN:
         ({ data }) => {
@@ -43,9 +55,7 @@ const ACTIONS = {
             (dispath) => (
                 API.rest.auth
                     .signout()
-                    .then(
-                        () => dispath(ACTIONS.SIGNEDOUT())
-                    )
+                    .then(() => { dispath(ACTIONS.SIGNEDOUT()); })
             ),
     SIGNEDOUT:
         () => {

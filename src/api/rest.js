@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import fp from 'lodash/fp';
 import qs from 'qs';
@@ -12,100 +11,130 @@ const BASIC = {
     username: 'default', password: 'secret',
 };
 
-const API = (props) => {
-    const { access_token, token_type, refresh_token } = props.auth || {};
+const resolve = ({ response, saveAs }) => {
+    const isContentType = checkContentType(response);
+    const response_json = isContentType(CONTENT_TYPES.json) && response.data;
+    const response_content = fp.get('content', response_json);
+    switch (response.status) {
+        case 200:
+        case 201:
+        case 202:
+            return (
+                saveAs
+                    ? saveAsFile(
+                        response,
+                        getContentDispositionFilename(response, saveAs),
+                    )
+                    : (response_content || response_json || response)
+            );
+        case 204:
+            return null;
+        default:
+            console.warn(`Unknown response status: ${response.status}\n`, response);
+            return null;
+    }
+};
 
-    const request = ({
-        basic,
-        body,
-        contentType = CONTENT_TYPES.json,
-        headers = {},
-        method = 'POST',
-        onDownloadProgress,
-        onUploadProgress,
-        path = '',
-        query = {},
+
+const reject = (response) => {
+    switch (response.status) {
+        case 401:
+            throw new Errors.NotAuthorized(response);
+        case 403:
+            throw new Errors.Forbidden(response);
+        case 400:
+            throw new Errors.BadRequest(response);
+        case 500:
+            throw new Errors.Backend(response);
+        // eslint-disable-next-line no-fallthrough
+        default:
+            throw new Errors.Unknown(response, response.data);
+    }
+};
+
+
+const options = ({
+    access_token,
+    basic,
+    body,
+    contentType = CONTENT_TYPES.json,
+    headers = {},
+    method = 'POST',
+    onDownloadProgress,
+    onUploadProgress,
+    path = '',
+    query = {},
+    responseType,
+    token_type,
+    url = (() => { throw new Error('Url is not specified'); })(),
+}) => {
+    const hasBody = isHasBody(method);
+    const data = body && hasBody && (
+        contentType === CONTENT_TYPES.json
+            ? JSON.stringify(body)
+            : contentType === CONTENT_TYPES.form
+                ? qs.stringify(body)
+                : body
+    );
+    const url_path = path ? `/${path}` : '';
+    const url_query = qs.stringify({ ...query, ...!hasBody && body }, { arrayFormat: 'repeat' });
+    const url_request = [URL_BASE, url, url_path, url_query ? '?' : '', url_query].join('');
+
+    return {
+        method,
+        ...data && { data },
+        ...basic && { auth: basic },
+        headers: {
+            Accept: CONTENT_TYPES.json,
+            ...hasBody && { 'Content-Type': contentType },
+            ...access_token && { Authorization: `${token_type} ${access_token}` },
+            ...headers,
+        },
         responseType,
-        saveAs,
-        url = (() => { throw new Error('Url is not specified'); })(),
-    }) => {
-        const hasBody = isHasBody(method);
-        const data = body && hasBody && (
-            contentType === CONTENT_TYPES.json
-                ? JSON.stringify(body)
-                : contentType === CONTENT_TYPES.form
-                    ? qs.stringify(body)
-                    : body
-        );
-        const url_path = path ? `/${path}` : '';
-        const url_query = qs.stringify({ ...query, ...!hasBody && body }, { arrayFormat: 'repeat' });
-        const url_request = [URL_BASE, url, url_path, url_query ? '?' : '', url_query].join('');
-
-        const opts = {
-            method,
-            ...data && { data },
-            ...basic && { auth: basic },
-            headers: {
-                Accept: CONTENT_TYPES.json,
-                ...hasBody && { 'Content-Type': contentType },
-                ...access_token && { Authorization: `${token_type} ${access_token}` },
-                ...headers,
-            },
-            responseType,
-            onUploadProgress,
-            onDownloadProgress,
-            url: url_request,
-        };
-
-        const resolve = (response) => {
-            const isContentType = checkContentType(response);
-            const response_json = isContentType(CONTENT_TYPES.json) && response.data;
-            const response_content = fp.get('content', response_json);
-            switch (response.status) {
-                case 200:
-                case 201:
-                case 202:
-                    return (
-                        saveAs
-                            ? saveAsFile(
-                                response,
-                                getContentDispositionFilename(response, saveAs),
-                            )
-                            : (response_content || response_json || response)
-                    );
-                case 204:
-                    return null;
-                default:
-                    console.warn(`Unknown response status: ${response.status}\n`, response);
-                    return null;
-            }
-        };
-
-        const reject = ({ response }) => {
-            switch (response.status) {
-                case 401:
-                    throw new Errors.NotAuthorized(response);
-                case 403:
-                    throw new Errors.Forbidden(response);
-                case 400:
-                    throw new Errors.BadRequest(response);
-                case 500:
-                    throw new Errors.Backend(response);
-                // eslint-disable-next-line no-fallthrough
-                default:
-                    throw new Errors.Unknown(response, response.data);
-            }
-        };
-
-        return (
-            axios(opts)
-                .then(resolve, reject)
-        );
+        onUploadProgress,
+        onDownloadProgress,
+        url: url_request,
     };
+};
+
+
+const request = ({
+    parent,
+    reconnect = reject,
+    saveAs,
+    ...props
+}) => (
+    axios(options(props))
+        .then(
+            (response) => resolve({ response, saveAs }),
+            parent
+                ? reject
+                : ({ response }) => (
+                    response.status === 401
+                        ? reconnect(
+                            (tokens) => (
+                                request({
+                                    parent,
+                                    saveAs,
+                                    ...props,
+                                    access_token: tokens.access_token,
+                                    token_type: tokens.token_type,
+                                })
+                            )
+                        )
+                        : reject(response)
+                )
+        )
+);
+
+
+const connect = (props) => {
+    const { reconnect } = props;
+    const { access_token, refresh_token, token_type } = props.auth || {};
 
     const method =
         (name) => (args) =>
-            request({ ...args, method: name });
+            request({ access_token, token_type, ...args, reconnect, method: name });
 
     const get = method('GET');
     const post = method('POST');
@@ -150,7 +179,9 @@ const API = (props) => {
         reconnect: () => (
             post({
                 url,
+                parent: true,
                 path: 'token',
+                basic: BASIC,
                 contentType: CONTENT_TYPES.form,
                 body: { grant_type: 'refresh_token', refresh_token },
             })
@@ -159,8 +190,8 @@ const API = (props) => {
             post({
                 url,
                 path: 'token',
-                contentType: CONTENT_TYPES.form,
                 basic: BASIC,
+                contentType: CONTENT_TYPES.form,
                 body: { grant_type: 'password', username, password },
             })
         ),
@@ -179,7 +210,7 @@ const API = (props) => {
     // });
 
 
-    return {
+    const API = {
         get,
         remove,
         post,
@@ -189,7 +220,9 @@ const API = (props) => {
         // dicts: dicts('/dicts'),
         users: crud('/accounts'),
     };
+
+    return API;
 };
 
 
-export default API;
+export default connect;
