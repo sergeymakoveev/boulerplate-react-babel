@@ -12,16 +12,15 @@ import CommonDialog from 'components/dialog';
 
 import { ACTIONS } from 'models/users';
 import { PropTypesRoute, PropTypesUser } from 'proptypes';
+import { getName } from 'pages/users';
 
 
 const VALIDATORS = {
-    login: validators.pipe(
+    name: validators.pipe(
         validators.required,
-        validators.is.alphanumeric,
+        validators.is.cyralphanumeric,
         validators.has.nospace,
-        validators.length.min(5),
     ),
-    name: validators.is.cyralphanumeric,
     email: validators.pipe(
         validators.required,
         validators.is.email,
@@ -39,7 +38,6 @@ class Page extends React.Component {
     constructor(props) {
         super(props);
         const { match: { params }, load } = props;
-        console.warn('user: constructor', { props });
         load(params.id);
     }
 
@@ -63,6 +61,7 @@ class Page extends React.Component {
 
     render() {
         const { data = {} } = this.props;
+        const name = getName(data.lastName, data.firstName);
         return (
             <Form
                 initialValues={data}
@@ -73,7 +72,7 @@ class Page extends React.Component {
                         title={
                             R.isEmpty(data)
                                 ? 'New user'
-                                : `User: ${data.name}`
+                                : `User: ${name}`
                         }
                         onClose={this.onClose}
                         onSubmit={handleSubmit}
@@ -81,10 +80,10 @@ class Page extends React.Component {
                         <Field
                             style={{ width: '100%' }}
                             component={TextField}
-                            name="login"
-                            label="Login"
+                            name="firstName"
+                            label="First name"
                             validate={
-                                VALIDATORS.login
+                                VALIDATORS.name
                             }
                         />
                         <br />
@@ -92,8 +91,8 @@ class Page extends React.Component {
                         <Field
                             style={{ width: '100%' }}
                             component={TextField}
-                            name="name"
-                            label="Name"
+                            name="lastName"
+                            label="Last name"
                             validate={
                                 VALIDATORS.name
                             }
