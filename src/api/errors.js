@@ -2,7 +2,7 @@
 
 export class ErrorNotAuthorized extends Error {
     constructor(response) {
-        super('Ошибка авторизации');
+        super(['Ошибка авторизации', response.error_description].join('\n'));
         this.response = response;
         this.name = 'ErrorNotAuthorized';
         this.constructor = ErrorNotAuthorized;
@@ -12,7 +12,7 @@ export class ErrorNotAuthorized extends Error {
 
 export class ErrorForbidden extends Error {
     constructor(response) {
-        super('Операция запрещена');
+        super(['Операция запрещена', response.error_description].join('\n'));
         this.response = response;
         this.name = 'ErrorForbidden';
         this.constructor = ErrorForbidden;
@@ -22,7 +22,7 @@ export class ErrorForbidden extends Error {
 
 export class ErrorBadRequest extends Error {
     constructor(response) {
-        super('Некорректный запрос');
+        super(['Некорректный запрос', response.error_description].join('\n'));
         this.response = response;
         this.name = 'ErrorBadRequest';
         this.constructor = ErrorBadRequest;
@@ -32,7 +32,7 @@ export class ErrorBadRequest extends Error {
 
 export class ErrorBackend extends Error {
     constructor(response) {
-        super('Ошибка сервера');
+        super(['Ошибка сервера', response.error_description].join('\n'));
         this.response = response;
         this.name = 'ErrorBackend';
         this.constructor = ErrorBackend;
@@ -42,7 +42,7 @@ export class ErrorBackend extends Error {
 
 export class ErrorUnknown extends Error {
     constructor(response, message) {
-        super(message || 'Неизвестная ошибка');
+        super(message || ['Неизвестная ошибка', response.error_description].join('\n'));
         this.response = response;
         this.name = 'ErrorUnknown';
         this.constructor = ErrorUnknown;
