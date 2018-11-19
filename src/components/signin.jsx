@@ -32,12 +32,13 @@ class SignIn extends React.PureComponent {
         const { signin } = this.props;
         return (
             <Form onSubmit={signin}>
-                {({ handleSubmit /* , submitting, pristine, invalid, form */ }) => (
+                {({ handleSubmit, invalid /* , submitting, pristine, form */ }) => (
                     <CommonDialog
                         title="Sign In"
                         onSubmit={handleSubmit}
                         labelSubmit="Sign In"
                         labelCancel={false}
+                        invalid={invalid}
                     >
                         <Field
                             style={{ width: '100%' }}
@@ -45,7 +46,7 @@ class SignIn extends React.PureComponent {
                             name="username"
                             label="Login"
                             validate={
-                                VALIDATORS.login
+                                VALIDATORS.username
                             }
                         />
                         <br />

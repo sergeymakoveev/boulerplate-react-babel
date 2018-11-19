@@ -45,7 +45,16 @@ class CommonDialog extends React.Component {
     }
 
     render() {
-        const { children, title, text, onSubmit, labelSubmit, labelCancel, ...props } = this.props;
+        const {
+            children,
+            title,
+            text,
+            onSubmit,
+            labelSubmit,
+            labelCancel,
+            invalid,
+            ...props
+        } = this.props;
         const { open } = this.state;
         return (
             <Dialog
@@ -82,6 +91,7 @@ class CommonDialog extends React.Component {
                                 type="submit"
                                 key="b-submit"
                                 onClick={onSubmit}
+                                disabled={invalid}
                             >
                                 {labelSubmit}
                             </Button>
