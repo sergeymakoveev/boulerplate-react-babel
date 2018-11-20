@@ -16,17 +16,26 @@ function storeTokens({ access_token, refresh_token, token_type } = {}) {
 
 const ACTIONS = {
     CHECK:
-        () => {
-            const data = fp.omitBy(
-                fp.isEmpty,
-                {
-                    access_token: localStorage.getItem('access_token') || '',
-                    refresh_token: localStorage.getItem('refresh_token') || '',
-                    token_type: localStorage.getItem('token_type') || '',
-                }
-            );
-            return { type: TYPES.AUTH_SIGNEDIN, data };
-        },
+        () =>
+            (dispath) => {
+                const data = fp.omitBy(
+                    fp.isEmpty,
+                    {
+                        access_token: localStorage.getItem('access_token') || '',
+                        refresh_token: localStorage.getItem('refresh_token') || '',
+                        token_type: localStorage.getItem('token_type') || '',
+                    }
+                );
+                return (
+                    data.access_token
+                        ? API.rest.auth.check(data.access_token)
+                            .then(
+                                () => { dispath(ACTIONS.SIGNEDIN({ data })); },
+                                () => { dispath(ACTIONS.SIGNEDIN({})); }
+                            )
+                        : dispath(ACTIONS.SIGNEDIN({}))
+                );
+            },
     RECONNECT:
         (cb) =>
             (dispath) => (
