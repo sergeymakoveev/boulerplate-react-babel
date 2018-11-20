@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import fp from 'lodash/fp';
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -47,7 +47,7 @@ class Page extends React.Component {
     }
 
     onSubmitSuccess = (data) => {
-        const { list, onSubmit = R.identity } = this.props;
+        const { list, onSubmit = fp.identity } = this.props;
         this.onClose();
         list();
         return onSubmit(data);
@@ -70,7 +70,7 @@ class Page extends React.Component {
                 {({ handleSubmit /* , submitting, pristine, invalid, form */ }) => (
                     <CommonDialog
                         title={
-                            R.isEmpty(data)
+                            fp.isEmpty(data)
                                 ? 'New user'
                                 : `User: ${name}`
                         }
