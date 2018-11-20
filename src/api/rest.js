@@ -176,6 +176,14 @@ const connect = (props) => {
     });
 
     const auth = (url) => ({
+        check: (token) => (
+            get({
+                url,
+                basic: BASIC,
+                path: 'check_token',
+                query: { token },
+            })
+        ),
         reconnect: () => (
             post({
                 url,
