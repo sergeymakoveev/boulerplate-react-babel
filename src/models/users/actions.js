@@ -48,7 +48,8 @@ export default {
                     .then(
                         (data) => {
                             dispath(ACTIONS.CREATED({ data }));
-                            return onSuccess(data);
+                            onSuccess(data);
+                            return data;
                         }
                     )
             ),
@@ -64,7 +65,8 @@ export default {
                     .then(
                         (data) => {
                             dispath(ACTIONS.PATCHED({ data }));
-                            return onSuccess(data);
+                            onSuccess(data);
+                            return data;
                         }
                     )
             ),
@@ -98,7 +100,8 @@ export default {
                     .then(
                         (data) => {
                             dispath(ACTIONS.UPDATED({ data }));
-                            return onSuccess(data);
+                            onSuccess(data);
+                            return data;
                         }
                     )
             ),
