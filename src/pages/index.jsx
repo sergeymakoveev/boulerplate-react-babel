@@ -29,7 +29,7 @@ import { MenuDrawer, MenuToolbar } from 'components';
 import Auth from 'components/auth';
 
 import { MuiTheme } from 'externals/material-ui';
-import { stopPropagation } from 'helpers';
+import { stopPropagation } from 'helpers/dom';
 
 
 const styles_layout = (theme) => ({
