@@ -6,6 +6,7 @@ export const CONTENT_TYPES = {
     json: 'application/json',
     formdata: 'multipart/form-data',
     form: 'application/x-www-form-urlencoded',
+    patch: 'application/merge-patch+json',
 };
 
 export const saveAsFile = fp.curry(

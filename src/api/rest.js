@@ -133,14 +133,14 @@ const connect = (props) => {
     const { access_token, refresh_token, token_type } = props.auth || {};
 
     const method =
-        (name) => (args) =>
-            request({ access_token, token_type, ...args, reconnect, method: name });
+        ({ name, ...opts }) => (args) =>
+            request({ access_token, token_type, ...opts, ...args, reconnect, method: name });
 
-    const get = method('GET');
-    const post = method('POST');
-    const put = method('PUT');
-    const patch = method('PATCH');
-    const remove = method('DELETE');
+    const get = method({ name: 'GET' });
+    const post = method({ name: 'POST' });
+    const put = method({ name: 'PUT' });
+    const patch = method({ name: 'PATCH', content_type: CONTENT_TYPES.patch });
+    const remove = method({ name: 'DELETE' });
 
     const crud = (url) => ({
         create: (body) => post({ url, body }),
