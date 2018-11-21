@@ -57,7 +57,7 @@ const options = ({
     access_token,
     basic,
     body,
-    contentType = CONTENT_TYPES.json,
+    content_type = CONTENT_TYPES.json,
     headers = {},
     method = 'POST',
     onDownloadProgress,
@@ -70,9 +70,9 @@ const options = ({
 }) => {
     const hasBody = isHasBody(method);
     const data = body && hasBody && (
-        contentType === CONTENT_TYPES.json
+        content_type === CONTENT_TYPES.json
             ? JSON.stringify(body)
-            : contentType === CONTENT_TYPES.form
+            : content_type === CONTENT_TYPES.form
                 ? qs.stringify(body)
                 : body
     );
@@ -86,7 +86,7 @@ const options = ({
         ...basic && { auth: basic },
         headers: {
             Accept: CONTENT_TYPES.json,
-            ...hasBody && { 'Content-Type': contentType },
+            ...hasBody && { 'Content-Type': content_type },
             ...access_token && { Authorization: `${token_type} ${access_token}` },
             ...headers,
         },
@@ -166,7 +166,7 @@ const connect = (props) => {
                         return post({
                             url,
                             path: 'upload',
-                            contentType: CONTENT_TYPES.formdata,
+                            content_type: CONTENT_TYPES.formdata,
                             onUploadProgress,
                             body,
                         });
@@ -190,7 +190,7 @@ const connect = (props) => {
                 parent: true,
                 path: 'token',
                 basic: BASIC,
-                contentType: CONTENT_TYPES.form,
+                content_type: CONTENT_TYPES.form,
                 body: { grant_type: 'refresh_token', refresh_token },
             })
         ),
@@ -199,7 +199,7 @@ const connect = (props) => {
                 url,
                 path: 'token',
                 basic: BASIC,
-                contentType: CONTENT_TYPES.form,
+                content_type: CONTENT_TYPES.form,
                 body: { grant_type: 'password', username, password },
             })
         ),
