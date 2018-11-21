@@ -2,7 +2,7 @@ import axios from 'axios';
 import fp from 'lodash/fp';
 import qs from 'qs';
 
-import { saveAsFile, checkContentType, getContentDispositionFilename, isHasBody, CONTENT_TYPES } from './http-helpers';
+import { saveAsFile, checkContentType, getContentDispositionFilename, isHasBody, CONTENT_TYPES } from 'helpers/http';
 import Errors from './errors';
 
 
