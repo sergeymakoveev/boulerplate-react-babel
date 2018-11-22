@@ -22,6 +22,8 @@ import Switch from '@material-ui/core/Switch';
 import { PropTypesRoute, PropTypesUsers } from 'proptypes';
 import { ACTIONS } from 'models/users';
 
+import Loading from 'components/loading';
+
 import { routes } from 'pages';
 import { getName } from 'pages/users';
 
@@ -58,25 +60,32 @@ class Page extends React.Component {
         list: PropTypesUsers,
         load: PropTypes.func,
         remove: PropTypes.func,
+        reset: PropTypes.func,
     }
 
     state = {
         selected: [],
     }
 
-    constructor(props) {
-        super(props);
-        props.load();
+    componentDidMount() {
+        const { load } = this.props;
+        load();
+    }
+
+    componentWillUnmount() {
+        const { reset } = this.props;
+        reset();
     }
 
     render() {
-        const { list = [], history, remove, load, patch } = this.props;
+        const { data, history, remove, patch } = this.props;
         const { selected } = this.state;
-        const count = selected.length;
+        const list = data || [];
         const selected_items = fp.filter(
             ({ id }) => selected.includes(id),
             list
         );
+        const count = selected_items.length;
         const buttonProps = {
             variant: 'contained',
             disabled: !count,
@@ -90,11 +99,11 @@ class Page extends React.Component {
             (src) =>
                 () => history.push(routes.users(src.id));
         const onPatch =
-            (src, data) =>
-                () => patch(src, data, load);
+            (src, d) =>
+                () => patch(src, d);
         const onRemove =
             (src) =>
-                () => remove(src, load);
+                () => remove(src);
         const onSelect =
             (id) =>
                 () => this.setState({
@@ -110,6 +119,7 @@ class Page extends React.Component {
                 });
         return (
             <div>
+                { !data && <Loading /> }
                 <h1>Users</h1>
                 <div>
                     <Link
@@ -182,7 +192,7 @@ class Page extends React.Component {
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            {getName(item.lastName, item.firstName)}
+                                            {getName(item)}
                                         </TableCell>
                                         <TableCell>{item.email}</TableCell>
                                         <TableCell>
@@ -219,11 +229,12 @@ class Page extends React.Component {
 
 export default connect(
     (state) => ({
-        list: state.users.list,
+        data: state.users.list,
     }),
     {
         load: ACTIONS.LIST,
         patch: ACTIONS.PATCH,
         remove: ACTIONS.REMOVE,
+        reset: ACTIONS.LIST_RESETTED,
     },
 )(Page);

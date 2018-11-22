@@ -9,7 +9,9 @@ export const TYPES = {
     USERS_CREATED: 'USERS_CREATED',
     USERS_LIST: 'USERS_LIST',
     USERS_LIST_RECEIVED: 'USERS_LIST_RECEIVED',
+    USERS_LIST_RESETTED: 'USERS_LIST_RESETTED',
     USERS_ITEM_RECEIVED: 'USERS_ITEM_RECEIVED',
+    USERS_ITEM_RESETTED: 'USERS_ITEM_RESETTED',
     USERS_PATCH: 'USERS_PATCH',
     USERS_PATCHED: 'USERS_PATCHED',
     USERS_REMOVE: 'USERS_REMOVE',
@@ -21,8 +23,10 @@ export const TYPES = {
 // Sync actions creators
 const ACTIONS = {
     LIST_RECEIVED: createSyncAction(TYPES.USERS_LIST_RECEIVED),
+    LIST_RESETTED: createSyncAction(TYPES.USERS_LIST_RESETTED),
     CREATED: createSyncAction(TYPES.USERS_CREATED),
     ITEM_RECEIVED: createSyncAction(TYPES.USERS_ITEM_RECEIVED),
+    ITEM_RESETTED: createSyncAction(TYPES.USERS_ITEM_RESETTED),
     PATCHED: createSyncAction(TYPES.USERS_PATCHED),
     REMOVED: createSyncAction(TYPES.USERS_REMOVED),
     UPDATED: createSyncAction(TYPES.USERS_UPDATED),
@@ -60,11 +64,15 @@ export default {
                 Promise
                     .all(
                         [].concat(src)
-                            .map(({ id }) => API.rest.users.patch({ id, body }))
+                            .map(
+                                ({ id }) => (
+                                    API.rest.users.patch({ id, body })
+                                        .then((data) => { dispath(ACTIONS.PATCHED({ id, data })); })
+                                )
+                            )
                     )
                     .then(
                         (data) => {
-                            dispath(ACTIONS.PATCHED({ data }));
                             onSuccess(data);
                             return data;
                         }

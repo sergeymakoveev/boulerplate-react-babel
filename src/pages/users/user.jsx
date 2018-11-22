@@ -9,6 +9,7 @@ import { TextField } from 'externals/material-ui.final-form';
 import validators from 'helpers/form-validators';
 
 import CommonDialog from 'components/dialog';
+import Loading from 'components/loading';
 
 import { ACTIONS } from 'models/users';
 import { PropTypesRoute, PropTypesUser } from 'proptypes';
@@ -30,95 +31,89 @@ const VALIDATORS = {
 class Page extends React.Component {
     static propTypes = {
         ...PropTypesRoute,
-        initialValues: PropTypesUser,
+        create: PropTypes.func,
+        data: PropTypesUser,
         load: PropTypes.func,
-        onClose: PropTypes.func,
+        reset: PropTypes.func,
+        update: PropTypes.func,
     }
 
-    constructor(props) {
-        super(props);
-        const { match: { params }, load } = props;
+    componentDidMount() {
+        const { match: { params }, load } = this.props;
         load(params.id);
     }
 
-    onSubmit = (data) => {
-        const { create, update } = this.props;
-        (+data.id ? update : create)(data, this.onSubmitSuccess);
-    }
-
-    onSubmitSuccess = (data) => {
-        const { list, onSubmit = fp.identity } = this.props;
-        this.onClose();
-        list();
-        return onSubmit(data);
-    }
-
-    onClose = () => {
-        const { history, onClose } = this.props;
-        history.push('/users');
-        onClose && onClose();
-    }
-
     render() {
-        const { data = {} } = this.props;
-        const name = getName(data.lastName, data.firstName);
+        const { data, history, reset, create, update } = this.props;
+        const name = getName(data);
+        const onClose = () => {
+            reset();
+            history.push('/users');
+        };
+        const onSubmit = (item) =>
+            (+item.id ? update : create)(item, onClose);
+
         return (
-            <Form
-                initialValues={data}
-                onSubmit={this.onSubmit}
-            >
-                {({ handleSubmit /* , submitting, pristine, invalid, form */ }) => (
-                    <CommonDialog
-                        title={
-                            fp.isEmpty(data)
-                                ? 'New user'
-                                : `User: ${name}`
-                        }
-                        onClose={this.onClose}
-                        onSubmit={handleSubmit}
+            !data
+                ? <Loading />
+                : (
+                    <Form
+                        initialValues={data}
+                        onSubmit={onSubmit}
                     >
-                        <Field
-                            style={{ width: '100%' }}
-                            component={TextField}
-                            name="firstName"
-                            label="First name"
-                            validate={
-                                VALIDATORS.name
-                            }
-                        />
-                        <br />
-                        <br />
-                        <Field
-                            style={{ width: '100%' }}
-                            component={TextField}
-                            name="lastName"
-                            label="Last name"
-                            validate={
-                                VALIDATORS.name
-                            }
-                        />
-                        <br />
-                        <br />
-                        <Field
-                            style={{ width: '100%' }}
-                            component={TextField}
-                            name="email"
-                            label="Email"
-                            validate={
-                                VALIDATORS.email
-                            }
-                        />
-                    </CommonDialog>
-                )}
-            </Form>
+                        {({ handleSubmit /* , submitting, pristine, invalid, form */ }) => (
+                            <CommonDialog
+                                title={
+                                    fp.isEmpty(data)
+                                        ? 'New user'
+                                        : `User: ${name}`
+                                }
+                                onClose={onClose}
+                                onSubmit={handleSubmit}
+                            >
+                                <Field
+                                    style={{ width: '100%' }}
+                                    component={TextField}
+                                    name="firstName"
+                                    label="First name"
+                                    validate={
+                                        VALIDATORS.name
+                                    }
+                                />
+                                <br />
+                                <br />
+                                <Field
+                                    style={{ width: '100%' }}
+                                    component={TextField}
+                                    name="lastName"
+                                    label="Last name"
+                                    validate={
+                                        VALIDATORS.name
+                                    }
+                                />
+                                <br />
+                                <br />
+                                <Field
+                                    style={{ width: '100%' }}
+                                    component={TextField}
+                                    name="email"
+                                    label="Email"
+                                    validate={
+                                        VALIDATORS.email
+                                    }
+                                />
+                            </CommonDialog>
+                        )}
+                    </Form>
+                )
         );
     }
 }
 
 export default connect(
-    (state) => ({
+    ({ users }) => ({
         // pull initial values from account reducer
-        data: state.users.item,
+        data: users.item,
     }),
     // bind account loading action creator
     ({
@@ -126,5 +121,6 @@ export default connect(
         create: ACTIONS.CREATE,
         load: ACTIONS.ITEM,
         update: ACTIONS.UPDATE,
+        reset: ACTIONS.ITEM_RESETTED,
     }),
 )(Page);
