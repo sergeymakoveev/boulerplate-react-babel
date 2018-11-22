@@ -1,14 +1,15 @@
-import './index.scss';
+// import './index.scss';
 
 import fp from 'lodash/fp';
 import React from 'react';
 import PropTypes from 'prop-types';
 
 
-export class FormField extends React.PureComponent {
+const omitUndefined = fp.omitBy(fp.isUndefined);
 
+export class FormField extends React.PureComponent {
     static propTypes = {
-        input: PropTypes.object,
+        input: PropTypes.node,
         labelCancel: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         placeholder: PropTypes.string,
         label: PropTypes.string,
@@ -18,11 +19,11 @@ export class FormField extends React.PureComponent {
         meta: PropTypes.shape({
             touched: PropTypes.bool,
             error: PropTypes.string,
-            warning: PropTypes.string
+            warning: PropTypes.string,
         }),
     };
 
-    render(){
+    render() {
         const {
             input,
             placeholder,
@@ -32,12 +33,11 @@ export class FormField extends React.PureComponent {
             name,
             meta: { touched, error, warning },
         } = this.props;
-        const omitUndefined = fp.omitBy(fp.isUndefined);
         const id_ = id || name;
         const props_input = omitUndefined({ id: id_, placeholder, type });
         const props_label = omitUndefined({ htmlFor: id_ });
         return (
-            <div className='FormField'>
+            <div className="FormField">
                 {
                     label
                     && <label {...props_label}>{label}</label>
@@ -46,14 +46,13 @@ export class FormField extends React.PureComponent {
                 {
                     touched
                     && (
-                        (error && <span className='error'>{error}</span>) ||
-                        (warning && <span className='warning'>{warning}</span>)
+                        (error && <span className="error">{error}</span>) ||
+                        (warning && <span className="warning">{warning}</span>)
                     )
                 }
             </div>
         );
     }
-
 }
 
 export default FormField;
