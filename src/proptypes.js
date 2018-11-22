@@ -29,6 +29,13 @@ export const PropTypesChildren = (
     ]).isRequired
 );
 
+export const PropTypesTextField = {
+    label: PropTypes.string,
+    name: PropTypes.string,
+    validate: PropTypes.func,
+};
+
+
 export default {
     user: PropTypesUser,
 };

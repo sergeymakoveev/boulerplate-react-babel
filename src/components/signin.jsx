@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Field } from 'react-final-form';
+import { Form } from 'react-final-form';
 
 import { ACTIONS } from 'models/auth';
-import { TextField } from 'externals/material-ui.final-form';
+import { TextField, PasswordField } from 'externals/material-ui.final-form';
 import validators from 'helpers/form-validators';
 
 import CommonDialog from 'components/dialog';
@@ -40,9 +40,8 @@ class SignIn extends React.PureComponent {
                         labelCancel={false}
                         invalid={invalid}
                     >
-                        <Field
+                        <TextField
                             style={{ width: '100%' }}
-                            component={TextField}
                             name="username"
                             label="Login"
                             validate={
@@ -51,10 +50,8 @@ class SignIn extends React.PureComponent {
                         />
                         <br />
                         <br />
-                        <Field
+                        <PasswordField
                             style={{ width: '100%' }}
-                            component={TextField}
-                            type="password"
                             name="password"
                             label="Password"
                             validate={

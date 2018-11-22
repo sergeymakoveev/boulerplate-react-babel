@@ -3,7 +3,7 @@ import fp from 'lodash/fp';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Field } from 'react-final-form';
+import { Form } from 'react-final-form';
 
 import { TextField } from 'externals/material-ui.final-form';
 import validators from 'helpers/form-validators';
@@ -70,9 +70,8 @@ class Page extends React.Component {
                                 onClose={onClose}
                                 onSubmit={handleSubmit}
                             >
-                                <Field
+                                <TextField
                                     style={{ width: '100%' }}
-                                    component={TextField}
                                     name="firstName"
                                     label="First name"
                                     validate={
@@ -81,9 +80,8 @@ class Page extends React.Component {
                                 />
                                 <br />
                                 <br />
-                                <Field
+                                <TextField
                                     style={{ width: '100%' }}
-                                    component={TextField}
                                     name="lastName"
                                     label="Last name"
                                     validate={
@@ -92,9 +90,8 @@ class Page extends React.Component {
                                 />
                                 <br />
                                 <br />
-                                <Field
+                                <TextField
                                     style={{ width: '100%' }}
-                                    component={TextField}
                                     name="email"
                                     label="Email"
                                     validate={
