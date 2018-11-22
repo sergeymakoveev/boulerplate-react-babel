@@ -11,9 +11,8 @@ import validators from 'helpers/form-validators';
 import CommonDialog from 'components/dialog';
 import Loading from 'components/loading';
 
-import { ACTIONS } from 'models/users';
+import { ACTIONS, helpers } from 'models/users';
 import { PropTypesRoute, PropTypesUser } from 'proptypes';
-import { getName } from 'pages/users';
 
 
 const VALIDATORS = {
@@ -45,7 +44,7 @@ class Page extends React.Component {
 
     render() {
         const { data, history, reset, create, update } = this.props;
-        const name = getName(data);
+        const name = helpers.getName(data);
         const onClose = () => {
             reset();
             history.push('/users');

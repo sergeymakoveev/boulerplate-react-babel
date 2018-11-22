@@ -20,12 +20,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Switch from '@material-ui/core/Switch';
 
 import { PropTypesRoute, PropTypesUsers } from 'proptypes';
-import { ACTIONS } from 'models/users';
+import { ACTIONS, helpers } from 'models/users';
 
 import Loading from 'components/loading';
 
 import { routes } from 'pages';
-import { getName } from 'pages/users';
 
 
 // class Countered extends React.Component {
@@ -192,7 +191,7 @@ class Page extends React.Component {
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            {getName(item)}
+                                            {helpers.getName(item)}
                                         </TableCell>
                                         <TableCell>{item.email}</TableCell>
                                         <TableCell>
