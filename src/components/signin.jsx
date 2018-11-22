@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Form } from 'react-final-form';
 
 import { ACTIONS } from 'models/auth';
-import { TextField, PasswordField } from 'externals/material-ui.final-form';
+import { TextField, PasswordField } from 'externals/final-form';
 import validators from 'helpers/form-validators';
 
 import CommonDialog from 'components/dialog';

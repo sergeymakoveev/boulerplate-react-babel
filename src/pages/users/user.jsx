@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-final-form';
 
-import { TextField } from 'externals/material-ui.final-form';
+import { TextField } from 'externals/final-form';
 import validators from 'helpers/form-validators';
 
 import CommonDialog from 'components/dialog';
