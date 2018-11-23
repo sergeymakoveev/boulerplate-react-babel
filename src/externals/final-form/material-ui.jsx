@@ -3,9 +3,38 @@ import React from 'react';
 
 import { Field } from 'react-final-form';
 import MUITextField from '@material-ui/core/TextField';
+import MUISwitch from '@material-ui/core/Switch';
 
 import { PropTypesTextField } from 'proptypes';
 
+
+const _Switch = ({
+    render,
+    meta,
+    input: { name, value, ...inputProps },
+    ...custom
+}) => (
+    <MUISwitch
+        color="primary"
+        {...inputProps}
+        {...custom}
+        name={name}
+        checked={Boolean(value)}
+    />
+);
+
+export const Switch = ({
+    name,
+}) => (
+    <Field
+        component={_Switch}
+        name={name}
+        type="checkbox"
+    />
+);
+Switch.propTypes = {
+    name: PropTypes.string,
+};
 
 const _TextField = ({
     render,

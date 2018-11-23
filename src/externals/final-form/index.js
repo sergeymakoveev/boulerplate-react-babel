@@ -1,1 +1,1 @@
-export { TextField, PasswordField } from './material-ui';
+export { TextField, PasswordField, Switch } from './material-ui';
