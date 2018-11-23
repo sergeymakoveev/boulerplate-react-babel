@@ -13,16 +13,17 @@ import { PropTypesChildren } from 'proptypes';
 
 class CommonDialog extends React.Component {
     static defaultProps = {
-        labelCancel: 'Cancel',
-        labelSubmit: 'Submit',
+        cancel_label: 'Cancel',
+        submit_label: 'Submit',
         onClose: (e) => e,
         onSubmit: (e) => e,
         open: true,
     };
 
     static propTypes = {
-        labelCancel: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-        labelSubmit: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        cancel_label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        submit_label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        submit_disabled: PropTypes.bool,
         onClose: PropTypes.func,
         onSubmit: PropTypes.func,
         open: PropTypes.bool,
@@ -50,9 +51,9 @@ class CommonDialog extends React.Component {
             title,
             text,
             onSubmit,
-            labelSubmit,
-            labelCancel,
-            invalid,
+            submit_label,
+            cancel_label,
+            submit_disabled,
             ...props
         } = this.props;
         const { open } = this.state;
@@ -75,25 +76,25 @@ class CommonDialog extends React.Component {
                 </DialogContent>
                 <DialogActions>
                     {[
-                        labelCancel && (
+                        cancel_label && (
                             <Button
                                 color="primary"
                                 key="b-cancel"
                                 onClick={this.onClose}
                             >
-                                {labelCancel}
+                                {cancel_label}
                             </Button>
                         ),
-                        labelSubmit && (
+                        submit_label && (
                             <Button
                                 variant="contained"
                                 color="primary"
                                 type="submit"
                                 key="b-submit"
                                 onClick={onSubmit}
-                                disabled={invalid}
+                                disabled={submit_disabled}
                             >
-                                {labelSubmit}
+                                {submit_label}
                             </Button>
                         ),
                     ]}

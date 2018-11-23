@@ -50,8 +50,10 @@ class Page extends React.Component {
             reset();
             history.push('/users');
         };
-        const onSubmit = (item) =>
-            (+item.id ? update : create)(item, onClose);
+        const onSubmit = (item) => {
+            console.warn({ item });
+            return (+item.id ? update : create)(item, onClose);
+        };
 
         return (
             !data
@@ -61,7 +63,7 @@ class Page extends React.Component {
                         initialValues={data}
                         onSubmit={onSubmit}
                     >
-                        {({ handleSubmit /* , submitting, pristine, invalid, form */ }) => (
+                        {({ handleSubmit, pristine, invalid /* , submitting, form */ }) => (
                             <CommonDialog
                                 title={
                                     fp.isEmpty(data)
@@ -70,6 +72,7 @@ class Page extends React.Component {
                                 }
                                 onClose={onClose}
                                 onSubmit={handleSubmit}
+                                submit_disabled={invalid || pristine}
                             >
                                 <TextField
                                     style={{ width: '100%' }}

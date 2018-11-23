@@ -35,10 +35,10 @@ class SignIn extends React.PureComponent {
                 {({ handleSubmit, invalid /* , submitting, pristine, form */ }) => (
                     <CommonDialog
                         title="Sign In"
+                        cancel_label={false}
                         onSubmit={handleSubmit}
-                        labelSubmit="Sign In"
-                        labelCancel={false}
-                        invalid={invalid}
+                        submit_label="Sign In"
+                        submit_disabled={invalid}
                     >
                         <TextField
                             style={{ width: '100%' }}
