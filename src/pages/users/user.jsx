@@ -5,7 +5,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-final-form';
 
-import { TextField } from 'externals/final-form';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { TextField, Switch } from 'externals/final-form';
 import validators from 'helpers/form-validators';
 
 import CommonDialog from 'components/dialog';
@@ -96,6 +97,16 @@ class Page extends React.Component {
                                     label="Email"
                                     validate={
                                         VALIDATORS.email
+                                    }
+                                />
+                                <br />
+                                <br />
+                                <FormControlLabel
+                                    style={{ margin: 0 }}
+                                    label="Active"
+                                    labelPlacement="start"
+                                    control={
+                                        <Switch name="active" />
                                     }
                                 />
                             </CommonDialog>
