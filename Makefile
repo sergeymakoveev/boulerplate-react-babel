@@ -4,13 +4,12 @@ SHELL = /bin/bash
 
 APP=REACT-BABEL
 DIR=${PWD}
-DIR-API=${DIR}/../api
-DIR-API-CI=${DIR}/../api-ci
+DIR-ROOT=${DIR}/../
 DIR-SRC=${DIR}/src
 DIR-DIST=${DIR}/dist
 DIR-NPM=${DIR}/node_modules
 
-start:
+develop:
 	@gnome-terminal \
 		--tab-with-profile="tab"\
 			--working-directory="${DIR}"\
@@ -19,16 +18,15 @@ start:
 		--tab-with-profile="tab"\
 			--working-directory="${DIR}"\
 			--title="${APP}-frontend"\
-			--command="make develop"
+			--command="make start"
 
 api:
-	@$(MAKE) -C ${DIR-API}
+	@cd ${DIR-ROOT}; $(MAKE) api
 
-api-ci:
-	@$(MAKE) -C ${DIR-API-CI}
-	@#$(MAKE) -C ${DIR-API-CI} debug
+api-mock:
+	@cd ${DIR-ROOT}; $(MAKE) api-mock
 
-develop:
+start:
 	@# @DEBUG='express:router' webpack-dev-server --inline --hot
 	@# webpack-dev-server --inline --hot
 	@npm start
