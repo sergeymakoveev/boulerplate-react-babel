@@ -21,10 +21,10 @@ develop:
 			--command="make start"
 
 api:
-	@cd ${DIR-ROOT}; $(MAKE) api
+	@cd ${DIR-ROOT} && $(MAKE) api
 
 api-mock:
-	@cd ${DIR-ROOT}; $(MAKE) api-mock
+	@cd ${DIR-ROOT} && $(MAKE) api-mock
 
 start:
 	@# @DEBUG='express:router' webpack-dev-server --inline --hot
