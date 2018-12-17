@@ -14,7 +14,7 @@ develop:
 		--tab-with-profile="tab"\
 			--working-directory="${DIR}"\
 			--title="${APP}-api"\
-			--command="make api-ci"\
+			--command="make api"\
 		--tab-with-profile="tab"\
 			--working-directory="${DIR}"\
 			--title="${APP}-frontend"\
