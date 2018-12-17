@@ -2,11 +2,39 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { Field } from 'react-final-form';
-import MUITextField from '@material-ui/core/TextField';
+// import MUIFormHelperText from '@material-ui/core/FormHelperText';
+// import MUIFormControl from '@material-ui/core/FormControl';
+// import MUIInput from '@material-ui/core/Input';
+// import MUIInputLabel from '@material-ui/core/InputLabel';
+// import MUIMenuItem from '@material-ui/core/MenuItem';
+// import MUISelect from '@material-ui/core/Select';
 import MUISwitch from '@material-ui/core/Switch';
+import MUITextField from '@material-ui/core/TextField';
 
-import { PropTypesTextField } from 'proptypes';
+import { PropTypesTextField } from '~/proptypes';
 
+/*
+const _Select = ({
+    render,
+    meta: { touched, error },
+    input: { name, value, ...inputProps },
+    ...custom
+}) => (
+    <MUIFormControl>
+        <MUIInputLabel htmlFor="age-helper">Age</MUIInputLabel>
+        <MUISelect
+            value={this.state.age}
+            onChange={this.handleChange}
+            input={<MUIInput name="age" id="age-helper" />}
+        >
+            <MUIMenuItem value={10}>Ten</MUIMenuItem>
+            <MUIMenuItem value={20}>Twenty</MUIMenuItem>
+            <MUIMenuItem value={30}>Thirty</MUIMenuItem>
+        </MUISelect>
+        <MUIFormHelperText>Some important helper text</MUIFormHelperText>
+    </MUIFormControl>
+);
+*/
 
 const _Switch = ({
     render,

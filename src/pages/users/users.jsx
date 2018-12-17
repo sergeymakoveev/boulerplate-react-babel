@@ -19,12 +19,12 @@ import TableRow from '@material-ui/core/TableRow';
 // import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Switch from '@material-ui/core/Switch';
 
-import { PropTypesRoute, PropTypesUsers } from 'proptypes';
-import { ACTIONS, helpers } from 'models/users';
+import { PropTypesRoute, PropTypesUsers } from '~/proptypes';
+import { ACTIONS, helpers } from '~/models/users';
 
-import Loading from 'components/loading';
+import Loading from '~/components/loading';
 
-import { routes } from 'pages';
+import { routes } from '~/pages';
 
 
 // class Countered extends React.Component {

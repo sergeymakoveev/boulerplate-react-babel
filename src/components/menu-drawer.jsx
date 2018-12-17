@@ -11,7 +11,7 @@ import IconHome from '@material-ui/icons/Home';
 import IconInfo from '@material-ui/icons/Info';
 import IconUsers from '@material-ui/icons/People';
 
-import { routes } from 'pages';
+import { routes } from '~/pages';
 
 
 const ListItemLink = ({ children, to, path, exact }) => {

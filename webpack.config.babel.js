@@ -80,6 +80,7 @@ export default {
     resolve: {
         modules: [DIR_NODE_MODULES, DIR_SRC],
         extensions: ['.json', '.js', '.jsx', '.scss', '.css'],
+        alias: { '~': DIR_SRC },
     },
 
     module: {

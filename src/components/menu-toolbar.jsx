@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { ACTIONS } from 'models/auth';
-
 import IconMenu from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import MUIMenu from '@material-ui/core/Menu';
 import MUIMenuItem from '@material-ui/core/MenuItem';
+
+import { ACTIONS } from '~/models/auth';
 
 
 class Menu extends React.PureComponent {

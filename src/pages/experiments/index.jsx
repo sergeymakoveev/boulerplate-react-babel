@@ -7,16 +7,16 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 const LoadablePageTopics = Loadable({
     loader: () => new Promise(
-        (resolve) => setTimeout(() => resolve(import('pages/experiments/topics')), 3000)
+        (resolve) => setTimeout(() => resolve(import('~/pages/experiments/topics')), 3000)
     ),
     loading: Loading,
 });
 const LoadablePageCategories = Loadable({
-    loader: () => import('pages/experiments/categories'),
+    loader: () => import('~/pages/experiments/categories'),
     loading: Loading,
 });
 
-const LazyPage = React.lazy(() => import('pages/experiments/lazy'));
+const LazyPage = React.lazy(() => import('~/pages/experiments/lazy'));
 const renderPage = (Page) => () => (
     <React.Suspense fallback={<Loading />}>
         <Page />

@@ -6,14 +6,14 @@ import { connect } from 'react-redux';
 import { Form } from 'react-final-form';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { TextField, Switch } from 'externals/final-form';
-import validators from 'helpers/form-validators';
+import { TextField, Switch } from '~/externals/final-form';
+import validators from '~/helpers/form-validators';
 
-import CommonDialog from 'components/dialog';
-import Loading from 'components/loading';
+import CommonDialog from '~/components/dialog';
+import Loading from '~/components/loading';
 
-import { ACTIONS, helpers } from 'models/users';
-import { PropTypesRoute, PropTypesUser } from 'proptypes';
+import { ACTIONS, helpers } from '~/models/users';
+import { PropTypesRoute, PropTypesUser } from '~/proptypes';
 
 
 const VALIDATORS = {

@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
-import { PropTypesChildren } from 'proptypes';
+import { PropTypesChildren } from '~/proptypes';
 
 
 class CommonDialog extends React.Component {

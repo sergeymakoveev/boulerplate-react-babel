@@ -2,14 +2,13 @@ import fp from 'lodash/fp';
 
 import React from 'react';
 import { connect } from 'react-redux';
-
 import PropTypes from 'prop-types';
-import { PropTypesAuth } from 'proptypes';
 
-import { ACTIONS } from 'models/auth';
+import { PropTypesAuth } from '~/proptypes';
+import { ACTIONS } from '~/models/auth';
 
-import SignIn from 'components/signin';
-import Loading from 'components/loading';
+import SignIn from '~/components/signin';
+import Loading from '~/components/loading';
 
 
 class Auth extends React.Component {

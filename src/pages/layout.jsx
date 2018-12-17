@@ -12,10 +12,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconMenu from '@material-ui/icons/Menu';
 
-import { routes, PageAbout, PageHome, PageUser, PageUsers, PageExperiments } from 'pages';
+import { routes, PageAbout, PageHome, PageUser, PageUsers, PageExperiments } from '~/pages';
 
-import { MenuDrawer, MenuToolbar } from 'components';
-import { stopPropagation } from 'helpers/dom';
+import { MenuDrawer, MenuToolbar } from '~/components';
+import { stopPropagation } from '~/helpers/dom';
 
 
 const styles_layout = (theme) => ({

@@ -7,16 +7,16 @@ import Loadable from 'react-loadable';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
-import { APIConnector } from 'api';
-import { history, store } from 'store';
+import { APIConnector } from '~/api';
+import { history, store } from '~/store';
 
-import Auth from 'components/auth';
-import Loading from 'components/loading';
-import { MuiTheme } from 'externals/material-ui';
+import Auth from '~/components/auth';
+import Loading from '~/components/loading';
+import { MuiTheme } from '~/externals/material-ui';
 
 
 const LayoutLoadable = Loadable({
-    loader: () => Promise.resolve(import('pages/layout.jsx')),
+    loader: () => Promise.resolve(import('./layout')),
     loading: Loading,
 });
 

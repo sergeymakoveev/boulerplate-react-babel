@@ -1,5 +1,6 @@
 import fp from 'lodash/fp';
-import API from 'api';
+
+import API from '~/api';
 
 
 export const TYPES = {

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { ACTIONS } from 'models/auth';
+import { ACTIONS } from '~/models/auth';
 import RestAPI from './rest';
 
 
