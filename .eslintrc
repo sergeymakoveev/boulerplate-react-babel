@@ -31,6 +31,7 @@
         "import/prefer-default-export": "off",
         "import/newline-after-import": ["error", { "count": 2 }],
         "indent": ["error", 4, { "SwitchCase": 1 }],
+        "linebreak-style": ["error", "unix"],
         "new-cap": "off",
         "no-bitwise": ["error", { "allow": ["~"] }],
         "no-console": "off",
