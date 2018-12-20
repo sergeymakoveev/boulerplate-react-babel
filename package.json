@@ -25,10 +25,10 @@
   "scripts": {
     "start": "webpack-dev-server --inline --hot",
     "clean": "npm run clean-dist; npm run clean-modules; exit 0",
-    "clean-dist": "rm -rf dist; exit 0",
-    "clean-modules": "rm -rf node_modules; rm package-lock.json; exit 0",
+    "clean-dist": "shx rm -rf dist; exit 0",
+    "clean-modules": "shx rm -rf node_modules; shx rm package-lock.json; exit 0",
     "build": "npm run clean-dist; webpack",
-    "build-production": "npm run clean; npm i && NODE_ENV=production webpack -p"
+    "build-production": "npm run clean-dist; npm i && NODE_ENV=production webpack -p"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
@@ -54,6 +54,7 @@
     "node-sass": "^4.10.0",
     "postcss-loader": "^2.1.6",
     "sass-loader": "^6.0.7",
+    "shx": "^0.3.2",
     "style-loader": "^0.20.3",
     "stylelint": "^8.4.0",
     "stylelint-config-standard": "^18.2.0",
