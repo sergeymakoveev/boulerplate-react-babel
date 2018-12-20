@@ -100,7 +100,7 @@ export default {
                 enforce: 'pre',
                 test: /\.jsx?$/,
                 include: DIR_SRC,
-                loader: 'eslint-loader',
+                use: 'eslint-loader',
             },
             // {
             //     test: /\.scss$/,
@@ -116,22 +116,26 @@ export default {
             {
                 test: /\.js$/,
                 include: DIR_SRC,
-                loader: 'babel-loader',
-                query: {
-                    presets: [
-                        '@babel/preset-env',
-                    ],
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                        ],
+                    },
                 },
             },
             {
                 test: /\.jsx$/,
                 include: DIR_SRC,
-                loader: 'babel-loader',
-                query: {
-                    presets: [
-                        '@babel/preset-env',
-                        '@babel/preset-react',
-                    ],
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                            '@babel/preset-react',
+                        ],
+                    },
                 },
             },
             {
