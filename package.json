@@ -28,7 +28,10 @@
     "clean-dist": "shx rm -rf dist; exit 0",
     "clean-modules": "shx rm -rf node_modules; shx rm package-lock.json; exit 0",
     "build": "npm run clean-dist; webpack",
-    "build-production": "npm run clean-dist; npm i && NODE_ENV=production webpack -p"
+    "build-production": "npm run clean-dist; npm i && NODE_ENV=production webpack -p",
+    "eslint": "eslint ./src/**/*.{js,jsx}",
+    "eslint:fix": "eslint --fix ./src/**/*.{js,jsx}",
+    "eslint:config": "eslint --print-config ./{src/**/*.{js,jsx}"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
