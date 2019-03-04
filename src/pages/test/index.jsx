@@ -5,8 +5,8 @@ import './index.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class Layout extends React.Component {
 
+class Layout extends React.Component {
     state = {
         title: 'test react success',
     };
@@ -19,10 +19,10 @@ class Layout extends React.Component {
     // }
 
     click = () =>
-        this.setState({ title: `${this.state.title} click`})
+        this.setState({ title: `${this.state.title} click` })
 
     render = () => (
-        <button onClick={ this.click }>
+        <button onClick={this.click}>
             { this.state.title }
         </button>
     );
